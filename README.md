@@ -1,4 +1,4 @@
-# Gestion des Parcours Étudiants
+# Gestion des Parcours Étudiants - USMBA
 
 <p align="center">
   <img src="public/images/logo.png" alt="Logo Gestion Parcours Étudiants" width="200" />
@@ -6,13 +6,23 @@
 
 ## À propos de l'application
 
-Cette application web permet la gestion des parcours étudiants au sein d'un établissement d'enseignement supérieur. Elle offre les fonctionnalités suivantes :
+Cette application web permet la gestion des parcours étudiants au sein de l'Université Sidi Mohamed Ben Abdellah (USMBA). Elle offre les fonctionnalités suivantes :
 
-- Authentification sécurisée des étudiants
-- Consultation des filières et parcours disponibles
-- Sélection et confirmation d'un parcours selon la filière de l'étudiant
-- Génération de PDF de confirmation de choix de parcours
-- Interface utilisateur intuitive et responsive avec Tailwind CSS
+- Authentification sécurisée des étudiants via email académique
+- Tableau de bord personnalisé avec suivi de l'état du profil et choix de parcours
+- Consultation des filières et parcours disponibles selon le profil étudiant
+- Sélection et confirmation d'un parcours selon la filière et les résultats académiques
+- Génération de PDF de confirmation de choix de parcours avec informations complètes
+- Historique des actions pour suivre les étapes importantes du parcours
+- Interface utilisateur moderne et responsive avec Tailwind CSS
+
+## Technologies utilisées
+
+- **Backend**: Laravel 10.x
+- **Frontend**: Blade + Tailwind CSS
+- **Base de données**: MySQL
+- **Authentification**: Laravel Breeze
+- **PDF**: Barryvdh/DomPDF
 
 ## Prérequis
 
@@ -20,7 +30,7 @@ Cette application web permet la gestion des parcours étudiants au sein d'un ét
 - Composer 2.0 ou plus récent
 - Node.js 16 ou plus récent
 - npm 8 ou plus récent
-- Serveur de base de données (SQLite, MySQL, PostgreSQL)
+- Serveur de base de données MySQL 5.7+ ou MariaDB 10.2+
 
 ## Installation pour le développement
 

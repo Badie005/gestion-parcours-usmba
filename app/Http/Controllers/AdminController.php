@@ -189,7 +189,7 @@ class AdminController extends Controller
             // Données
             foreach ($etudiants as $etudiant) {
                 fputcsv($file, [
-                    $etudiant->id_etudiant,
+                    $etudiant->num_inscription,
                     $etudiant->nom,
                     $etudiant->prenom,
                     $etudiant->email,

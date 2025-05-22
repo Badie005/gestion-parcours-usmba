@@ -29,21 +29,26 @@ class ParcourChoixRequest extends FormRequest
     public function rules(): array
     {
         $etudiant = Auth::user();
-        $codeDeug = $etudiant ? $etudiant->code_deug : null;
         
         return [
             'code_licence' => [
                 'required',
                 'string',
-                'exists:parcour,code_licence',
-                function ($attribute, $value, $fail) use ($codeDeug) {
+                'exists:parcours,code_licence',
+                function ($attribute, $value, $fail) {
+                    $etudiant = Auth::user();
+                    if (!$etudiant) {
+                        $fail('Vous n\'êtes pas connecté.');
+                        return;
+                    }
+                    
                     $parcour = Parcour::where('code_licence', $value)->first();
                     if (!$parcour) {
                         $fail('Le parcours sélectionné n\'existe pas.');
                         return;
                     }
                     
-                    if ($parcour->code_deug != $codeDeug) {
+                    if ($parcour->id_filiere != $etudiant->filiere_id) {
                         $fail('Le parcours sélectionné n\'appartient pas à votre filière.');
                     }
                 }

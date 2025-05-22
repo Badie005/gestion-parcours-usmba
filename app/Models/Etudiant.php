@@ -3,203 +3,188 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Etudiant extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    
+
     /**
-     * Override save method to update the model in the database.
-     *
-     * @param array $options
-     * @return bool
-     */
-    public function save(array $options = [])
-    {
-        return parent::save($options);
-    }
-    
-    /**
-     * Indique si le modèle doit mémoriser les jetons des utilisateurs.
-     *
-     * @var bool
-     */
-    protected $rememberTokenName = false;
-    
-    /**
-     * Le nom de la table associée au modèle.
+     * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'etudiant';
-    
+    protected $table = 'etudiants';
+
     /**
-     * La clé primaire associée à la table.
+     * The primary key for the model.
      *
      * @var string
      */
-    protected $primaryKey = 'Num_Inscription';
-    
+    protected $primaryKey = 'num_inscription';
+
     /**
-     * Indique si le modèle doit gérer automatiquement created_at / updated_at.
-     * La table "etudiant" ne possède pas ces colonnes, on les désactive donc.
+     * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
      */
-    public $timestamps = false;
-    
+    public $incrementing = false;
+
     /**
-     * Les attributs qui sont mass assignable.
+     * The "type" of the auto-incrementing ID.
      *
-     * @var array<int, string>
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int,string>
      */
     protected $fillable = [
-        'nom_fr', 'prenom_fr', 'nom_ar', 'prenom_ar',
-        'email_academique', 'password',
-        'date_naissance', 'adresse', 'telephone',
-        'id_filiere', 'id_parcour',
-        'choix_confirme', 'date_choix', 'last_login_at',
-        'annee', 'aux', 'nb_val_ac_s1', 'nb_val_ac_s2', 'nb_val_ac_s3', 'nb_val_ac_s4',
-        'fonctionnaire', 'impression_carte', 'duplicata_carte', 'impression_deug',
-        'la_poutre', 'admission_deug', 'exclu', 'rd', 'reinscription',
-        'lieu_naissance_fr', 'lieu_naissance_ar', 'sexe', 'pays_naissance', 'nationalite',
-        'serie_bac', 'lieu_bac', 'annee_bac', 'lycee', 'handicap', 'region',
-        'role'
+        'num_inscription',
+        'nom_fr',
+        'prenom_fr',
+        'email_academique',
+        'password',
+        'date_naissance',
+        'adresse',
+        'telephone',
+        'filiere_id',
+        'parcour_id',
+        'choix_confirme',
+        'date_choix',
     ];
-    
+
     /**
-     * Les attributs qui doivent être cachés pour les tableaux.
+     * The attributes that should be hidden for arrays.
      *
-     * @var array<int, string>
+     * @var array<int,string>
      */
     protected $hidden = [
         'password',
+        'remember_token',
     ];
-    
+
     /**
-     * Les attributs qui doivent être convertis en types natifs.
+     * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string,string>
      */
     protected $casts = [
-        'choix_confirme' => 'boolean',
-        'date_choix' => 'datetime',
-        'last_login_at' => 'datetime'
+        'date_naissance'  => 'date',
+        'date_choix'      => 'datetime',
+        'last_login_at'   => 'datetime',
+        'choix_confirme'  => 'boolean',
     ];
-    
-    /**
-     * Obtenir la filière à laquelle appartient cet étudiant.
-     */
-    public function filiere(): BelongsTo
-    {
-        // L'étudiant est lié à la filière via la colonne id_filiere => Code_DEUG
-        return $this->belongsTo(Filiere::class, 'id_filiere', 'Code_DEUG');
-    }
-    
-    /**
-     * Obtenir le parcours choisi par cet étudiant (si existant).
-     */
-    public function parcour(): BelongsTo
-    {
-        // Relation basée sur id_parcour => Code_Licence
-        return $this->belongsTo(Parcour::class, 'id_parcour', 'Code_Licence');
-    }
-    
-    /**
-     * Accesseur pour obtenir le nom complet de l'étudiant.
-     *
-     * @return string
-     */
-    public function getNomCompletAttribute(): string
-    {
-        return "$this->prenom_fr $this->nom_fr";
-    }
-    
-    /**
-     * Vérifie si l'étudiant peut choisir son parcours.
-     * Basé sur le paramètre choix_parcour_autorise de sa filière.
-     *
-     * @return bool
-     */
-    /**
-     * Vérifie si l'étudiant peut choisir son parcours.
-     * Basé sur le paramètre choix_parcour_autorise de sa filière.
-     *
-     * @return bool
-     */
-    public function peutChoisirParcour(): bool
-    {
-        // Vérifie si la filière autorise le choix de parcours (sécurisé)
-        return $this->filiere?->choix_parcour_autorise ?? false;
-    }
-    
-    /**
-     * Alias pour la compatibilité API.
-     * 
-     * @return bool
-     */
-    public function peutChoisirParcours(): bool
-    {
-        return $this->peutChoisirParcour();
-    }
-    
-    /**
-     * Vérifie si l'étudiant a déjà choisi un parcours.
-     *
-     * @return bool
-     */
-    public function aChoisiParcour(): bool
-    {
-        return $this->id_parcour !== null;
-    }
-    
-    /**
-     * Obtenir l'historique des actions de cet étudiant.
-     */
+
+    /* ---------------------------------------------------------------------*/
+    /* Relashionships                                                       */
+    /* ---------------------------------------------------------------------*/
+
     public function actionHistoriques(): HasMany
     {
-        return $this->hasMany(ActionHistorique::class, 'id_etudiant', 'Num_Inscription');
+        return $this->hasMany(ActionHistorique::class, 'etudiant_id', 'num_inscription');
     }
-    
+
+    public function filiere(): BelongsTo
+    {
+        return $this->belongsTo(Filiere::class, 'filiere_id', 'code_deug');
+    }
+
+    public function parcour(): BelongsTo
+    {
+        return $this->belongsTo(Parcour::class, 'parcour_id', 'code_licence');
+    }
+
+    /* ---------------------------------------------------------------------*/
+    /* Accessors / Mutators (Aliases for legacy code)                       */
+    /* ---------------------------------------------------------------------*/
+
+    public function getNomAttribute(): ?string
+    {
+        return $this->nom_fr;
+    }
+
+    public function getPrenomAttribute(): ?string
+    {
+        return $this->prenom_fr;
+    }
+
+    public function getEmailAttribute(): ?string
+    {
+        return $this->email_academique;
+    }
+
+    /**
+     * Alias for legacy id_etudiant property.
+     */
+    public function getIdEtudiantAttribute(): ?string
+    {
+        return $this->num_inscription;
+    }
+
+    /**
+     * Alias to remain compatible with property "Num_Inscription" used in some controllers.
+     */
+    public function getNum_InscriptionAttribute(): ?string
+    {
+        return $this->num_inscription;
+    }
+
+    /**
+     * Alias for id_filiere legacy column name.
+     */
+    public function getIdFiliereAttribute(): ?string
+    {
+        return $this->filiere_id;
+    }
+
+    /**
+     * Alias for id_parcour legacy column name.
+     */
+    public function getIdParcourAttribute(): ?string
+    {
+        return $this->parcour_id;
+    }
+
+    public function getNomCompletAttribute(): string
+    {
+        return trim(($this->nom_fr ?? '') . ' ' . ($this->prenom_fr ?? ''));
+    }
+
+    public function getFormattedDateNaissanceAttribute(): ?string
+    {
+        return $this->date_naissance ? $this->date_naissance->format('d/m/Y') : null;
+    }
+
+    /* ---------------------------------------------------------------------*/
+    /* Helper methods                                                       */
+    /* ---------------------------------------------------------------------*/
+
     /**
      * Enregistrer une action dans l'historique.
-     *
-     * @param string $typeAction
-     * @param string $description
-     * @param array|null $donneesAdditionnelles
-     * @return \App\Models\ActionHistorique
      */
     public function enregistrerAction(string $typeAction, string $description, ?array $donneesAdditionnelles = null): ActionHistorique
     {
         return $this->actionHistoriques()->create([
-            'type_action' => $typeAction,
-            'description' => $description,
+            'etudiant_id'          => $this->num_inscription,
+            'type_action'          => $typeAction,
+            'description'          => $description,
             'donnees_additionnelles' => $donneesAdditionnelles,
         ]);
     }
-    
+
     /**
-     * Vérifie si l'étudiant a le rôle admin.
-     *
-     * @return bool
+     * Détermine si l'étudiant peut encore choisir un parcours.
      */
-    public function isAdmin(): bool
+    public function peutChoisirParcour(): bool
     {
-        return $this->role === 'admin';
-    }
-    
-    /**
-     * Accessor pour rendre disponible $etudiant->date_naissance
-     * même si la colonne réelle est "Date_Naissance" (PascalCase).
-     */
-    public function getDateNaissanceAttribute()
-    {
-        return $this->attributes['Date_Naissance'] ?? null;
+        return !$this->choix_confirme && $this->filiere && ($this->filiere->choix_parcour_autorise ?? false);
     }
 }

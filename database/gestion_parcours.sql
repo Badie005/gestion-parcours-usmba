@@ -1,69 +1,162 @@
 -- Création de la base de données
-CREATE DATABASE IF NOT EXISTS gestion_parcours;
-USE gestion_parcours;
+CREATE DATABASE IF NOT EXISTS parcours
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+USE parcours;
 
--- Création de la table Filière
-CREATE TABLE filiere (
-    id_filiere INT AUTO_INCREMENT PRIMARY KEY,
-    nom_filiere VARCHAR(100) NOT NULL,
-    description TEXT,
-    choix_parcour_autorise BOOLEAN DEFAULT FALSE, -- Indique si les étudiants de cette filière peuvent choisir leur parcours
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+-- 1. Table des filières (DEUG)
+CREATE TABLE IF NOT EXISTS filiere (
+    Code_DEUG CHAR(10) NOT NULL PRIMARY KEY COLLATE utf8mb4_bin,
+    DEUG_Intitule_Fr VARCHAR(255) NOT NULL,
+    DEUG_Intitule_Ar VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    choix_parcour_autorise BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    updated_at TIMESTAMP NULL DEFAULT NULL
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
--- Création de la table Parcour
-CREATE TABLE parcour (
-    id_parcour INT AUTO_INCREMENT PRIMARY KEY,
-    nom_parcour VARCHAR(100) NOT NULL,
-    description TEXT,
-    id_filiere INT NOT NULL,
-    est_parcour_defaut BOOLEAN DEFAULT FALSE, -- Parcours par défaut pour la filière si choix non autorisé
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_filiere) REFERENCES filiere(id_filiere)
-);
+-- 2. Table des parcours (Licence)
+CREATE TABLE IF NOT EXISTS parcour (
+    Code_Licence CHAR(10) NOT NULL PRIMARY KEY COLLATE utf8mb4_bin,
+    Licence_Intitule_Fr VARCHAR(255) NOT NULL,
+    Licence_Intitule_Ar VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    id_filiere CHAR(10) NOT NULL COLLATE utf8mb4_bin,
+    est_parcour_defaut BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    updated_at TIMESTAMP NULL DEFAULT NULL,
+    CONSTRAINT fk_parcour_filiere
+      FOREIGN KEY (id_filiere)
+      REFERENCES filiere(Code_DEUG)
+      ON UPDATE CASCADE
+      ON DELETE RESTRICT
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
--- Création de la table Etudiant
-CREATE TABLE etudiant (
-    id_etudiant INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL,
-    prenom VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+-- 3. Table des étudiants
+CREATE TABLE IF NOT EXISTS etudiant (
+    Num_Inscription VARCHAR(20) NOT NULL PRIMARY KEY COLLATE utf8mb4_bin,
+    nom_fr VARCHAR(100) NOT NULL,
+    prenom_fr VARCHAR(100) NOT NULL,
+    nom_ar VARCHAR(100) DEFAULT NULL,
+    prenom_ar VARCHAR(100) DEFAULT NULL,
+    email_academique VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    date_naissance DATE,
-    adresse TEXT,
-    telephone VARCHAR(20),
-    id_filiere INT NOT NULL,
-    id_parcour INT, -- Peut être NULL si l'étudiant n'a pas encore choisi son parcours
-    choix_confirme BOOLEAN DEFAULT FALSE, -- Indique si l'étudiant a confirmé son choix
-    date_choix TIMESTAMP NULL, -- Date à laquelle le choix a été confirmé
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_filiere) REFERENCES filiere(id_filiere),
-    FOREIGN KEY (id_parcour) REFERENCES parcour(id_parcour)
-);
+    Date_Naissance DATE DEFAULT NULL,
+    lieu_naissance_fr VARCHAR(100) DEFAULT NULL,
+    lieu_naissance_ar VARCHAR(100) DEFAULT NULL,
+    sexe ENUM('M','F') DEFAULT NULL,
+    pays_naissance VARCHAR(100) DEFAULT NULL,
+    nationalite VARCHAR(100) DEFAULT NULL,
+    adresse TEXT DEFAULT NULL,
+    telephone VARCHAR(20) DEFAULT NULL,
+    id_filiere CHAR(10) NOT NULL COLLATE utf8mb4_bin,
+    id_parcour CHAR(10) DEFAULT NULL COLLATE utf8mb4_bin,
+    choix_confirme BOOLEAN NOT NULL DEFAULT FALSE,
+    date_choix DATETIME DEFAULT NULL,
+    last_login_at DATETIME DEFAULT NULL,
+    annee YEAR DEFAULT NULL,
+    aux TINYINT DEFAULT NULL,
+    nb_val_ac_s1 TINYINT DEFAULT NULL,
+    nb_val_ac_s2 TINYINT DEFAULT NULL,
+    nb_val_ac_s3 TINYINT DEFAULT NULL,
+    nb_val_ac_s4 TINYINT DEFAULT NULL,
+    serie_bac VARCHAR(50) DEFAULT NULL,
+    lieu_bac VARCHAR(100) DEFAULT NULL,
+    annee_bac YEAR DEFAULT NULL,
+    lycee VARCHAR(255) DEFAULT NULL,
+    handicap BOOLEAN NOT NULL DEFAULT FALSE,
+    region VARCHAR(100) DEFAULT NULL,
+    fonctionnaire BOOLEAN NOT NULL DEFAULT FALSE,
+    impression_carte BOOLEAN NOT NULL DEFAULT FALSE,
+    duplicata_carte BOOLEAN NOT NULL DEFAULT FALSE,
+    impression_deug BOOLEAN NOT NULL DEFAULT FALSE,
+    la_poutre BOOLEAN NOT NULL DEFAULT FALSE,
+    admission_deug BOOLEAN NOT NULL DEFAULT FALSE,
+    exclu BOOLEAN NOT NULL DEFAULT FALSE,
+    rd BOOLEAN NOT NULL DEFAULT FALSE,
+    reinscription BOOLEAN NOT NULL DEFAULT FALSE,
+    role VARCHAR(20) NOT NULL DEFAULT 'etudiant',
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    updated_at TIMESTAMP NULL DEFAULT NULL,
+    CONSTRAINT fk_etudiant_filiere
+      FOREIGN KEY (id_filiere)
+      REFERENCES filiere(Code_DEUG)
+      ON UPDATE CASCADE
+      ON DELETE RESTRICT,
+    CONSTRAINT fk_etudiant_parcour
+      FOREIGN KEY (id_parcour)
+      REFERENCES parcour(Code_Licence)
+      ON UPDATE CASCADE
+      ON DELETE RESTRICT
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
--- Insertion d'exemples dans la table Filière
-INSERT INTO filiere (nom_filiere, description, choix_parcour_autorise) VALUES
-('Informatique', 'Formation en développement logiciel et systèmes informatiques', TRUE),
-('Commerce', 'Formation en gestion commerciale et marketing', TRUE),
-('Sciences', 'Formation en sciences fondamentales et appliquées', FALSE); -- Cette filière ne permet pas le choix
+-- Indexes pour optimiser les recherches sur les étudiants
+CREATE INDEX idx_etudiant_filiere       ON etudiant(id_filiere);
+CREATE INDEX idx_etudiant_parcour       ON etudiant(id_parcour);
+CREATE INDEX idx_etudiant_filiere_annee ON etudiant(id_filiere, annee);
+CREATE INDEX idx_etudiant_parcour_annee ON etudiant(id_parcour, annee);
+CREATE FULLTEXT INDEX idx_etudiant_search
+    ON etudiant(nom_fr, prenom_fr, email_academique);
 
--- Insertion d'exemples dans la table Parcour
-INSERT INTO parcour (nom_parcour, description, id_filiere, est_parcour_defaut) VALUES
-('Développement Web', 'Spécialisation en développement de sites et applications web', 1, FALSE),
-('Réseaux', 'Spécialisation en administration réseau et cybersécurité', 1, FALSE),
-('Intelligence Artificielle', 'Spécialisation en IA et apprentissage automatique', 1, TRUE), -- Parcours par défaut pour Informatique
-('Marketing Digital', 'Spécialisation en stratégies marketing en ligne', 2, TRUE), -- Parcours par défaut pour Commerce
-('Gestion des Ventes', 'Spécialisation en techniques de vente et négociation', 2, FALSE),
-('Biologie', 'Spécialisation en sciences biologiques', 3, TRUE), -- Parcours par défaut pour Sciences
-('Physique', 'Spécialisation en sciences physiques', 3, FALSE);
+-- 4. Table de l’historique des actions
+CREATE TABLE IF NOT EXISTS action_historique (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_etudiant VARCHAR(20) NOT NULL COLLATE utf8mb4_bin,
+    type_action VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    donnees_additionnelles JSON DEFAULT NULL,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    updated_at TIMESTAMP NULL DEFAULT NULL,
+    CONSTRAINT fk_histo_etudiant
+      FOREIGN KEY (id_etudiant)
+      REFERENCES etudiant(Num_Inscription)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
--- Insertion d'exemples dans la table Etudiant
-INSERT INTO etudiant (nom, prenom, email, password, date_naissance, adresse, telephone, id_filiere, id_parcour, choix_confirme) VALUES
-('Dupont', 'Jean', 'jean.dupont@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '2000-05-15', '123 Rue de Paris, 75001 Paris', '0123456789', 1, 1, TRUE),
-('Martin', 'Sophie', 'sophie.martin@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '1999-10-22', '456 Avenue des Champs, 75008 Paris', '0123456780', 1, NULL, FALSE), -- N'a pas encore choisi
-('Petit', 'Lucas', 'lucas.petit@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '2001-03-10', '789 Boulevard Saint-Michel, 75005 Paris', '0123456781', 2, 5, TRUE),
-('Leroy', 'Emma', 'emma.leroy@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '2002-07-28', '101 Rue de Rivoli, 75001 Paris', '0123456782', 2, NULL, FALSE), -- N'a pas encore choisi
-('Moreau', 'Thomas', 'thomas.moreau@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '2000-12-05', '202 Rue Saint-Honoré, 75001 Paris', '0123456783', 3, 6, TRUE); -- Filière sans choix, parcours attribué par défaut
+-- Indexes pour l’historique
+CREATE INDEX idx_historique_etudiant ON action_historique(id_etudiant);
+CREATE INDEX idx_historique_type     ON action_historique(type_action);
+
+-- 5. Table des administrateurs
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    email_verified_at TIMESTAMP NULL DEFAULT NULL,
+    password VARCHAR(255) NOT NULL,
+    remember_token VARCHAR(100) DEFAULT NULL,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    updated_at TIMESTAMP NULL DEFAULT NULL
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+-- 6. Table pour les tokens API (Laravel Sanctum)
+CREATE TABLE IF NOT EXISTS personal_access_tokens (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tokenable_type VARCHAR(255) NOT NULL,
+    tokenable_id BIGINT UNSIGNED NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    token VARCHAR(64) NOT NULL UNIQUE,
+    abilities TEXT DEFAULT NULL,
+    last_used_at DATETIME DEFAULT NULL,
+    expires_at    DATETIME DEFAULT NULL,
+    created_at    DATETIME DEFAULT NULL,
+    updated_at    DATETIME DEFAULT NULL
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+
+-- Index pour les tokens
+CREATE INDEX idx_personal_access_tokens_tokenable
+    ON personal_access_tokens(tokenable_type, tokenable_id);

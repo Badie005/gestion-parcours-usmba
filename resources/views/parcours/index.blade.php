@@ -163,125 +163,84 @@
                                 </div>
                             </div>
                         @else
-                            <h3 class="text-lg font-semibold mb-6 flex items-center bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
-                                Choisissez votre parcours
-                                <span class="ml-auto text-sm text-gray-500 italic">Sélectionnez une option ci-dessous</span>
-                            </h3>
+                            <div class="border-t border-gray-200 pt-6">
+                                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                    Choisissez votre parcours
+                                </h3>
 
-                            <form method="POST" action="{{ route('parcours.choisir') }}">
-                                @csrf
-                                
-                                @error('id_parcour')
-                                    <x-notification type="error" :message="$message" />
-                                @enderror
-                                
-                                @error('general')
-                                    <x-notification type="error" :message="$message" />
-                                @enderror
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                                    @foreach ($parcours as $parcour)
+                                <form method="POST" action="{{ route('parcours.choisir') }}">
+                                    @csrf
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                        @foreach($parcours as $parcour)
                                         <div class="relative">
-                                            <input type="radio" name="id_parcour" id="parcour_{{ $parcour->id_parcour }}" value="{{ $parcour->id_parcour }}" class="peer hidden" {{ old('id_parcour', $parcourSelectionne ? $parcourSelectionne->id_parcour : '') == $parcour->id_parcour ? 'checked' : '' }} required>
-                                            <label for="parcour_{{ $parcour->id_parcour }}" class="group flex flex-col h-full border-2 border-gray-200 rounded-lg p-0 cursor-pointer hover:border-blue-800 peer-checked:border-blue-800 peer-checked:ring-2 peer-checked:ring-blue-800 peer-checked:ring-offset-2 transition-all duration-200 overflow-hidden shadow-sm hover:shadow-md">
-                                                <!-- En-tête de la carte -->
-                                                <div class="bg-gradient-to-r {{ $parcour->est_parcour_defaut ? 'from-gray-700 to-gray-900' : 'from-gray-500 to-gray-700' }} p-4">
+                                            <input type="radio" name="code_licence" id="parcour_{{ $parcour->code_licence }}" value="{{ $parcour->code_licence }}" class="peer hidden" {{ $loop->first ? 'checked' : '' }} required>
+                                            <label for="parcour_{{ $parcour->code_licence }}" class="flex flex-col h-full border border-gray-200 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 hover:shadow-md peer-checked:border-blue-500 peer-checked:ring-2 peer-checked:ring-blue-500 peer-checked:bg-blue-50 transition-all duration-200 overflow-hidden shadow-sm bg-white">
+                                                <!-- En-tête -->
+                                                <div class="p-3 bg-gradient-to-r from-blue-600 to-blue-800 text-black group-hover:from-blue-700 group-hover:to-blue-900 transition-all duration-200">
                                                     <div class="flex justify-between items-center">
-                                                        <h4 class="text-lg font-bold text-white">{{ $parcour->licence_intitule_fr }}</h4>
-                                                        @if ($parcour->est_parcour_defaut)
-                                                            <span class="inline-flex items-center rounded-full bg-white/30 px-2 py-1 text-xs font-medium text-white">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                                </svg>
-                                                                Par défaut
-                                                            </span>
+                                                        <h4 class="font-medium text-sm">{{ $parcour->licence_intitule_fr }}</h4>
+                                                        @if($parcour->est_parcour_defaut)
+                                                        <span class="inline-flex items-center rounded-full bg-white/20 px-2 py-0.5 text-xs text-black">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                            </svg>
+                                                            Défaut
+                                                        </span>
                                                         @endif
                                                     </div>
                                                 </div>
                                                 
-                                                <!-- Corps de la carte -->
-                                                <div class="p-5 bg-white peer-checked:bg-gray-50 flex-grow flex flex-col">
-                                                    <div class="mb-3">
-                                                        <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 group-hover:bg-gray-1000 group-hover:text-gray-900 transition-colors duration-200 peer-checked:bg-gray-200 peer-checked:text-gray-900">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                            </svg>
-                                                            Code: {{ $parcour->id_parcour }}
+                                                <!-- Corps -->
+                                                <div class="p-3 flex-grow flex flex-col">
+                                                    <div class="mb-2">
+                                                        <span class="inline-flex items-center text-xs font-medium text-gray-500">
+                                                            Code: {{ $parcour->code_licence }}
                                                         </span>
                                                     </div>
                                                     
-                                                    <p class="text-gray-700 flex-grow leading-relaxed">{{ $parcour->description }}</p>
+                                                    <p class="text-sm text-gray-600 flex-grow">{{ $parcour->description }}</p>
                                                     
                                                     <!-- Indicateur de sélection -->
-                                                    <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                                                        <!-- Statut de sélection -->
-                                                        <div class="inline-flex items-center text-sm peer-checked:text-blue-800 text-gray-500 transition-colors duration-200 group-hover:text-blue-800">
-                                                            <div class="peer-checked:visible invisible group-hover:visible mr-2">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                                                </svg>
-                                                            </div>
-                                                            <span class="peer-checked:font-medium">Choisir ce parcours</span>
+                                                    <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+                                                        <span class="text-xs font-medium peer-checked:text-blue-600 text-gray-500 group-hover:text-blue-600 transition-colors duration-200">Sélectionner</span>
+                                                        <div class="peer-checked:bg-blue-600 bg-gray-200 group-hover:bg-blue-400 group-hover:shadow rounded-full w-5 h-5 flex items-center justify-center transition-all duration-200">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                            </svg>
                                                         </div>
-                                                        
-                                                        <!-- Indicateur visuel -->
-                                                        <div class="peer-checked:visible invisible group-hover:visible">
-                                                            <div class="relative inline-flex h-6 w-6 items-center justify-center">
-                                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-800 opacity-75 peer-checked:opacity-100"></span>
-                                                                <span class="relative inline-flex rounded-full h-5 w-5 bg-gray-500 text-xs text-white items-center justify-center shadow-sm">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                                    </svg>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- Pied de la carte avec effet de sélection -->
-                                                <div class="border-t border-gray-200 p-4 bg-gray-50 flex justify-center peer-checked:bg-gray-50 peer-checked:border-blue-100 hover:bg-gray-50">
-                                                    <div class="inline-flex items-center text-sm font-medium text-gray-500 group-hover:text-blue-800 peer-checked:text-blue-800">
-                                                        <span class="relative mr-3 hidden md:inline-flex">
-                                                            <span class="animate-ping absolute h-4 w-4 rounded-full bg-blue-900 opacity-75 peer-checked:opacity-100"></span>
-                                                            <span class="relative rounded-full h-3 w-3 bg-gray-500"></span>
-                                                        </span>
-                                                        Sélectionner et poursuivre
                                                     </div>
                                                 </div>
                                             </label>
                                         </div>
-                                    @endforeach
-                                </div>
+                                        @endforeach
+                                    </div>
 
-                                <div class="mb-6">
-                                    <div class="flex items-center">
-                                        <input id="confirmer" name="confirmer" type="checkbox" class="w-4 h-4 text-blue-800 border-gray-300 rounded focus:ring-blue-800" {{ old('confirmer') ? 'checked' : '' }} required>
-                                        <label for="confirmer" class="ml-2 text-sm font-medium text-gray-900">
+                                    <div class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                        <div class="flex items-center">
+                                        <input id="confirmer" name="confirmer" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                        <label for="confirmer" class="ml-2 text-sm text-gray-700">
                                             Je confirme mon choix de parcours
                                         </label>
                                     </div>
                                     @error('confirmer')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
-                                </div>
 
-                                <!-- Boutton de confirmation -->
-                                <div class="mt-10 flex justify-center">
-                                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 w-full max-w-lg text-center shadow-sm">
-                                        <p class="mb-4 text-gray-600">Après validation, votre choix sera enregistré et vous recevrez une confirmation.</p>
-                                        <button type="submit" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-800 to-black border border-transparent rounded-md font-semibold text-base text-white uppercase tracking-wide hover:from-blue-700 hover:to-blue-800 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md hover:shadow-lg w-full justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    <!-- Bouton de confirmation -->
+                                    <div class="flex justify-end">
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-medium text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>
                                             Confirmer mon choix
                                         </button>
-                                        <p class="mt-3 text-xs text-gray-500 italic">Vous pourrez consulter votre confirmation après validation</p>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         @endif
                     </div>
                 </div>

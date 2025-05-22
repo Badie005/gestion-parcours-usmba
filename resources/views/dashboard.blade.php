@@ -10,7 +10,7 @@
 
             <!-- Section d'état du profil et des étapes -->
             <div class="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm border border-blue-100 overflow-hidden">
-                <div class="p-5">
+                <div class="p-5 max-w-4xl mx-auto w-3/5">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -20,48 +20,45 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- État du profil -->
-                        <div class="bg-white p-4 rounded-lg shadow-sm border {{ $profileComplete ? 'border-green-200' : 'border-yellow-200' }}">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200">
                             <div class="flex items-center">
-                                <div class="rounded-full p-2 mr-3 {{ $profileComplete ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600' }}">
-                                    @if($profileComplete)
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                        </svg>
-                                    @endif
+                                <div class="rounded-full p-2 mr-3 bg-blue-100 text-blue-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold {{ $profileComplete ? 'text-green-700' : 'text-yellow-700' }}">
+                                    <h4 class="font-semibold text-blue-700">
                                         Profil étudiant
                                     </h4>
                                     <p class="text-sm text-gray-600">
-                                        @if($profileComplete)
-                                            Votre profil est complet
-                                        @else
-                                            Profil incomplet
-                                        @endif
+                                        Informations personnelles
                                     </p>
                                 </div>
                             </div>
                             <div class="mt-2 text-right">
                                 <a href="{{ route('profile.edit') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
-                                    {{ $profileComplete ? 'Voir mon profil' : 'Compléter mon profil' }} →
+                                    Voir mon profil →
                                 </a>
                             </div>
                         </div>
                         
                         <!-- État du choix de parcours -->
-                        <div class="bg-white p-4 rounded-lg shadow-sm border {{ $hasParcours ? 'border-green-200' : ($etudiant->peutChoisirParcour() ? 'border-yellow-200' : 'border-gray-200') }}">
+                        @php
+                        $peutChoisir = false;
+                        try {
+                            $filiere = \App\Models\Filiere::find($etudiant->filiere_id);
+                            $peutChoisir = !$etudiant->choix_confirme && $filiere && ($filiere->choix_parcour_autorise ?? false);
+                        } catch(\Exception $e) {}
+                        @endphp
+                        <div class="bg-white p-4 rounded-lg shadow-sm border {{ $hasParcours ? 'border-green-200' : ($peutChoisir ? 'border-yellow-200' : 'border-gray-200') }}">
                             <div class="flex items-center">
-                                <div class="rounded-full p-2 mr-3 {{ $hasParcours ? 'bg-green-100 text-green-600' : ($etudiant->peutChoisirParcour() ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-600') }}">
+                                <div class="rounded-full p-2 mr-3 {{ $hasParcours ? 'bg-green-100 text-green-600' : ($peutChoisir ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-600') }}">
                                     @if($hasParcours)
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                         </svg>
-                                    @elseif($etudiant->peutChoisirParcour())
+                                    @elseif($peutChoisir)
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -72,13 +69,13 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold {{ $hasParcours ? 'text-green-700' : ($etudiant->peutChoisirParcour() ? 'text-yellow-700' : 'text-gray-700') }}">
+                                    <h4 class="font-semibold {{ $hasParcours ? 'text-green-700' : ($peutChoisir ? 'text-yellow-700' : 'text-gray-700') }}">
                                         Choix de parcours
                                     </h4>
                                     <p class="text-sm text-gray-600">
                                         @if($hasParcours)
                                             Parcours confirmé
-                                        @elseif($etudiant->peutChoisirParcour())
+                                        @elseif($peutChoisir)
                                             En attente de choix
                                         @else
                                             Attribué automatiquement
@@ -88,7 +85,7 @@
                             </div>
                             <div class="mt-2 text-right">
                                 <a href="{{ route('parcours.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
-                                    {{ $hasParcours ? 'Voir mon parcours' : ($etudiant->peutChoisirParcour() ? 'Choisir un parcours' : 'Voir le parcours attribué') }} →
+                                    {{ $hasParcours ? 'Voir mon parcours' : ($peutChoisir ? 'Choisir un parcours' : 'Voir le parcours attribué') }} →
                                 </a>
                             </div>
                         </div>
@@ -141,21 +138,21 @@
                 <div class="p-6">
                     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
                         <div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ Auth::user()->nom_complet }}</h3>
-                            <p class="text-gray-600">{{ Auth::user()->email }}</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ Auth::user()->nom_fr ?? '' }} {{ Auth::user()->prenom_fr ?? '' }}</h3>
+                            <p class="text-gray-600">{{ Auth::user()->email_academique ?? Auth::user()->email ?? '' }}</p>
                         </div>
                         <div class="mt-4 md:mt-0">
-                            @if (Auth::user()->id_parcour)
+                            @if (Auth::user()->parcour_id)
                                 <span class="inline-flex items-center rounded-md bg-green-50 px-3 py-2 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">
                                     <svg class="mr-1.5 h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Parcours choisi
                                 </span>
                             @else
                                 <span class="inline-flex items-center rounded-md bg-yellow-50 px-3 py-2 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
                                     <svg class="mr-1.5 h-4 w-4 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                                     </svg>
                                     Choix de parcours non effectué
                                 </span>
@@ -170,12 +167,12 @@
                             <div class="space-y-2">
                                 <div class="flex">
                                     <span class="text-gray-500 min-w-32">Nom complet:</span>
-                                    <span class="font-medium">{{ Auth::user()->nom_complet }}</span>
+                                    <span class="font-medium">{{ Auth::user()->nom_fr ?? '' }} {{ Auth::user()->prenom_fr ?? '' }}</span>
                                 </div>
                                 <div class="flex">
                                     <span class="text-gray-500 min-w-32">Date de naissance:</span>
                                     <span class="font-medium">
-                                        @php($dn = Auth::user()->date_naissance)
+                                        @php $dn = Auth::user()->date_naissance @endphp
                                         {{ $dn ? \Carbon\Carbon::parse($dn)->format('d/m/Y') : '—' }}
                                     </span>
                                 </div>
@@ -196,18 +193,18 @@
                             <div class="space-y-3">
                                 <div class="flex">
                                     <span class="text-gray-500 min-w-32">Filière:</span>
-                                    <span class="font-medium">{{ Auth::user()->filiere->deug_intitule_fr }}</span>
+                                    <span class="font-medium">{{ Auth::user()->filiere->deug_intitule_fr ?? 'Non définie' }}</span>
                                 </div>
-                                @if (Auth::user()->code_licence)
+                                @if (Auth::user()->parcour_id)
                                     <div class="flex flex-col">
                                         <span class="text-gray-500 mb-1">Parcours choisi:</span>
-                                        <div class="bg-white p-3 rounded border border-blue-200">
-                                            <p class="font-medium text-blue-700">{{ Auth::user()->parcour->licence_intitule_fr }}</p>
-                                            <p class="text-gray-600 text-sm mt-1">{{ Auth::user()->parcour->description }}</p>
+                                        <div class="mt-1 p-3 bg-white rounded-md border border-gray-200">
+                                            <p class="font-medium text-blue-700">{{ Auth::user()->parcour->licence_intitule_fr ?? 'Parcours sélectionné' }}</p>
+                                            <p class="text-gray-600 text-sm mt-1">{{ Auth::user()->parcour->description ?? '' }}</p>
                                             <div class="flex justify-between items-center mt-3">
                                                 <div>
-                                                    @if(Auth::user()->choix_confirme)
-                                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+                                                    @if(Auth::user()->choix_confirme ?? false)
+                                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
                                                             Choix confirmé
                                                         </span>
                                                     @else
@@ -217,8 +214,16 @@
                                                     @endif
                                                 </div>
                                                 <div>
-                                                    @php($dc = Auth::user()->date_choix)
-                                                    {{ $dc ? \Carbon\Carbon::parse($dc)->format('d/m/Y') : '' }}
+                                                    @php
+                                                        $dc = Auth::user()->date_choix ?? null;
+                                                        $formatted_date = '';
+                                                        if ($dc) {
+                                                            try {
+                                                                $formatted_date = \Carbon\Carbon::parse($dc)->format('d/m/Y');
+                                                            } catch (\Exception $e) {}
+                                                        }
+                                                    @endphp
+                                                    {{ $formatted_date }}
                                                 </div>
                                             </div>
                                         </div>
@@ -286,7 +291,18 @@
                                                         <p class="text-sm text-gray-900">{{ $action->description }}</p>
                                                         @if($action->donnees_additionnelles)
                                                             <div class="mt-1 text-xs text-gray-500">
-                                                                @foreach(array_filter($action->donnees_additionnelles) as $key => $value)
+                                                                @php
+                                                                    $donnees = $action->donnees_additionnelles;
+                                                                    if (is_string($donnees)) {
+                                                                        try {
+                                                                            $donnees = json_decode($donnees, true);
+                                                                        } catch (\Exception $e) {
+                                                                            $donnees = [];
+                                                                        }
+                                                                    }
+                                                                    $donnees = is_array($donnees) ? $donnees : [];
+                                                                @endphp
+                                                                @foreach($donnees as $key => $value)
                                                                     @if(!is_array($value))
                                                                         <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 mr-1 mb-1">
                                                                             {{ ucfirst(str_replace('_', ' ', $key)) }}: {{ $value }}                                                                

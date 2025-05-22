@@ -81,7 +81,7 @@
                             <tbody>
                                 @foreach($etudiants as $etudiant)
                                     <tr class="border-t">
-                                        <td class="py-2 px-4">{{ $etudiant->id_etudiant }}</td>
+                                        <td class="py-2 px-4">{{ $etudiant->num_inscription }}</td>
                                         <td class="py-2 px-4">{{ $etudiant->nom }}</td>
                                         <td class="py-2 px-4">{{ $etudiant->prenom }}</td>
                                         <td class="py-2 px-4">{{ $etudiant->email }}</td>

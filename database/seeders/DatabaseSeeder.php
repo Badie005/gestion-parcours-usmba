@@ -2,13 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+// Nous n'utilisons plus le modèle User
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\FiliereSeeder;
-use Database\Seeders\ParcourSeeder;
-use Database\Seeders\EtudiantSeeder;
-use Database\Seeders\ActionHistoriqueSeeder;
+use Database\Seeders\TestDataSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,23 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Appel des seeders dans l'ordre correct (gérer les dépendances)
-        // 1. D'abord FiliereSeeder (table parente)
-        $this->call(FiliereSeeder::class);
-        
-        // 2. Ensuite ParcourSeeder (dépend de filiere)
-        $this->call(ParcourSeeder::class);
-        
-        // 3. Ensuite EtudiantSeeder (dépend de filiere et parcour)
-        $this->call(EtudiantSeeder::class);
-        
-        // 4. Enfin ActionHistoriqueSeeder (dépend de etudiant)
-        $this->call(ActionHistoriqueSeeder::class);
-        
-        // Création d'un utilisateur de test pour l'authentification
-        User::factory()->create([
-            'name' => 'Admin Test',
-            'email' => 'admin@example.com',
+        // Utiliser les seeders dans le bon ordre pour respecter les contraintes
+        $this->call([
+            TestDataSeeder::class,     // D'abord les filieres et parcours
+            EtudiantSeeder::class,     // Ensuite les étudiants
+            ActionHistoriqueSeeder::class, // Enfin l'historique des actions
         ]);
+        
+        // N'utilisez pas User::factory() car nous utilisons le modèle Etudiant pour l'authentification
+        // et non le modèle User par défaut de Laravel
     }
 }

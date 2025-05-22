@@ -168,7 +168,7 @@
     
     <!-- Référence du document -->
     <div>
-        <strong>Référence :</strong> GPE-{{ str_pad($etudiant->id_etudiant, 5, '0', STR_PAD_LEFT) }}-{{ now()->format('Ymd') }}
+        <strong>Référence :</strong> GPE-{{ str_pad($etudiant->num_inscription, 5, '0', STR_PAD_LEFT) }}-{{ now()->format('Ymd') }}
     </div>
     
     <!-- Section Étudiant -->

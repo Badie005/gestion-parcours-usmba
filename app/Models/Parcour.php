@@ -16,14 +16,14 @@ class Parcour extends Model
      *
      * @var string
      */
-    protected $table = 'parcour';
+    protected $table = 'parcours';
     
     /**
      * La clé primaire associée à la table.
      *
      * @var string
      */
-    protected $primaryKey = 'Code_Licence';
+    protected $primaryKey = 'code_licence';
     public $incrementing = false;
     protected $keyType = 'string';
     
@@ -33,9 +33,9 @@ class Parcour extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'Code_Licence',
-        'Licence_Intitule_Fr',
-        'Licence_Intitule_Ar',
+        'code_licence',
+        'licence_intitule_fr',
+        'licence_intitule_ar',
         'description',
         'id_filiere',
         'est_parcour_defaut'
@@ -55,7 +55,7 @@ class Parcour extends Model
      */
     public function filiere(): BelongsTo
     {
-        return $this->belongsTo(Filiere::class, 'id_filiere', 'Code_DEUG');
+        return $this->belongsTo(Filiere::class, 'id_filiere', 'code_deug');
     }
     
     /**

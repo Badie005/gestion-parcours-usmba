@@ -8,8 +8,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Informations étudiant -->
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg border-l-4 border-blue-500">
-                <div class="max-w-xl">
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="max-w-4xl mx-auto w-3/5">
                     <section>
                         <header>
                             <h2 class="text-lg font-medium text-gray-900">
@@ -90,7 +90,7 @@
                                             <div class="flex justify-between items-center mt-3">
                                                 <div>
                                                     @if($user->choix_confirme)
-                                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+                                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
                                                             Choix confirmé
                                                         </span>
                                                     @else
@@ -128,23 +128,23 @@
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             <tr>
                                                 <td class="px-6 py-3 whitespace-nowrap text-center">S1</td>
-                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->Nb_Val_AC_S1 ?? 0 }}</td>
+                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->nb_val_ac_s1 ?? 0 }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="px-6 py-3 whitespace-nowrap text-center">S2</td>
-                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->Nb_Val_AC_S2 ?? 0 }}</td>
+                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->nb_val_ac_s2 ?? 0 }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="px-6 py-3 whitespace-nowrap text-center">S3</td>
-                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->Nb_Val_AC_S3 ?? 0 }}</td>
+                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->nb_val_ac_s3 ?? 0 }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="px-6 py-3 whitespace-nowrap text-center">S4</td>
-                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->Nb_Val_AC_S4 ?? 0 }}</td>
+                                                <td class="px-6 py-3 whitespace-nowrap text-center font-medium text-gray-800">{{ $user->nb_val_ac_s4 ?? 0 }}</td>
                                             </tr>
                                             <tr class="bg-blue-50 font-semibold">
                                                 <td class="px-6 py-3 whitespace-nowrap text-center">Total</td>
-                                                <td class="px-6 py-3 whitespace-nowrap text-center text-blue-700">{{ ($user->Nb_Val_AC_S1 ?? 0) + ($user->Nb_Val_AC_S2 ?? 0) + ($user->Nb_Val_AC_S3 ?? 0) + ($user->Nb_Val_AC_S4 ?? 0) }}</td>
+                                                <td class="px-6 py-3 whitespace-nowrap text-center text-blue-700">{{ ($user->nb_val_ac_s1 ?? 0) + ($user->nb_val_ac_s2 ?? 0) + ($user->nb_val_ac_s3 ?? 0) + ($user->nb_val_ac_s4 ?? 0) }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
