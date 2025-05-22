@@ -75,7 +75,7 @@ Cette application web permet la gestion des parcours étudiants au sein de l'Uni
 
 - Un serveur web (Apache, Nginx) avec PHP 8.1+ installé
 - Modules PHP requis : BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML
-- Une base de données (MySQL, PostgreSQL, SQLite)
+- Une base de données (MySQL, PostgreSQL)
 - Composer installé globalement
 - Node.js et npm pour la compilation des assets
 
@@ -257,4 +257,4 @@ php artisan test
 
 ## Licence
 
-Cette application est fournie sous licence MIT.
+Cette application est fournie sous licence XXXX.
