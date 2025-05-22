@@ -1,7 +1,7 @@
 # Gestion des Parcours Étudiants - USMBA
 
 <p align="center">
-  <img src="public/images/logo.png" alt="Logo Gestion Parcours Étudiants" width="200" />
+  <img src="public/logo.png" alt="Logo Gestion Parcours Étudiants" width="200" />
 </p>
 
 ## À propos de l'application
