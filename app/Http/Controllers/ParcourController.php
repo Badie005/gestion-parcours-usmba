@@ -31,20 +31,30 @@ class ParcourController extends Controller
      */
     public function index()
     {
-        // Récupérer l'étudiant connecté
+                // Récupérer l'étudiant connecté
         $etudiant = Auth::user();
-        $filiere = $etudiant->filiere;
         
-        // Vérifier si l'étudiant a déjà confirmé son choix
+        // Si déjà confirmé, redirection
         if ($etudiant->choix_confirme) {
             return redirect()->route('parcours.confirmation');
         }
         
+        // Récupérer la filière d'une manière sécurisée
+        $filiere = null;
+        if ($etudiant->filiere_id) {
+            $filiere = \App\Models\Filiere::find($etudiant->filiere_id);
+        }
+        
+        // Vérifier si l'étudiant a une filière assignée
+        if (!$filiere) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Vous n\'avez pas de filière assignée. Veuillez contacter l\'administration.');
+        }
+        
         // Récupérer les parcours disponibles pour la filière de l'étudiant
-        $parcours = Parcour::where('id_filiere', $filiere->Code_DEUG)->get();
+        $parcours = Parcour::where('id_filiere', $etudiant->filiere_id)->get();
         
         // Vérifier si l'étudiant peut choisir son parcours
-        // Utilisation d'une vérification simplifiée pour éviter les erreurs de lint
         $peutChoisir = $filiere->choix_parcour_autorise ?? false;
         
         // Si l'étudiant ne peut pas choisir, afficher le parcours par défaut
@@ -65,19 +75,19 @@ class ParcourController extends Controller
             }
             
             // Assigner automatiquement le parcours par défaut si ce n'est pas déjà fait
-            if (!$etudiant->id_parcour) {
+            if (!$etudiant->parcour_id) {
                 // Utiliser l'update statique pour éviter les erreurs de méthode manquante
-                \App\Models\Etudiant::where('Num_Inscription', $etudiant->Num_Inscription)
+                \App\Models\Etudiant::where('num_inscription', $etudiant->num_inscription)
                     ->update([
-                        'id_parcour' => $parcourDefaut->Code_Licence,
+                        'parcour_id' => $parcourDefaut->code_licence,
                         'choix_confirme' => true,
                         'date_choix' => now()
                     ]);
                     
                 // Rafraîchir l'instance de l'étudiant
-                $etudiant = \App\Models\Etudiant::find($etudiant->Num_Inscription);
+                $etudiant = \App\Models\Etudiant::find($etudiant->num_inscription);
                 
-                $message = 'Votre choix de parcours <strong>' . $parcourDefaut->Licence_Intitule_Fr . '</strong> a été enregistré avec succès.';
+                $message = 'Votre choix de parcours <strong>' . $parcourDefaut->licence_intitule_fr . '</strong> a été enregistré avec succès.';
                 
                 return redirect()->route('parcours.confirmation')
                     ->with('success', $message);
@@ -93,13 +103,13 @@ class ParcourController extends Controller
             ]);
         }
         
-        // Si l'étudiant peut choisir, afficher le formulaire de choix
+        // Si l'étudiant peut choisir, afficher le formulaire de choix de parcours
         return view('parcours.index', [
             'etudiant' => $etudiant,
             'filiere' => $filiere,
             'parcours' => $parcours,
             'peutChoisir' => true,
-            'parcourSelectionne' => $etudiant->id_parcour ? $etudiant->parcour : null,
+            'parcourSelectionne' => $etudiant->parcour_id ? $etudiant->parcour : null,
         ]);
     }
     
@@ -130,56 +140,68 @@ class ParcourController extends Controller
                 ]);
             }
             
-            // Vérifier si l'étudiant a déjà un choix confirmé
+            // Vérifier si l'étudiant a déjà confirmé son choix
             if ($etudiant->choix_confirme) {
                 throw ValidationException::withMessages([
-                    'general' => ['Vous avez déjà confirmé votre choix de parcours.']
+                    'choix_confirme' => ['Vous avez déjà confirmé votre choix de parcours et ne pouvez plus le modifier.']
                 ]);
             }
             
-            // Enregistrer le choix de l'étudiant dans une transaction pour garantir l'intégrité des données
+            // Vérifier si la filière autorise le choix de parcours
+            $filiere = $etudiant->filiere;
+            if (!($filiere->choix_parcour_autorise ?? false)) {
+                throw ValidationException::withMessages([
+                    'filiere' => ['Votre filière ne permet pas de choisir librement un parcours.']
+                ]);
+            }
+            
+            // Démarrer une transaction pour s'assurer que tout est cohérent
             \Illuminate\Support\Facades\DB::beginTransaction();
             
             try {
-                // Mettre à jour l'étudiant avec une requête statique
-                \App\Models\Etudiant::where('Num_Inscription', $etudiant->Num_Inscription)
-                    ->update([
-                        'id_parcour' => $parcour->Code_Licence,
-                        'choix_confirme' => $request->has('confirmer'),
-                        'date_choix' => now()
-                    ]);
-                    
-                // Rafraîchir l'instance de l'étudiant
-                $etudiant = \App\Models\Etudiant::find($etudiant->Num_Inscription);
-                
                 // Obtenir le nom de la filière et du parcours pour le message
                 $nomFiliere = $etudiant->filiere->deug_intitule_fr;
-                $nomParcour = $parcour->Licence_Intitule_Fr;
+                $nomParcour = $parcour->licence_intitule_fr;
                 
-                // Enregistrer l'action dans l'historique via le modèle
-                if (method_exists($etudiant, 'enregistrerAction')) {
-                    $etudiant->enregistrerAction(
-                        'parcours_selection',
-                        'Sélection du parcours ' . $nomParcour,
-                        [
-                            'id_parcour' => $parcour->Code_Licence,
-                            'nom_parcour' => $nomParcour,
-                            'confirme' => $etudiant->choix_confirme,
-                        ]
-                    );
-                    
-                    // Si l'étudiant a confirmé son choix, enregistrer également cette action
-                    if ($etudiant->choix_confirme) {
-                        $etudiant->enregistrerAction(
-                            'parcours_confirmation',
-                            'Confirmation du choix de parcours',
-                            [
-                                'id_parcour' => $parcour->Code_Licence,
-                                'date_confirmation' => now()->format('Y-m-d H:i:s'),
-                            ]
-                        );
-                    }
-                }
+                // Mettre à jour l'étudiant avec le parcours choisi en utilisant la méthode statique update
+                // pour éviter les erreurs liées à la méthode save()
+                Etudiant::where('num_inscription', $etudiant->num_inscription)
+                    ->update([
+                        'parcour_id' => $parcour->code_licence,
+                        'choix_confirme' => true,
+                        'date_choix' => now()
+                    ]);
+                
+                // Rafraîchir l'instance de l'étudiant
+                $etudiant = Etudiant::find($etudiant->num_inscription);
+                
+                // Enregistrer l'action directement dans la table action_historiques
+                // sans utiliser la méthode enregistrerAction qui peut causer des erreurs
+                // Convertir les données en JSON pour éviter les problèmes de sérialisation
+                \App\Models\ActionHistorique::create([
+                    'etudiant_id' => $etudiant->num_inscription,
+                    'type_action' => 'parcours_choix',
+                    'description' => 'Choix du parcours',
+                    'donnees_additionnelles' => json_encode([
+                        'code_licence' => $parcour->code_licence,
+                        'date_choix' => now()->format('Y-m-d H:i:s'),
+                    ]),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+                
+                // Enregistrer l'action de confirmation
+                \App\Models\ActionHistorique::create([
+                    'etudiant_id' => $etudiant->num_inscription,
+                    'type_action' => 'parcours_confirmation',
+                    'description' => 'Confirmation du choix de parcours',
+                    'donnees_additionnelles' => json_encode([
+                        'code_licence' => $parcour->code_licence,
+                        'date_confirmation' => now()->format('Y-m-d H:i:s'),
+                    ]),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
                 
                 \Illuminate\Support\Facades\DB::commit();
                 
@@ -188,13 +210,11 @@ class ParcourController extends Controller
                 
                 return redirect()->route('parcours.confirmation')
                     ->with('success', $message);
-                    
             } catch (\Exception $e) {
                 // Annuler la transaction en cas d'erreur
                 \Illuminate\Support\Facades\DB::rollBack();
                 throw $e;
             }
-            
         } catch (ValidationException $e) {
             return redirect()->route('parcours.index')
                 ->withErrors($e->errors())
@@ -217,7 +237,7 @@ class ParcourController extends Controller
         $etudiant = Auth::user();
         
         // Vérifier si l'étudiant a déjà choisi un parcours
-        if (!$etudiant->choix_confirme || !$etudiant->id_parcour) {
+        if (!$etudiant->choix_confirme || !$etudiant->parcour_id) {
             return redirect()->route('parcours.index')
                 ->with('error', 'Vous devez d\'abord choisir un parcours.');
         }
@@ -316,11 +336,11 @@ class ParcourController extends Controller
                 throw new \Exception('Utilisateur non authentifié.');
             }
             
-            if (!$etudiant->id_filiere) {
+            if (!$etudiant->filiere_id) {
                 throw new \Exception('Aucune filière n\'est assignée à votre profil.');
             }
             
-            if (!$etudiant->choix_confirme || !$etudiant->id_parcour) {
+            if (!$etudiant->choix_confirme || !$etudiant->parcour_id) {
                 throw new \Exception('Vous devez d\'abord choisir et confirmer un parcours.');
             }
             
@@ -336,17 +356,17 @@ class ParcourController extends Controller
             }
             
             // Vérification de la cohérence des données
-            if ($parcour->id_filiere !== $filiere->Code_DEUG) {
+            if ($parcour->id_filiere !== $filiere->code_deug) {
                 throw new \Exception('Incohérence détectée entre le parcours et la filière.');
             }
             
             // Si la date de choix est manquante, la définir maintenant
             if (!$etudiant->date_choix) {
-                \App\Models\Etudiant::where('Num_Inscription', $etudiant->Num_Inscription)
+                \App\Models\Etudiant::where('num_inscription', $etudiant->num_inscription)
                     ->update(['date_choix' => now()]);
                     
                 // Rafraîchir l'instance de l'étudiant
-                $etudiant = \App\Models\Etudiant::find($etudiant->Num_Inscription);
+                $etudiant = \App\Models\Etudiant::find($etudiant->num_inscription);
             }
             
             // Validation des champs obligatoires pour le PDF - uniquement les champs essentiels
@@ -369,19 +389,27 @@ class ParcourController extends Controller
                 'filiere'  => $filiere,
                 'parcour'  => $parcour,
                 'date'     => now()->format('d/m/Y')
-            ])
-                ->setPaper('A4', 'portrait');
+            ])->setPaper('A4', 'portrait');
             
             // Définir le nom du fichier PDF
-            $filename = 'confirmation_parcours_' . $etudiant->id_etudiant . '_' . now()->format('Ymd_His') . '.pdf';
+            $filename = 'confirmation_parcours_' . $etudiant->num_inscription . '_' . now()->format('Ymd_His') . '.pdf';
             
-            // Enregistrer l'action d'export du PDF dans l'historique
-            if (method_exists($etudiant, 'enregistrerAction')) {
-                $etudiant->enregistrerAction(
-                    'pdf_export',
-                    'Export du PDF de confirmation',
-                    ['filename' => $filename]
-                );
+            // Vérifier si une action similaire a été enregistrée dans les 10 dernières secondes
+            $recentAction = \App\Models\ActionHistorique::where('etudiant_id', $etudiant->num_inscription)
+                ->where('type_action', 'pdf_export')
+                ->where('created_at', '>=', now()->subSeconds(10))
+                ->first();
+                
+            // Enregistrer l'action uniquement si aucune action similaire récente n'existe
+            if (!$recentAction) {
+                \App\Models\ActionHistorique::create([
+                    'etudiant_id' => $etudiant->num_inscription,
+                    'type_action' => 'pdf_export',
+                    'description' => 'Export du PDF de confirmation',
+                    'donnees_additionnelles' => json_encode(['filename' => $filename]),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
             }
             
             // Téléchargement
@@ -434,7 +462,7 @@ class ParcourController extends Controller
             'etudiant' => $etudiant,
             'filiere' => $filiere,
             'parcour' => $parcour,
-            'estParcourChoisi' => $etudiant->id_parcour == $code_licence,
+            'estParcourChoisi' => $etudiant->parcour_id == $code_licence,
             'peutChoisir' => ($filiere->choix_parcour_autorise ?? false) && !$etudiant->choix_confirme
         ]);
     }

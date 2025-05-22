@@ -18,7 +18,7 @@ class ActionHistorique extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id_action';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +26,7 @@ class ActionHistorique extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_etudiant',
+        'etudiant_id',
         'type_action',
         'description',
         'donnees_additionnelles',
@@ -46,7 +46,7 @@ class ActionHistorique extends Model
      */
     public function etudiant()
     {
-        return $this->belongsTo(Etudiant::class, 'id_etudiant', 'id_etudiant');
+        return $this->belongsTo(Etudiant::class, 'etudiant_id', 'num_inscription');
     }
 
     /**

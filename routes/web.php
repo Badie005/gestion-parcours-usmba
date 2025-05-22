@@ -40,6 +40,26 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 /*
 |--------------------------------------------------------------------------
+| Diagnostic Routes (TEMPORAIRES - POUR DÉPANNAGE)
+|--------------------------------------------------------------------------
+|
+| Routes de diagnostic pour aider à identifier et résoudre les problèmes.
+| Ces routes doivent être supprimées en production.
+|
+*/
+Route::prefix('diagnostic')->group(function () {
+    Route::get('/', [\App\Http\Controllers\DiagnosticController::class, 'index']);
+    Route::get('/user', [\App\Http\Controllers\DiagnosticController::class, 'user'])
+        ->middleware(['auth']);
+    Route::get('/actions', [\App\Http\Controllers\DiagnosticController::class, 'actionHistorique']);
+    
+    // Page de débogage pour les parcours
+    Route::get('/parcours', [\App\Http\Controllers\DiagnosticController::class, 'debugParcours'])
+        ->middleware(['auth']);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Routes protégées par authentification
 |--------------------------------------------------------------------------
 |

@@ -11,18 +11,18 @@ class Filiere extends Model
     use HasFactory;
     
     /**
-     * Le nom de la table associée au modèle.
+     * La table dans la base de données est au pluriel : "filieres".
      *
      * @var string
      */
-    protected $table = 'filiere';
+    protected $table = 'filieres';
     
     /**
-     * La clé primaire associée à la table.
+     * La clé primaire correspond désormais à la colonne snake_case.
      *
      * @var string
      */
-    protected $primaryKey = 'Code_DEUG';
+    protected $primaryKey = 'code_deug';
     public $incrementing = false;
     protected $keyType = 'string';
     
@@ -32,9 +32,9 @@ class Filiere extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'Code_DEUG',
-        'DEUG_Intitule_Fr',
-        'DEUG_Intitule_Ar',
+        'code_deug',
+        'deug_intitule_fr',
+        'deug_intitule_ar',
         'description',
         'choix_parcour_autorise'
     ];
@@ -53,7 +53,7 @@ class Filiere extends Model
      */
     public function parcours(): HasMany
     {
-        return $this->hasMany(Parcour::class, 'id_filiere', 'Code_DEUG');
+        return $this->hasMany(Parcour::class, 'id_filiere', 'code_deug');
     }
     
     /**
@@ -61,7 +61,7 @@ class Filiere extends Model
      */
     public function etudiants(): HasMany
     {
-        return $this->hasMany(Etudiant::class, 'id_filiere', 'Code_DEUG');
+        return $this->hasMany(Etudiant::class, 'id_filiere', 'code_deug');
     }
     
     /**
@@ -95,15 +95,20 @@ class Filiere extends Model
     }
     
     /**
-     * Accessor alias for lowercase snake case attributes.
+     * Accessors for camel / legacy attributes – continue to support any
+     * existing code that might still reference the old column names.
      */
     public function getDeugIntituleFrAttribute()
     {
-        return $this->attributes['DEUG_Intitule_Fr'] ?? null;
+        return $this->attributes['deug_intitule_fr']
+               ?? $this->attributes['DEUG_Intitule_Fr']
+               ?? null;
     }
 
     public function getCodeDeugAttribute()
     {
-        return $this->attributes['Code_DEUG'] ?? null;
+        return $this->attributes['code_deug']
+               ?? $this->attributes['Code_DEUG']
+               ?? null;
     }
 }

@@ -28,8 +28,8 @@ class FiliereParcourMiddleware
         }
         
         // Vérifier le nombre de modules validés (minimum 18)
-        $totalModules = ($etudiant->Nb_Val_AC_S1 ?? 0) + ($etudiant->Nb_Val_AC_S2 ?? 0) + 
-                       ($etudiant->Nb_Val_AC_S3 ?? 0) + ($etudiant->Nb_Val_AC_S4 ?? 0);
+        $totalModules = ($etudiant->nb_val_ac_s1 ?? 0) + ($etudiant->nb_val_ac_s2 ?? 0) + 
+                       ($etudiant->nb_val_ac_s3 ?? 0) + ($etudiant->nb_val_ac_s4 ?? 0);
         
         if ($totalModules < 18) {
             $modulesManquants = 18 - $totalModules;
