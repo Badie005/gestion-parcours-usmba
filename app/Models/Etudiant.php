@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 class Etudiant extends Authenticatable
 {
@@ -161,6 +162,85 @@ class Etudiant extends Authenticatable
     public function getFormattedDateNaissanceAttribute(): ?string
     {
         return $this->date_naissance ? $this->date_naissance->format('d/m/Y') : null;
+    }
+
+    /* ---------------------------------------------------------------------*/
+    /* Resultats Academiques                                                */
+    /* ---------------------------------------------------------------------*/
+
+    /**
+     * Get the academic results for this student.
+     */
+    public function resultatsAcademiques(): HasMany
+    {
+        return $this->hasMany(ResultatAcademique::class, 'num_inscription', 'num_inscription');
+    }
+
+    /**
+     * Get the results for a specific semester and academic year.
+     */
+    public function getResultatsSemestre(string $semestre, ?string $anneeAcademique = null): Collection
+    {
+        $query = $this->resultatsAcademiques()
+                    ->where('semestre', $semestre);
+        
+        if ($anneeAcademique) {
+            $query->whereYear('created_at', $anneeAcademique);
+        }
+        
+        return $query->get();
+    }
+
+    /**
+     * Get the average grade for a specific semester and academic year.
+     */
+    public function getMoyenneSemestre(string $semestre, ?string $anneeAcademique = null): ?float
+    {
+        $resultats = $this->getResultatsSemestre($semestre, $anneeAcademique);
+        
+        if ($resultats->isEmpty()) {
+            return null;
+        }
+        
+        $totalPondere = 0;
+        $totalCoefficients = 0;
+        
+        foreach ($resultats as $resultat) {
+            if ($resultat->note !== null) {
+                $totalPondere += $resultat->note * $resultat->coefficient;
+                $totalCoefficients += $resultat->coefficient;
+            }
+        }
+        
+        return $totalCoefficients > 0 ? $totalPondere / $totalCoefficients : null;
+    }
+
+    /**
+     * Get the number of validated modules for a specific semester and academic year.
+     */
+    public function getNombreModulesValidesSemestre(string $semestre, ?string $anneeAcademique = null): int
+    {
+        return $this->getResultatsSemestre($semestre, $anneeAcademique)
+                    ->filter(function($resultat) {
+                        return $resultat->estValide();
+                    })
+                    ->count();
+    }
+
+    /**
+     * Check if a semester is validated (all modules validated).
+     */
+    public function estSemestreValide(string $semestre, ?string $anneeAcademique = null): bool
+    {
+        $resultats = $this->getResultatsSemestre($semestre, $anneeAcademique);
+        
+        if ($resultats->isEmpty()) {
+            return false;
+        }
+        
+        return $resultats->every(function($resultat) {
+            return $resultat->estValide();
+        });
     }
 
     /* ---------------------------------------------------------------------*/

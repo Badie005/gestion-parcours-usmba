@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ParcourController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentProfileController;
+use App\Http\Controllers\ResultatsAcademiquesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +99,23 @@ Route::middleware('auth')->group(function () {
             // Route avec paramètre pour accéder aux détails d'un parcours spécifique
             // Cette route sera vérifiée par le middleware pour s'assurer que le parcours appartient à la filière de l'étudiant
             Route::get('/{code_licence}', [ParcourController::class, 'show'])->name('show')->where('code_licence', '[A-Za-z0-9]+');
+        });
+        
+    // Routes pour les résultats académiques
+    Route::prefix('resultats-academiques')
+        ->name('resultats.')
+        ->group(function () {
+            // Voir ses propres résultats
+            Route::get('/', [ResultatsAcademiquesController::class, 'index'])->name('index');
+            
+            // Exporter ses résultats en PDF
+            Route::get('/export-pdf', [ResultatsAcademiquesController::class, 'exportPDF'])->name('export-pdf');
+            
+            // Pour les administrateurs - voir les résultats d'un étudiant spécifique
+            Route::get('/{numInscription}', [ResultatsAcademiquesController::class, 'show'])
+                ->name('show')
+                ->middleware('admin')
+                ->where('numInscription', '[0-9]+');
         });
 });
 
