@@ -36,7 +36,7 @@ Route::get('/', function () {
 |
 */
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', \App\Http\Middleware\CheckFirstLogin::class])
     ->name('dashboard');
 
 /*
@@ -154,4 +154,20 @@ Route::prefix('admin')
 | gestion du mot de passe, vérification d'email, etc.
 |
 */
+/*
+|--------------------------------------------------------------------------
+| Routes pour le changement de mot de passe à la première connexion
+|--------------------------------------------------------------------------
+|
+| Ces routes permettent de forcer l'étudiant à changer son mot de passe
+| par défaut lors de sa première connexion.
+|
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/first-password', [\App\Http\Controllers\Auth\FirstPasswordController::class, 'show'])
+        ->name('password.first');
+    Route::post('/first-password', [\App\Http\Controllers\Auth\FirstPasswordController::class, 'update'])
+        ->name('password.first.update');
+});
+
 require __DIR__.'/auth.php';

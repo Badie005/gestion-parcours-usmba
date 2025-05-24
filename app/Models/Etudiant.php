@@ -53,6 +53,7 @@ class Etudiant extends Authenticatable
         'prenom_fr',
         'email_academique',
         'password',
+        'password_changed',
         'date_naissance',
         'adresse',
         'telephone',

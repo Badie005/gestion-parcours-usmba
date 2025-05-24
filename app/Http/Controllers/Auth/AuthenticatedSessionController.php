@@ -33,11 +33,20 @@ class AuthenticatedSessionController extends Controller
         /** @var Etudiant $user */
         $user = Auth::user();
         if ($user) {
+            // Vérifier si c'est la première connexion
+            $isFirstLogin = ($user->password_changed === null || $user->password_changed === 0);
+            
+            // Enregistrer l'action dans l'historique
             $user->enregistrerAction(
-                'login',
-                'Connexion au système',
+                $isFirstLogin ? 'first_login' : 'login',
+                $isFirstLogin ? 'Première connexion au système' : 'Connexion au système',
                 ['ip' => $request->ip()]
             );
+            
+            // Si c'est la première connexion, rediriger vers la page de changement de mot de passe
+            if ($isFirstLogin) {
+                return redirect()->route('password.first');
+            }
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

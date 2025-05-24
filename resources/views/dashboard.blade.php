@@ -9,10 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <!-- Section d'état du profil et des étapes -->
-            <div class="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm border border-blue-100 overflow-hidden">
-                <div class="p-5 max-w-4xl mx-auto w-3/5">
+            <div class="mb-6 rounded-lg shadow-md border border-blue-50 overflow-hidden" style="background: transparent !important;">
+                <div class="p-5 max-w-4xl mx-auto w-3/5 rounded-lg shadow-md bg-white" style="pointer-events: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#0085c7] dark:text-[#A8F1FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                         Progression de votre parcours académique
@@ -20,7 +21,7 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- État du profil -->
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200">
+                        <div class="bg-white p-4 rounded-lg shadow-md border border-blue-50 hover:shadow-lg transition-shadow duration-300">
                             <div class="flex items-center">
                                 <div class="rounded-full p-2 mr-3 bg-blue-100 text-blue-600">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,9 +52,9 @@
                             $peutChoisir = !$etudiant->choix_confirme && $filiere && ($filiere->choix_parcour_autorise ?? false);
                         } catch(\Exception $e) {}
                         @endphp
-                        <div class="bg-white p-4 rounded-lg shadow-sm border {{ $hasParcours ? 'border-green-200' : ($peutChoisir ? 'border-yellow-200' : 'border-gray-200') }}">
+                        <div class="bg-white p-4 rounded-lg shadow-md border {{ $hasParcours ? 'border-green-100' : ($peutChoisir ? 'border-yellow-100' : 'border-gray-100') }} hover:shadow-lg transition-shadow duration-300">
                             <div class="flex items-center">
-                                <div class="rounded-full p-2 mr-3 {{ $hasParcours ? 'bg-green-100 text-green-600' : ($peutChoisir ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-600') }}">
+                                <div class="rounded-full p-2 mr-3 {{ $hasParcours ? 'bg-green-50 text-green-600' : ($peutChoisir ? 'bg-yellow-50 text-yellow-600' : 'bg-gray-50 text-gray-600') }}">
                                     @if($hasParcours)
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -91,9 +92,9 @@
                         </div>
                         
                         <!-- État de l'attestation -->
-                        <div class="bg-white p-4 rounded-lg shadow-sm border {{ $hasParcours ? 'border-green-200' : 'border-gray-200' }}">
+                        <div class="bg-white p-4 rounded-lg shadow-md border {{ $hasParcours ? 'border-green-100' : 'border-gray-100' }} hover:shadow-lg transition-shadow duration-300">
                             <div class="flex items-center">
-                                <div class="rounded-full p-2 mr-3 {{ $hasParcours ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600' }}">
+                                <div class="rounded-full p-2 mr-3 {{ $hasParcours ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-600' }}">
                                     @if($hasParcours)
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -134,7 +135,7 @@
             </div>
             
             <!-- Carte d'information principale -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg mb-6 hover:shadow-lg transition-shadow duration-300" style="pointer-events: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="p-6">
                     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
                         <div>
@@ -258,7 +259,8 @@
             </div>
 
             <!-- Historique des actions -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Historique des actions</h3>
 

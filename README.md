@@ -9,20 +9,25 @@
 Cette application web permet la gestion des parcours étudiants au sein de l'Université Sidi Mohamed Ben Abdellah (USMBA). Elle offre les fonctionnalités suivantes :
 
 - Authentification sécurisée des étudiants via email académique
+- Changement de mot de passe obligatoire à la première connexion
+- Gestion simplifiée du profil avec formulaires modernes et responsive
 - Tableau de bord personnalisé avec suivi de l'état du profil et choix de parcours
 - Consultation des filières et parcours disponibles selon le profil étudiant
+- Visualisation interactive des résultats académiques avec statistiques et graphiques
 - Sélection et confirmation d'un parcours selon la filière et les résultats académiques
-- Génération de PDF de confirmation de choix de parcours avec informations complètes
-- Historique des actions pour suivre les étapes importantes du parcours
-- Interface utilisateur moderne et responsive avec Tailwind CSS
+- Génération de PDF de confirmation de choix de parcours et de résultats académiques
+- Historique des actions pour suivre les étapes importantes du parcours (connexions, choix de parcours, changements de mot de passe)
+- Interface utilisateur moderne et responsive avec design minimaliste et éléments pliables
+- Navigation fluide entre les différentes sections de l'application
 
 ## Technologies utilisées
 
 - **Backend**: Laravel 10.x
 - **Frontend**: Blade + Tailwind CSS
 - **Base de données**: MySQL
-- **Authentification**: Laravel Breeze
+- **Authentification**: Laravel Breeze (personnalisé pour l'USMBA)
 - **PDF**: Barryvdh/DomPDF
+- **Interface utilisateur**: Design minimaliste et moderne avec boutons compacts et effets visuels avancés
 
 ## Prérequis
 
@@ -32,12 +37,44 @@ Cette application web permet la gestion des parcours étudiants au sein de l'Uni
 - npm 8 ou plus récent
 - Serveur de base de données MySQL 5.7+ ou MariaDB 10.2+
 
+## Mises à jour récentes
+
+### Sécurité et gestion des comptes
+
+- Ajout du changement de mot de passe obligatoire à la première connexion
+- Amélioration du formulaire de changement de mot de passe dans le profil étudiant
+- Enregistrement des actions de connexion et de changement de mot de passe dans l'historique
+- Messages d'erreur de validation améliorés en français
+
+### Interface utilisateur
+
+- Nouvelle barre de navigation avec effet glassmorphism (transparent et flou) fixée en haut de la page
+- Ajout d'ombres portées (drop shadows) sur tous les composants principaux pour une meilleure profondeur visuelle
+- Effets de transition et d'animation au survol des éléments interactifs
+- Boutons redesignés en style minimaliste, moderne et compact avec animations subtiles
+- Simplification de l'affichage des résultats académiques pour se concentrer sur les informations essentielles
+- Ajout de boutons de navigation entre les différentes sections de l'application
+- Harmonisation du design visuel avec un style cohérent sur toutes les pages
+- Optimisation des espaces avec une marge supérieure appropriée pour le contenu principal
+- Fond blanc pour la section "Progression de votre parcours académique" pour un contraste optimal
+
+### Corrections techniques
+
+- Correction des attributs de modèle Etudiant pour utiliser les noms de colonnes appropriés (num_inscription, email_academique, nom_fr, prenom_fr)
+- Ajout de la colonne `password_changed` pour suivre l'état du changement de mot de passe
+- Correction de la relation entre les tables en remplaçant 'filiere_id' par 'id_filiere'
+- Mise à jour des seeders pour utiliser la nomenclature correcte des champs
+- Résolution des erreurs 500 sur la page de sélection des parcours
+- Optimisation des calculs statistiques pour les résultats académiques
+- Correction des bugs d'affichage des graphiques Chart.js
+- Gestion robuste des cas où les données sont manquantes
+
 ## Installation pour le développement
 
 1. Cloner le dépôt :
    ```bash
-   git clone https://votre-repo/gestion-parcours-etudiants.git
-   cd gestion-parcours-etudiants
+   git clone https://github.com/Badie005/gestion-parcours-usmba.git
+   cd gestion-parcours-usmba
    ```
 
 2. Installer les dépendances PHP :
@@ -62,12 +99,80 @@ Cette application web permet la gestion des parcours étudiants au sein de l'Uni
    ```bash
    php artisan migrate --seed
    ```
+   
+   > **Important** : Les migrations doivent être exécutées dans l'ordre suivant pour éviter les problèmes de référence :
+   > 1. Migrations de base (filieres, parcours)
+   > 2. Migration des étudiants
+   > 3. Migration des actions historiques
+   > 4. Migrations additionnelles (password_changed, etc.)
+   > 5. Migration des filières et parcours
 
 7. Compiler les assets et lancer le serveur de développement :
    ```bash
    npm run dev
    php artisan serve
    ```
+
+## Comptes de test
+
+Un compte étudiant de test est disponible pour l'accès initial :
+
+- **Email** : etu1@etu.univ.ma
+- **Mot de passe** : 1234
+
+> **Note** : Lors de la première connexion, l'application invitera l'utilisateur à changer ce mot de passe par défaut, conformément aux nouvelles mesures de sécurité implémentées.
+
+## Fonctionnalités principales
+
+### Gestion du compte et profil étudiant
+- Changement obligatoire du mot de passe à la première connexion
+- Formulaire de profil pour la mise à jour des informations personnelles
+- Affichage des informations académiques (filière, résultats, parcours choisi)
+
+### Résultats académiques
+- Visualisation détaillée des notes par semestre avec système d'onglets
+- Statistiques de progression avec graphiques interactifs
+- Section pliable pour les statistiques et graphiques
+- Export PDF des résultats académiques
+
+### Choix de parcours
+- Sélection intelligente des parcours disponibles selon la filière de l'étudiant
+- Vérification des prérequis académiques
+- Confirmation et génération d'attestation
+
+### Suivi des actions
+- Historique détaillé des actions de l'étudiant
+- Horodatage des événements importants
+
+## Bonnes pratiques de développement
+
+### Sécurité
+
+- Le changement de mot de passe à la première connexion est obligatoire pour renforcer la sécurité
+- Les mots de passe doivent comporter au minimum 8 caractères
+- Toutes les actions importantes sont enregistrées dans l'historique (connexions, changements de mot de passe, etc.)
+- Les messages d'erreur ont été traduits en français pour une meilleure compréhension par les utilisateurs
+
+### Interface utilisateur
+
+- Conforme aux préférences de design : style minimaliste et moderne
+- Barre de navigation fixée avec effet glassmorphism pour une navigation constante
+- Boutons compacts et légers avec texte coloré sur fond transparent ou très léger
+- Animations subtiles et effets de transition lors des interactions
+- Ombres portées sur tous les composants principaux pour une hiérarchie visuelle claire
+- Espacement optimisé avec marge supérieure appropriée pour le contenu principal
+- Formulaires optimisés pour une expérience utilisateur fluide
+- Messages de succès et d'erreur clairement identifiables
+- Éléments d'interface pliables pour optimiser l'espace
+- Graphiques interactifs avec indications visuelles claires
+- Navigation inter-sections facilitée par des boutons dédiés
+
+### Structure des données
+
+- Les noms des attributs dans le modèle Etudiant ont été corrigés pour correspondre aux colonnes de la base de données
+- Un champ `password_changed` a été ajouté pour suivre l'état du changement de mot de passe
+- Calculs statistiques optimisés pour éviter les erreurs de division par zéro
+- Gestion des cas limites dans les données académiques
 
 ## Déploiement en production
 
@@ -83,8 +188,8 @@ Cette application web permet la gestion des parcours étudiants au sein de l'Uni
 
 1. Cloner le dépôt sur le serveur :
    ```bash
-   git clone https://votre-repo/gestion-parcours-etudiants.git /var/www/gestion-parcours-etudiants
-   cd /var/www/gestion-parcours-etudiants
+   git clone https://github.com/Badie005/gestion-parcours-usmba.git /var/www/gestion-parcours-usmba
+   cd /var/www/gestion-parcours-usmba
    ```
 
 2. Installer les dépendances en mode production :
@@ -109,7 +214,7 @@ Cette application web permet la gestion des parcours étudiants au sein de l'Uni
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=gestion_parcours
+   DB_DATABASE=gestion_parcours_usmba
    DB_USERNAME=username
    DB_PASSWORD=password
    ```
@@ -152,7 +257,7 @@ npm run build
 server {
     listen 80;
     server_name votre-domaine.com;
-    root /var/www/gestion-parcours-etudiants/public;
+    root /var/www/gestion-parcours-usmba/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -190,9 +295,9 @@ Assurez-vous que le module `mod_rewrite` est activé sur votre serveur Apache.
 
 1. Ajustez les permissions des fichiers :
    ```bash
-   chmod -R 755 /var/www/gestion-parcours-etudiants
-   chmod -R 777 /var/www/gestion-parcours-etudiants/storage
-   chmod -R 777 /var/www/gestion-parcours-etudiants/bootstrap/cache
+   chmod -R 755 /var/www/gestion-parcours-usmba
+   chmod -R 777 /var/www/gestion-parcours-usmba/storage
+   chmod -R 777 /var/www/gestion-parcours-usmba/bootstrap/cache
    ```
 
 2. Assurez-vous que vos certificats SSL sont correctement configurés pour utiliser HTTPS.

@@ -8,12 +8,12 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="p-6 text-gray-900">
                     <!-- Les messages flash sont maintenant gérés par le composant dans le layout -->
 
                     <!-- Bannière de félicitation avec animation -->
-                    <div class="relative overflow-hidden mb-8 rounded-lg">
+                    <div class="relative overflow-hidden mb-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                         <div class="absolute inset-0 bg-gradient-to-r from-[#00143f] to-[#0061ff] opacity-90"></div>
                         <div class="absolute inset-0 opacity-20 bg-indigo-900 bg-opacity-30"></div>
                         <div class="relative px-6 py-8 md:px-10 text-white text-center">
@@ -36,7 +36,7 @@
                             </svg>
                             Informations de l'étudiant
                         </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 border border-gray-200 hover:border-blue-300 transition-colors duration-300 rounded-lg bg-gradient-to-br from-white to-blue-50">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 border border-gray-200 hover:border-blue-300 transition-all duration-300 rounded-lg bg-gradient-to-br from-white to-blue-50 shadow-md hover:shadow-lg" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                             <div>
                                 <p><span class="font-medium">Nom complet :</span> {{ $etudiant->nom_complet ?? 'Non renseigné' }}</p>
                                 <p><span class="font-medium">Email :</span> {{ $etudiant->email ?? 'Non renseigné' }}</p>
@@ -58,7 +58,8 @@
                             </svg>
                             Filière
                         </h3>
-                        <div class="p-4 border border-gray-200 hover:border-green-300 rounded-lg bg-white shadow-sm">
+                        <div class="p-4 border border-gray-200 hover:border-green-300 rounded-lg bg-white shadow-md hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+
                             <div class="flex flex-col md:flex-row justify-between">
                                 <div class="mb-2">
                                     <h3 class="text-lg font-semibold text-green-700">{{ $filiere->deug_intitule_fr ?? 'Filière' }}</h3>
@@ -81,7 +82,8 @@
                             </svg>
                             Parcours choisi
                         </h3>
-                        <div class="relative p-5 border border-gray-200 rounded-lg bg-white shadow-sm transition-all duration-200 hover:border-blue-300">
+                        <div class="relative p-5 border border-gray-200 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-200 hover:border-blue-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+
                             <!-- Badge de confirmation -->
                             <div class="absolute top-3 right-3">
                                 <div class="flex items-center bg-blue-600 text-white px-2.5 py-1 text-xs font-medium rounded-full">

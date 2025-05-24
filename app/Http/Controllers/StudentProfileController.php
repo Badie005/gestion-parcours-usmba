@@ -32,8 +32,8 @@ class StudentProfileController extends Controller
             
             // Mise à jour des données de l'étudiant
             $etudiant->update([
-                'nom' => $request->nom,
-                'prenom' => $request->prenom,
+                'nom_fr' => $request->nom,
+                'prenom_fr' => $request->prenom,
                 'date_naissance' => $request->date_naissance,
                 'telephone' => $request->telephone,
                 'adresse' => $request->adresse,
