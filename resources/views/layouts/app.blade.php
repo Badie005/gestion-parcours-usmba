@@ -15,25 +15,14 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen" style="background-color: rgb(226 240 255 / 86%);">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+
 
             <!-- Page Content -->
-            <main>
-                @if (session('success') || session('error') || session('warning') || session('info') || $errors->any())
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                        @include('components.flash-messages')
-                    </div>
-                @endif
+            <main class="pt-16 mt-8 [&>*]:shadow-md [&>*]:rounded-lg" style="margin-top: 64px;">
+                <!-- Ajoute des ombres portu00e9es et des coins arrondis u00e0 tous les u00e9lu00e9ments enfants directs du main -->
                 {{ $slot }}
             </main>
         </div>

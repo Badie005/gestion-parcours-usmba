@@ -3,17 +3,25 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Auth;
 
-class PasswordController extends Controller
+class FirstPasswordController extends Controller
 {
     /**
-     * Update the user's password.
+     * Affiche le formulaire de changement de premier mot de passe
      */
-    public function update(Request $request): RedirectResponse
+    public function show()
+    {
+        return view('auth.first-password');
+    }
+
+    /**
+     * Met à jour le mot de passe lors de la première connexion
+     */
+    public function update(Request $request)
     {
         $messages = [
             'current_password.required' => 'Le mot de passe actuel est requis.',
@@ -23,28 +31,26 @@ class PasswordController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ];
         
-        $validated = $request->validateWithBag('updatePassword', [
+        $validated = $request->validate([
             'current_password' => ['required', 'current_password'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], $messages);
 
-        $user = $request->user();
+        $user = Auth::user();
         
         // Mettre à jour le mot de passe
         $user->update([
             'password' => Hash::make($validated['password']),
             'password_changed' => 1,
         ]);
-        
-        // Enregistrer l'action dans l'historique
-        if (method_exists($user, 'enregistrerAction')) {
-            $user->enregistrerAction(
-                'password_change',
-                'Changement de mot de passe',
-                null
-            );
-        }
 
-        return back()->with('status', 'password-updated');
+        // Créer une entrée dans l'historique des actions
+        $user->enregistrerAction(
+            'password_change',
+            'Changement du mot de passe initial',
+            ['first_login' => true]
+        );
+
+        return redirect()->route('dashboard')->with('status', 'password-updated');
     }
 }

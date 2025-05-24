@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-300 shadow-sm">
+<nav x-data="{ open: false }" class="fixed top-0 left-0 right-0 z-50 w-full bg-white/60 backdrop-blur-xl border-b border-gray-300/30 shadow-md" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">

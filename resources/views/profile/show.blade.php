@@ -8,7 +8,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Informations étudiant -->
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+
                 <div class="max-w-4xl mx-auto w-3/5">
                     <section>
                         <header>
@@ -21,30 +22,30 @@
                         </header>
 
                         <div class="mt-6 space-y-6">
-                            <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <!-- Numéro d'inscription -->
                                     <div>
                                         <h3 class="text-sm font-semibold text-gray-500">Numéro d'inscription</h3>
-                                        <p class="text-gray-800">{{ $user->Num_Inscription }}</p>
+                                        <p class="text-gray-800">{{ $user->num_inscription }}</p>
                                     </div>
 
                                     <!-- Email académique -->
                                     <div>
                                         <h3 class="text-sm font-semibold text-gray-500">Email académique</h3>
-                                        <p class="text-gray-800">{{ $user->Email_academique }}</p>
+                                        <p class="text-gray-800">{{ $user->email_academique }}</p>
                                     </div>
 
                                     <!-- Prénom -->
                                     <div>
                                         <h3 class="text-sm font-semibold text-gray-500">Prénom</h3>
-                                        <p class="text-gray-800">{{ $user->Prenom_Fr }}</p>
+                                        <p class="text-gray-800">{{ $user->prenom_fr }}</p>
                                     </div>
 
                                     <!-- Nom -->
                                     <div>
                                         <h3 class="text-sm font-semibold text-gray-500">Nom</h3>
-                                        <p class="text-gray-800">{{ $user->Nom_Fr }}</p>
+                                        <p class="text-gray-800">{{ $user->nom_fr }}</p>
                                     </div>
 
                                     <!-- Date de naissance -->
@@ -71,13 +72,13 @@
                             </div>
 
                             <!-- Informations académiques -->
-                            <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300">
                                 <h3 class="text-md font-semibold text-gray-700 mb-3">Informations académiques</h3>
                                 
                                 <!-- Filière -->
                                 <div class="mb-4">
                                     <h3 class="text-sm font-semibold text-gray-500">Filière</h3>
-                                    <p class="text-gray-800">{{ $user->filiere?->Deug_Intitule_Fr ?? '—' }}</p>
+                                    <p class="text-gray-800">{{ $user->filiere?->deug_intitule_fr ?? '—' }}</p>
                                 </div>
 
                                 <!-- Parcours -->
@@ -149,6 +150,14 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="mt-3 flex justify-end">
+                                    <a href="{{ route('resultats.index') }}" class="group inline-flex items-center px-3 py-1.5 text-sm text-blue-600 font-medium hover:text-blue-800 border border-transparent rounded hover:bg-blue-50 transition-all duration-200">
+                                        <span>Voir tous les résultats</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-1.5 transform group-hover:translate-x-0.5 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="flex justify-between">
@@ -169,6 +178,69 @@
                                 @endif
                             </div>
                         </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Sécurité - Changement de mot de passe -->
+            <div class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300 mt-6" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                <div class="max-w-4xl mx-auto w-3/5">
+                    <section>
+                        <header>
+                            <h2 class="text-lg font-medium text-gray-900">
+                                {{ __('Sécurité') }}
+                            </h2>
+                            <p class="mt-1 text-sm text-gray-600">
+                                {{ __('Gérez la sécurité de votre compte en modifiant votre mot de passe.') }}
+                            </p>
+                        </header>
+
+                        <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-4">
+                            @csrf
+                            @method('put')
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="current_password" class="block text-sm font-medium text-gray-700">{{ __('Mot de passe actuel') }}</label>
+                                    <input id="current_password" name="current_password" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" autocomplete="current-password" />
+                                    @error('current_password', 'updatePassword')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-gray-700">{{ __('Nouveau mot de passe') }}</label>
+                                    <input id="password" name="password" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" autocomplete="new-password" />
+                                    @error('password', 'updatePassword')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('Confirmer le mot de passe') }}</label>
+                                    <input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" autocomplete="new-password" />
+                                    @error('password_confirmation', 'updatePassword')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-end mt-4">
+                                <button type="submit" class="inline-flex items-center px-3 py-1.5 text-sm text-blue-600 font-medium hover:text-blue-800 border border-transparent rounded hover:bg-blue-50 transition-all duration-200">
+                                    {{ __('Changer le mot de passe') }}
+                                </button>
+
+                                @if (session('status') === 'password-updated')
+                                    <p
+                                        x-data="{ show: true }"
+                                        x-show="show"
+                                        x-transition
+                                        x-init="setTimeout(() => show = false, 2000)"
+                                        class="ml-3 text-sm text-green-600"
+                                    >{{ __('Mot de passe modifié avec succès.') }}</p>
+                                @endif
+                            </div>
+                        </form>
                     </section>
                 </div>
             </div>
