@@ -46,6 +46,14 @@ Cette application web permet la gestion des parcours étudiants au sein de l'Uni
 - Enregistrement des actions de connexion et de changement de mot de passe dans l'historique
 - Messages d'erreur de validation améliorés en français
 
+### Gestion des parcours
+
+- Correction des problèmes de sélection des parcours avec la mise à jour des relations entre les tables
+- Amélioration de l'interface de sélection des parcours avec un design plus moderne et interactif
+- Vérification des prérequis académiques pour l'éligibilité aux parcours
+- Ajout de la gestion des crédits validés par semestre pour la validation des parcours
+- Amélioration de la validation côté serveur pour assurer l'intégrité des données
+
 ### Interface utilisateur
 
 - Nouvelle barre de navigation avec effet glassmorphism (transparent et flou) fixée en haut de la page
