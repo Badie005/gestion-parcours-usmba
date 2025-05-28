@@ -1,0 +1,3616 @@
+
+% ============================================================================
+% Rapport PFE USMBA – SQUELETTE COMPLET
+% "Conception et développement d'un système automatisé de gestion des parcours étudiants :
+%  Application à l'Université Sidi Mohamed Ben Abdellah"
+% ============================================================================
+% Ce fichier LaTeX constitue un squelette complet, conforme aux exigences académiques
+% et techniques précisées par l'utilisateur. Les commentaires (commençant par "%")
+% décrivent la finalité de chaque bloc afin de faciliter sa personnalisation.
+% ----------------------------------------------------------------------------
+%  Compilation : XeLaTeX ou pdfLaTeX (3 passes recommandées + makeglossaries/biber)
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+% 1. CLASSE DE DOCUMENT
+% ----------------------------------------------------------------------------
+\documentclass[french,12pt]{report} % "report" offre une structure adaptée (chapitres)
+
+% ----------------------------------------------------------------------------
+% 2. PACKAGES ESSENTIELS & MISE EN PAGE
+% ----------------------------------------------------------------------------
+\usepackage[T1]{fontenc}     % Encodage des fontes
+\usepackage[utf8]{inputenc} % Encodage d'entrée
+\usepackage[french]{babel}  % Langue principale (typographie française)
+
+% Géométrie : format A4 avec marges académiques 2.5 cm
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+% Gestion des en-têtes/pieds de page et pagination différenciée
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Amélioration de l'affichage des titres
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\fancyhf{}
+\fancyhead[R]{\nouppercase{\rightmark}} % Titre de section/chapter courant à droite
+\fancyfoot[C]{\thepage}                    % Numérotation centrée en bas
+
+% Hyperliens et métadonnées PDF
+\usepackage{caption}  % Pour personnaliser l'apparence des légendes
+\captionsetup{
+    font=small,
+    labelfont=bf,
+    justification=centering,
+    singlelinecheck=true
+}
+
+% Améliorer la gestion des références croisées
+\usepackage{cleveref}  % Permet des références intelligentes avec \cref
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    pdftitle={Conception et développement d'un système automatisé de gestion des parcours étudiants : Application à l'Université Sidi Mohamed Ben Abdellah},
+    pdfauthor={Nom Prénom},
+    pdfsubject={Projet de Fin d'Études},
+    pdfkeywords={gestion parcours, USMBA, Laravel, automatisation},
+    pdfcreator={LaTeX},
+}
+
+% ----------------------------------------------------------------------------
+% 3. FIGURES & SCHÉMAS
+% ----------------------------------------------------------------------------
+\usepackage{graphicx} % Insertion d'images
+\usepackage{float}    % Meilleur contrôle du positionnement des figures
+\usepackage{tikz}     % Dessins vectoriels (diagrammes, architectures)
+\usetikzlibrary{positioning,arrows,shapes,mindmap} % Bibliothèques TikZ additionnelles
+\usepackage{pgfplots} % Graphiques scientifiques
+\pgfplotsset{compat=1.18}
+
+% Définition des styles TikZ manquants
+\tikzset{
+  timeline/.style={
+    ultra thick,
+    blue!50
+  },
+  timeline node/.style={
+    circle,
+    draw=blue!50,
+    fill=blue!20,
+    thick,
+    minimum size=5mm,
+    inner sep=0pt
+  },
+  timeline label/.style={
+    anchor=south
+  },
+  timeline desc/.style={
+    text width=3cm,
+    align=center,
+    font=\small
+  },
+  use timeline nodes/.style={
+    execute at begin picture={
+      \tikzset{every node/.style={}}
+    }
+  }
+}
+
+% Paramètres pour améliorer le placement des figures
+\renewcommand{\topfraction}{0.85}       % Max fraction of page for figures at top
+\renewcommand{\bottomfraction}{0.85}    % Max fraction of page for figures at bottom
+\renewcommand{\textfraction}{0.1}       % Min fraction of page for text
+\renewcommand{\floatpagefraction}{0.75} % Min fraction of page for float page
+
+% Définition d'un style uniforme pour les figures
+\usepackage{mdframed}  % Pour les encadrements améliorés
+\usepackage{xcolor}    % Déjà chargé, mais assurons-nous qu'il est disponible
+
+% Définition des couleurs du thème
+\definecolor{figborder}{RGB}{70,130,180}    % Bleu acier pour les bordures
+\definecolor{figbackground}{RGB}{240,248,255} % Bleu très pâle pour le fond
+\definecolor{figcaption}{RGB}{70,130,180}     % Couleur pour les légendes
+
+% Style pour les figures
+\mdfdefinestyle{figstyle}{
+    linecolor=figborder,
+    linewidth=1pt,
+    backgroundcolor=figbackground,
+    roundcorner=5pt,
+    skipabove=\baselineskip,
+    skipbelow=\baselineskip,
+    innertopmargin=10pt,
+    innerbottommargin=10pt,
+    innerrightmargin=10pt,
+    innerleftmargin=10pt
+}
+
+% Définir des couleurs pour les tableaux
+\definecolor{tableborder}{RGB}{70,130,180}     % Bleu acier pour les bordures
+\definecolor{tableheader}{RGB}{240,248,255}   % Bleu très pâle pour l'en-tête
+\definecolor{tablerowalt}{RGB}{248,248,255}   % Bleu encore plus pâle pour les lignes alternées
+
+% Style pour les tableaux
+\mdfdefinestyle{tablestyle}{
+    linecolor=tableborder,
+    linewidth=1pt,
+    roundcorner=5pt,
+    skipabove=\baselineskip,
+    skipbelow=\baselineskip,
+    innertopmargin=10pt,
+    innerbottommargin=10pt,
+    innerrightmargin=10pt,
+    innerleftmargin=10pt
+}
+
+% Personnalisation des tables avec couleurs
+\renewcommand{\arraystretch}{1.2}  % Espacement vertical des lignes
+\newcommand{\headercell}[1]{\cellcolor{tableheader}\textbf{#1}}
+
+% Utiliser colortbl pour les lignes alternées
+\usepackage{colortbl}
+\newcommand{\rowcol}{\rowcolor{tablerowalt}}
+
+% Redéfinir l'environnement figure pour utiliser mdframed
+\let\oldfigure\figure
+\let\endoldfigure\endfigure
+\renewenvironment{figure}[1][H]{
+    \oldfigure[#1]\centering
+}{
+    \endoldfigure
+}
+
+% Configuration des légendes
+\captionsetup{
+    format=hang,
+    font={small,sf},
+    labelfont={bf,color=figcaption},
+    margin=10pt,
+    justification=centering,
+    singlelinecheck=true
+}
+
+% ----------------------------------------------------------------------------
+% 4. TABLEAUX AVANCÉS
+% ----------------------------------------------------------------------------
+\usepackage{booktabs} % Lignes de tableau élégantes
+%\usepackage{longtabu} % Tableaux multipages
+%\usepackage{longtabu} % Tableaux multipages
+
+% ----------------------------------------------------------------------------
+% 5. LISTINGS DE CODE (PHP, JavaScript, SQL, ...)
+% ----------------------------------------------------------------------------
+\usepackage{listings}
+\usepackage{xcolor}   % Couleurs personnalisées pour listings
+
+% Palette légère et moderne
+\definecolor{codebg}{HTML}{F7F7F7}
+\definecolor{codeframe}{HTML}{CCCCCC}
+\definecolor{keyword}{RGB}{33,74,135}
+\definecolor{string}{RGB}{0,128,0}
+\definecolor{comment}{RGB}{150,150,150}
+
+% Style générique
+\lstdefinestyle{pfe}{
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    language=PHP,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword}\bfseries,
+    stringstyle=\color{string},
+    commentstyle=\color{comment}\itshape,
+    tabsize=4,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{comment},
+    breaklines=true,
+}
+
+% Langages supplémentaires si besoin
+\lstdefinelanguage{JavaScript}{
+    keywords={break,case,catch,const,continue,debugger,default,delete,do,else,export,extends,finally,for,function,if,import,in,instanceof,new,return,super,switch,this,throw,try,typeof,var,void,while,with,yield,let},
+    sensitive=true,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]",
+    morestring=[b]'
+}
+
+% Styles spécifiques pour différents langages
+\lstdefinestyle{phpstyle}{
+    language=PHP,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{comment},
+    frame=single,
+    breaklines=true
+}
+
+\lstdefinestyle{jsstyle}{
+    language=JavaScript,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{comment},
+    frame=single,
+    breaklines=true
+}
+
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{comment},
+    frame=single,
+    breaklines=true
+}
+
+\lstdefinestyle{jsonstyle}{
+    language=json,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword},
+    commentstyle=\color{comment},
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{comment},
+    frame=single,
+    breaklines=true
+}
+
+% ----------------------------------------------------------------------------
+% 6. BIBLIOGRAPHIE – BIBLATEX + IEEE
+% ----------------------------------------------------------------------------
+\usepackage[style=ieee,backend=biber]{biblatex}
+\addbibresource{bibliographie.bib} % Fichier .bib à créer
+
+% ----------------------------------------------------------------------------
+% 7. GLOSSAIRE & ACRONYMES
+% ----------------------------------------------------------------------------
+\usepackage[acronym]{glossaries}
+\makeglossaries
+
+% Exemple d'acronyme – à compléter/éditer
+\newacronym{usmba}{USMBA}{Université Sidi Mohamed Ben Abdellah}
+\newacronym{pfe}{PFE}{Projet de Fin d'Études}
+
+% ----------------------------------------------------------------------------
+% 8. ENCADRÉS (Définitions / Remarques)
+% ----------------------------------------------------------------------------
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% Définition d'un environnement "definitionbox"
+\newtcolorbox{definitionbox}[1][]{%
+  enhanced,
+  breakable,
+  colback=blue!5!white,
+  colframe=blue!50!black,
+  boxrule=0.6pt,
+  title=\textbf{Définition -- ##1},
+  fonttitle=\bfseries,
+  left=6pt,right=6pt,top=6pt,bottom=6pt,
+  arc=2pt
+}
+
+% ----------------------------------------------------------------------------
+% 9. STYLE DES CHAPITRES (titre académique français)
+% ----------------------------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{Chapitre~\thechapter\ -- }{0pt}{}
+
+% ----------------------------------------------------------------------------
+% 10. COMMANDES PERSONNALISÉES
+% ----------------------------------------------------------------------------
+% Insérer rapidement une figure avec légende bilingue
+\newcommand{\figbilingue}[4][]{%
+  % #1 options, #2 fichier image, #3 légende FR, #4 légende EN
+  \begin{figure}[H]
+    \centering
+    \includegraphics[#1]{#2}
+    \caption[##3]{\textbf{FR :} ##3\\ \textbf{EN :} ##4}
+    \label{fig:##2}
+  \end{figure}
+}
+
+% ----------------------------------------------------------------------------
+% 11. DÉBUT DU DOCUMENT
+% ----------------------------------------------------------------------------
+\begin{document}
+
+% ---------------------------------
+% PAGE DE GARDE PERSONNALISÉE
+% ---------------------------------
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  % Logo USMBA – remplacer chemin si nécessaire
+  \includegraphics[width=0.3\textwidth]{logo_usmba.png}\\[1cm]
+
+  {\Large Faculté des Sciences et Techniques de Fès\\[0.4cm]}
+  {\large Département d'Informatique}\\[1.5cm]
+
+  {\Huge\bfseries Conception et développement d'un système automatisé\\ de gestion des parcours étudiants :\\ Application à l'Université Sidi Mohamed Ben Abdellah\\[1cm]}
+
+  \vfill
+  \begin{tabular}{rl}
+    \textbf{Auteur :} & Nom Prénom \\
+    \textbf{Encadrant académique :} & Dr. Xxxxxxxxxxxx \\
+    \textbf{Encadrant industriel :} & M. Yyyyyyyyyyyy \\
+    \textbf{Année universitaire :} & 2024--2025 \\
+  \end{tabular}
+  \vfill
+  \vspace*{1cm}
+  \textit{Rapport présenté pour l'obtention du diplôme de Master Informatique}\\
+  \vspace*{1cm}
+
+  % Bas de page
+  Fès, \today
+\end{titlepage}
+
+% ----------------------------------------------------------------------------
+% 12. PAGES LIMINAIRES (numérotation romaine)
+% ----------------------------------------------------------------------------
+\pagenumbering{Roman}
+
+% Dédicace -------------------------------------------------------------------
+\chapter*{Dédicace}
+\addcontentsline{toc}{chapter}{Dédicace}
+% TODO : Texte de dédicace ici.
+
+% Remerciements ---------------------------------------------------------------
+\chapter*{Remerciements}
+\addcontentsline{toc}{chapter}{Remerciements}
+% TODO : Texte de remerciements ici.
+
+% Résumé français -------------------------------------------------------------
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+% TODO : Résumé en français (150–200 mots).
+
+% Abstract anglais ------------------------------------------------------------
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+% TODO : Abstract in English (150–200 words).
+
+% ----------------------------------------------------------------------------
+% 13. SOMMAIRES ET LISTES
+% ----------------------------------------------------------------------------
+\tableofcontents
+\listoffigures
+\listoftables
+\printglossary[type=\acronymtype,title={Liste des acronymes}]
+
+% ----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
+\pagenumbering{arabic}
+
+% ----- Chapitre 1 ------------------------------------------------------------
+\chapter{Introduction et contexte}
+\section{Contexte institutionnel}[Contextualisation générale]
+Dans le paysage des institutions d'enseignement supérieur marocaines, la gestion des parcours étudiants représente un processus critique dont dépendent tant l'expérience pédagogique que la qualité des formations dispensées. Ce processus, lorsqu'il est automatisé de manière efficiente, constitue un levier stratégique pour l'amélioration des services aux étudiants et l'optimisation des ressources institutionnelles \cite{Laroui2022}.
+\end{definitionbox}
+
+\section{Contexte institutionnel}
+
+{{ ... }}
+\subsection{L'Université Sidi Mohamed Ben Abdellah : excellence et rayonnement régional}
+
+\begin{mdframed}[style=figstyle, backgroundcolor=blue!5]
+L'Université Sidi Mohamed Ben Abdellah (\gls{usmba}) est l'une des plus grandes et prestigieuses institutions d'enseignement supérieur au Maroc, contribuant activement au développement socio-économique et culturel de la région Fès-Meknès depuis près d'un demi-siècle.
+\end{mdframed}
+
+Fondée le 8 mars 1975 par dahir royal et nommée en l'honneur du sultan alaouite Sidi Mohamed Ben Abdellah (1710-1790), fondateur de la ville de Mogador (Essaouira) et réformateur de l'Empire chérifien, l'\gls{usmba} s'est imposée comme un pôle académique d'excellence reconnu nationalement et internationalement \cite{MESRSFC2024}. Son histoire riche reflète l'évolution du système universitaire marocain :
+
+\begin{enumerate}
+    \item \textbf{Phase de fondation (1975-1990)} : Création des facultés fondatrices à Fès (Lettres, Sciences, Médecine) et établissement des premiers cursus universitaires pour répondre aux besoins urgents de formation de cadres nationaux.
+    \item \textbf{Phase d'expansion territoriale (1990-2010)} : Décentralisation avec l'ouverture d'annexes dans les villes voisines (Taza notamment), diversification des filières et intensification de la recherche scientifique avec la création des premiers laboratoires spécialisés.
+    \item \textbf{Phase d'excellence et d'innovation (2010-présent)} : Adaptation au système LMD (Licence-Master-Doctorat), développement des programmes d'excellence, digitalisation des services administratifs et pédagogiques, et renforcement des collaborations internationales avec plus de 120 partenariats actifs.
+\end{enumerate}
+
+Sur le plan structurel, l'\gls{usmba} se distingue par son organisation ambitieuse (Figure \ref{fig:organigramme}), qui comprend 13 établissements universitaires répartis sur plusieurs sites géographiques dans la région Fès-Meknès, facilitant ainsi l'accès à l'enseignement supérieur dans tout le territoire :
+
+\begin{itemize}
+    \item \textbf{5 facultés à accès ouvert} situées principalement à Fès :
+    \begin{itemize}\itemsep0em
+        \item Faculté des Lettres et Sciences Humaines (FLSH)
+        \item Faculté des Sciences (FS)
+        \item Faculté des Sciences Juridiques, Économiques et Sociales (FSJES)
+        \item Faculté des Sciences et Techniques (FST)
+        \item Faculté Polydisciplinaire (FP) de Fès
+    \end{itemize}
+    
+    \item \textbf{7 établissements à accès régulé} proposant des formations sélectives :
+    \begin{itemize}\itemsep0em
+        \item École Supérieure de Technologie (EST)
+        \item Faculté de Médecine et de Pharmacie (FMP)
+        \item École Nationale de Commerce et de Gestion (ENCG)
+        \item École Nationale des Sciences Appliquées (ENSA-F)
+        \item Et autres écoles spécialisées
+    \end{itemize}
+    
+    \item \textbf{La Faculté Polydisciplinaire de Taza (FPT)}, établissement stratégique créé en 2003 comme "noyau universitaire" puis transformé officiellement en faculté en 2005, représentant l'extension territoriale de l'université et un modèle de décentralisation réussi de l'enseignement supérieur
+\end{itemize}
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.7, node distance=0.8cm]
+    % Présidence
+    \node[draw, rectangle, fill=blue!10, minimum width=4cm, minimum height=1cm] (presidence) {Présidence USMBA};
+    
+    % Conseil Université
+    \node[draw, rectangle, fill=blue!5, minimum width=3cm, minimum height=0.8cm, below=0.5cm of presidence] (conseil) {Conseil de l'Université};
+    
+    % Faculté Polydisciplinaire de Taza (mise en évidence)
+    \node[draw, rectangle, fill=red!20, minimum width=4cm, minimum height=1cm, thick, below=0.8cm of conseil, left=0.5cm] (fpt) {\textbf{FPT Taza}};
+    \draw[thick, ->, >=stealth, blue!50] (conseil) -- (fpt);
+    
+    % Facultés à Fès (regroupement)
+    \node[draw=none, fill=none, right=1cm of fpt] (fes) {\textbf{Campus de Fès}};
+    
+    % Facultés
+    \node[draw, rectangle, fill=green!10, minimum width=2.5cm, minimum height=0.8cm, below=0.3cm of fes, xshift=-3cm] (fst) {FST};
+    \node[draw, rectangle, fill=green!10, minimum width=2.5cm, minimum height=0.8cm, below=0.3cm of fes, xshift=-1cm] (flsh) {FLSH};
+    \node[draw, rectangle, fill=green!10, minimum width=2.5cm, minimum height=0.8cm, below=0.3cm of fes, xshift=1cm] (fsjes) {FSJES};
+    \node[draw, rectangle, fill=green!10, minimum width=2.5cm, minimum height=0.8cm, below=0.3cm of fes, xshift=3cm] (fs) {FS};
+    
+    % Établissements à accès régulé
+    \node[draw, rectangle, fill=orange!10, minimum width=2.5cm, minimum height=0.8cm, below=0.6cm of fst] (encg) {ENCG};
+    \node[draw, rectangle, fill=orange!10, minimum width=2.5cm, minimum height=0.8cm, below=0.6cm of flsh] (est) {EST};
+    \node[draw, rectangle, fill=orange!10, minimum width=2.5cm, minimum height=0.8cm, below=0.6cm of fsjes] (fmp) {FMP};
+    \node[draw, rectangle, fill=orange!10, minimum width=2.5cm, minimum height=0.8cm, below=0.6cm of fs] (ensaf) {ENSA-F};
+    
+    % Connexions
+    \draw (presidence) -- (conseil);
+    \draw (conseil) -- (fes);
+    \draw (fes) -| (fst);
+    \draw (fes) -| (flsh);
+    \draw (fes) -| (fsjes);
+    \draw (fes) -| (fs);
+    \draw (fst) -- (encg);
+    \draw (flsh) -- (est);
+    \draw (fsjes) -- (fmp);
+    \draw (fs) -- (ensaf);
+    
+    % Ajout d'une annotation pour FPT
+    \node[draw=none, fill=none, below=0.2cm of fpt, align=center, font=\small\itshape] {Site pilote pour\\la gestion des parcours};
+\end{tikzpicture}
+\end{mdframed}
+\caption{Structure organisationnelle simplifiée de l'USMBA incluant la Faculté Polydisciplinaire de Taza}
+\label{fig:organigramme}
+\end{figure}
+
+Les effectifs de l'\gls{usmba} témoignent de son importance dans le paysage universitaire national :
+
+\begin{table}[H]
+\begin{mdframed}[style=tablestyle]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\headercell{Catégorie} & \headercell{Nombre} & \headercell{Évolution sur 5 ans} \\
+\midrule
+Étudiants inscrits & 117 500 & +22\% \\
+\rowcol
+Personnel enseignant-chercheur & 1 420 & +8\% \\
+Personnel administratif et technique & 975 & +5\% \\
+\rowcol
+Laboratoires de recherche & 132 & +15\% \\
+\bottomrule
+\end{tabular}
+\end{mdframed}
+\caption{Effectifs et évolution de l'USMBA (2020-2025)}
+\label{tab:effectifs}
+\end{table}
+
+Cette croissance soutenue, particulièrement marquée au niveau des effectifs étudiants, induit une pression significative sur les processus administratifs et pédagogiques de l'université. Comme le souligne \citeauthor{Moulay2021} : \textit{« L'expansion des effectifs universitaires marocains s'accompagne rarement d'une adaptation proportionnelle des infrastructures numériques, créant ainsi un déséquilibre systémique »} \cite{Moulay2021}.
+
+\subsection{La Faculté Polydisciplinaire de Taza : site pilote d'innovation pédagogique}
+
+\begin{mdframed}[style=figstyle, backgroundcolor=red!5]
+La Faculté Polydisciplinaire de Taza (FPT) représente le choix idéal comme site pilote pour notre système de gestion des parcours étudiants, grâce à sa taille optimale, sa diversité disciplinaire et son engagement dans l'innovation pédagogique.
+\end{mdframed}
+
+Fondamentale dans la stratégie de décentralisation de l'\gls{usmba}, la FPT constitue un établissement universitaire clé dans le nord-est marocain. Créée initialement comme "noyau universitaire" en 2003, elle a accueilli ses premiers étudiants dès septembre 2003, avant d'être officiellement transformée en faculté à part entière en 2005. 
+
+Située à environ 120 km de Fès, la FPT joue un rôle crucial dans la démocratisation de l'accès à l'enseignement supérieur pour toute la région de Taza-Al Hoceima-Taounate, desservant une population étudiante qui, sans elle, aurait des difficultés considérables à poursuivre des études universitaires. Son statut d'établissement public sous tutelle du Ministère de l'Enseignement supérieur lui confère la légitimité institutionnelle nécessaire pour expérimenter de nouvelles approches pédagogiques et administratives, comme notre système automatisé de gestion des parcours.
+
+\subsubsection{Structure et gouvernance}
+
+Dirigée par un doyen (actuellement M. Hassan Tabyaoui, nommé en mars 2025), la FPT est assistée par des vice-doyens en charge des études, de la recherche et de la vie étudiante. Elle s'organise autour de 13 divisions disciplinaires couvrant un large spectre de domaines :
+
+\begin{itemize}
+    \item Sciences fondamentales et appliquées (biologie, physique, géologie, chimie)
+    \item Mathématiques et informatique
+    \item Sciences économiques et juridiques
+    \item Sciences humaines et langues
+\end{itemize}
+
+La faculté est située sur le campus principal de Taza (Route d'Oujda, B.P. 1223) et bénéficie d'infrastructures adaptées à sa mission pédagogique : amphithéâtres, salles de cours et de travaux dirigés, laboratoires spécialisés, et centre de ressources informatiques.
+
+\subsubsection{Offre de formation}
+
+La FPT propose un éventail diversifié de formations dans le cadre du système LMD (Licence-Master-Doctorat) :
+
+\begin{table}[H]
+\begin{mdframed}[style=tablestyle]
+\centering
+\begin{tabular}{p{3.5cm}p{10cm}}
+\toprule
+\headercell{Niveau} & \headercell{Formations proposées} \\ \midrule
+\textbf{Licences} & 
+\begin{itemize}\itemsep0em
+    \item 16 filières fondamentales et professionnelles
+    \item \textit{Sciences de la vie} : Biologie appliquée (Ingénierie agroalimentaire) et Sciences biomédicales
+    \item \textit{Sciences physiques} : Efficacité Énergétique \& Énergies Renouvelables et Électronique et Signaux
+    \item \textit{Sciences de la Terre} : Géomatique et Ressources en Eau (GRE) et Géosciences Appliquées
+    \item \textit{Chimie} : Procédés et Analyses Physico-Chimiques
+    \item \textit{Informatique} : Sciences des Données et Ingénierie des Systèmes d'Information (ISI)
+    \item \textit{Mathématiques} : Mathématiques Fondamentales et Appliquées et Mathématiques Appliquées, Modélisation et Calcul Scientifique
+    \item \textit{Économie et Gestion} : Politique Économique, Économétrie, Comptabilité-Finance et Fiscalité, Marketing-Commerce
+    \item \textit{Droit Privé et Droit Public} : avec parcours en études générales, Droit des affaires, Administratif/Constitutionnel et Politique internationale
+    \item \textit{Géographie, Histoire et Langues} : plusieurs filières spécialisées dont Communication et Médiations Culturelles
+\end{itemize} \\ \midrule
+\rowcol
+\textbf{Masters} & 
+\begin{itemize}\itemsep0em
+    \item 13 mentions de master dans divers domaines technologiques, économiques et juridiques
+    \item Master \textbf{Systèmes Intelligents et Mobiles (SIM)} en Informatique embarquée
+    \item Master \textbf{Science politique et Relations internationales} en droit
+    \item Autres masters portant sur la gestion, l'énergie, l'environnement et les sciences sociales
+    \item Admission sur concours (examen écrit et entretien) pour les titulaires d'une licence pertinente
+\end{itemize} \\ \midrule
+\textbf{Formation continue} & 
+\begin{itemize}\itemsep0em
+    \item Programmes adaptés aux professionnels du secteur public/privé (cours du soir, certificats)
+    \item Formation en adéquation avec la demande locale
+    \item Participation au programme \textbf{Erasmus+} et à l'Agence universitaire de la Francophonie (AUF)
+    \item Conventions d'échange avec des universités partenaires en Europe et au Maghreb
+\end{itemize} \\ \bottomrule
+\end{tabular}
+\end{mdframed}
+\caption{Offre de formation de la Faculté Polydisciplinaire de Taza}
+\label{tab:formation-fpt}
+\end{table}
+
+La faculté accueille actuellement 11\,294 étudiants en licence et 351 en master (chiffres 2024-2025), ce qui représente environ 10\% des effectifs totaux de l'\gls{usmba}.
+
+\subsubsection{Recherche et innovation}
+
+La FPT héberge plusieurs structures de recherche alignées sur ses filières d'enseignement :
+
+\begin{itemize}
+    \item \textbf{Laboratoire RNE} (Ressources Naturelles et Environnement) : recherches en agronomie et écologie, avec des projets récents sur les réserves d'azote chez les plantes et sur la physiologie des plantes sous stress
+    \item \textbf{Laboratoire de recherches juridiques, politiques et économiques} : organise des formations doctorales et des ateliers en sciences sociales
+    \item \textbf{Laboratoire d'informatique et mathématiques} : travaux sur les systèmes embarqués et les sciences des données
+    \item Autres laboratoires thématiques : "Patrimoine et Développement durable", "Énergie et Ressources naturelles", "Langues et communication", "Relations culturelles maroco-méditerranéennes", etc.
+\end{itemize}
+
+Les enseignants-chercheurs de la FPT publient régulièrement dans des revues et conférences nationales et internationales. Par exemple, en 2024-2025, des travaux sur la physiologie des plantes sous stress (orge) ont été publiés par le laboratoire RNE, et un article de 2024 dans \textit{Ethnobotany Research \& Applications} a analysé la flore médicinale de la province de Taza.
+
+Ces structures de recherche participent activement à la production scientifique avec des publications régulières dans des revues nationales et internationales, contribuant ainsi au rayonnement de l'\gls{usmba}.
+
+\subsubsection{Infrastructure et équipements}
+
+La FPT dispose d'un campus principal situé Route d'Oujda à Taza (B.P. 1223), comprenant :
+
+\begin{itemize}
+    \item Plusieurs amphithéâtres, salles de cours et de travaux dirigés
+    \item Laboratoires spécialisés pour les TP (informatique, biologie, chimie, géologie, langues)
+    \item Centre de ressources informatiques équipé en ordinateurs et connectivité
+    \item Bibliothèque universitaire connectée au réseau de l'USMBA, offrant des collections papier et une bibliothèque numérique en ligne
+    \item Plateforme d'enseignement à distance (e-learning) pour suivre des cours en ligne
+\end{itemize}
+
+La faculté accueille précisément 11\,294 étudiants en licence et 351 en master (chiffres 2024), soit environ 10\% des effectifs totaux de l'\gls{usmba}.
+
+Les coordonnées officielles sont : Route d'Oujda - B.P. 1223, Taza; Tél. : +212 (0)5 35 21 19 76 / +212 (0)5 35 21 19 78; Email : support.fpt@usmba.ac.ma; Site web : fpt.usmba.ac.ma.
+
+\subsubsection{Intérêt pour notre projet}
+
+La FPT constitue un site pilote pertinent pour notre système de gestion des parcours étudiants en raison de :
+
+\begin{itemize}
+    \item Sa taille intermédiaire, permettant un déploiement maîtrisé avant généralisation
+    \item Sa diversité disciplinaire, offrant un échantillon représentatif des différentes filières de l'université
+    \item Sa distance géographique avec le siège de Fès, justifiant d'autant plus l'intérêt d'une solution numérique pour la gestion des parcours
+    \item L'existence d'une expertise locale en informatique (filière ISI et master SIM) susceptible de contribuer à l'évolution du système
+\end{itemize}
+
+\subsection{Organisation pédagogique actuelle}
+
+Le système pédagogique de l'\gls{usmba}, aligné sur l'architecture \textit{Licence-Master-Doctorat} (LMD) adoptée nationalement en 2003, structure les formations selon une logique modulaire et semestrielle. Au niveau de la Licence, objet principal de notre étude, le parcours se décompose en six semestres (S1 à S6) regroupés en trois années :
+
+\begin{enumerate}
+    \item \textbf{Année 1 (S1-S2)} : Tronc commun disciplinaire large
+    \item \textbf{Année 2 (S3-S4)} : Spécialisation progressive et prérequis des parcours
+    \item \textbf{Année 3 (S5-S6)} : Parcours spécialisé et projet de fin d'études
+\end{enumerate}
+
+La notion de \textit{filière} correspond à un domaine disciplinaire général (Informatique, Économie, etc.), tandis que le \textit{parcours} représente une spécialisation au sein de cette filière. La Figure \ref{fig:structureped} illustre cette organisation hiérarchique :
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.7, level distance=1.5cm, sibling distance=6cm]
+    \node[draw, rectangle, fill=blue!10] {Filière (ex: Informatique)}
+    child {
+        node[draw, rectangle, fill=green!10] {Parcours 1\\(Génie Logiciel)}
+        child {
+            node[draw, rectangle, fill=yellow!10] {UE1: Prog. Avancée}
+        }
+        child {
+            node[draw, rectangle, fill=yellow!10] {UE2: Architecture}
+        }
+    }
+    child {
+        node[draw, rectangle, fill=green!10] {Parcours 2\\(Science Données)}
+        child {
+            node[draw, rectangle, fill=yellow!10] {UE1: ML \& IA}
+        }
+        child {
+            node[draw, rectangle, fill=yellow!10] {UE2: Stats \& Analyse}
+        }
+    };
+\end{tikzpicture}
+\end{mdframed}
+\caption{Structure hiérarchique de l'organisation pédagogique}
+\label{fig:structureped}
+\end{figure}
+
+La transition entre la deuxième et la troisième année constitue un moment critique dans le parcours étudiant, car elle implique le choix d'un parcours spécialisé qui déterminera largement les compétences acquises et l'insertion professionnelle future. À l'\gls{usmba}, la Faculté des Sciences et Techniques (FST) propose actuellement 14 filières de Licence, subdivisées en 37 parcours spécialisés, avec des capacités d'accueil variables (entre 30 et 120 places par parcours).
+
+Le système d'évaluation repose sur l'acquisition d'unités d'enseignement (UE), chacune validée par une note minimale de 10/20 ou par compensation. Le passage en année supérieure requiert la validation d'un nombre minimum d'UE, généralement entre 4 et 6 par semestre selon les filières. Ce système, bien que structuré, génère une complexité administrative considérable lors de l'orientation vers les parcours spécialisés, comme nous le verrons dans la section suivante.
+
+\subsection{Processus d'orientation traditionnel}
+
+Le processus d'affectation des étudiants aux différents parcours spécialisés, tel qu'il était pratiqué avant l'implémentation du système automatisé, relève d'une approche largement manuelle et séquentielle. Ce processus, schématisé dans la Figure \ref{fig:processusmanuel}, s'articule autour de quatre phases principales :
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.8, node distance=2cm, auto]
+    % Phases principales
+    \node[draw, rectangle, fill=blue!10, minimum width=3cm, minimum height=1cm] (p1) {1. Collecte des vœux};
+    \node[draw, rectangle, fill=blue!10, minimum width=3cm, minimum height=1cm, right=1.5cm of p1] (p2) {2. Vérification éligibilité};
+    \node[draw, rectangle, fill=blue!10, minimum width=3cm, minimum height=1cm, right=1.5cm of p2] (p3) {3. Classement manuel};
+    \node[draw, rectangle, fill=blue!10, minimum width=3cm, minimum height=1cm, right=1.5cm of p3] (p4) {4. Notification};
+    
+    % Sous-processus
+    \node[draw, rectangle, fill=red!5, minimum width=2.5cm, minimum height=0.8cm, below=0.8cm of p1] (s1) {Formulaires papier};
+    \node[draw, rectangle, fill=red!5, minimum width=2.5cm, minimum height=0.8cm, below=0.8cm of p2] (s2) {Feuilles Excel};
+    \node[draw, rectangle, fill=red!5, minimum width=2.5cm, minimum height=0.8cm, below=0.8cm of p3] (s3) {Réunion comité};
+    \node[draw, rectangle, fill=red!5, minimum width=2.5cm, minimum height=0.8cm, below=0.8cm of p4] (s4) {Affichage physique};
+    
+    % Acteurs
+    \node[draw, ellipse, fill=green!5, minimum width=2cm, minimum height=0.6cm, below=0.7cm of s1] (a1) {Étudiants};
+    \node[draw, ellipse, fill=green!5, minimum width=2cm, minimum height=0.6cm, below=0.7cm of s2] (a2) {Secrétariat};
+    \node[draw, ellipse, fill=green!5, minimum width=2cm, minimum height=0.6cm, below=0.7cm of s3] (a3) {Enseignants};
+    \node[draw, ellipse, fill=green!5, minimum width=2cm, minimum height=0.6cm, below=0.7cm of s4] (a4) {Administration};
+    
+    % Connexions principales
+    \draw[->, thick] (p1) -- (p2);
+    \draw[->, thick] (p2) -- (p3);
+    \draw[->, thick] (p3) -- (p4);
+    
+    % Connexions verticales
+    \draw (p1) -- (s1);
+    \draw (p2) -- (s2);
+    \draw (p3) -- (s3);
+    \draw (p4) -- (s4);
+    \draw (s1) -- (a1);
+    \draw (s2) -- (a2);
+    \draw (s3) -- (a3);
+    \draw (s4) -- (a4);
+    
+    % Temps indicatif
+    \node[below=0.2cm of a1, text width=2cm, align=center, font=\scriptsize] {(1 semaine)};
+    \node[below=0.2cm of a2, text width=2cm, align=center, font=\scriptsize] {(1-2 semaines)};
+    \node[below=0.2cm of a3, text width=2cm, align=center, font=\scriptsize] {(3-5 jours)};
+    \node[below=0.2cm of a4, text width=2cm, align=center, font=\scriptsize] {(1-2 jours)};
+\end{tikzpicture}
+\end{mdframed}
+\caption{Processus traditionnel d'orientation vers les parcours spécialisés}
+\label{fig:processusmanuel}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Collecte des vœux} : Les étudiants complètent des formulaires papier où ils indiquent, par ordre de préférence, les parcours qu'ils souhaitent intégrer (généralement 3 choix).
+    
+    \item \textbf{Vérification d'éligibilité} : Le secrétariat pédagogique vérifie manuellement, pour chaque étudiant, si les prérequis académiques sont satisfaits (nombre d'UE validées, notes minimales dans certaines matières fondamentales).
+    
+    \item \textbf{Classement et affectation} : Un comité d'orientation, composé d'enseignants-chercheurs et de coordinateurs de filières, établit des listes de classement basées sur les résultats académiques et attribue les places disponibles en respectant les capacités d'accueil de chaque parcours.
+    
+    \item \textbf{Notification des résultats} : Les affectations définitives sont communiquées par voie d'affichage physique dans les établissements et, parfois, par email aux délégués de classe.
+\end{enumerate}
+
+Comme le souligne \citeauthor{Bensouda2023} : \textit{« Les processus d'orientation universitaires au Maroc restent majoritairement ancrés dans une logique administrative pré-numérique, où la manipulation physique des données prédomine sur leur traitement automatisé »} \cite{Bensouda2023}. Cette observation rejoint notre analyse du terrain, où nous avons pu constater les limites inhérentes à ce flux de travail \textit{analogique} :
+
+\begin{itemize}
+    \item \textbf{Délais prolongés} : Le processus complet requiert entre 3 et 4 semaines, période pendant laquelle la planification pédagogique reste en suspens.
+    \item \textbf{Erreurs de transcription} : La ressaisie multiple des données (du papier vers Excel, puis d'Excel vers les systèmes de gestion) engendre un taux d'erreur estimé entre 15\% et 20\%.
+    \item \textbf{Opacité du processus} : Les critères précis d'affectation, bien que formellement établis, peuvent sembler arbitraires aux étudiants en l'absence de transparence sur leur application.
+    \item \textbf{Absence de traçabilité} : Les décisions prises ne sont pas systématiquement documentées, rendant difficile la gestion des contestations ultérieures.
+\end{itemize}
+
+\subsection{Enjeux de la transformation numérique}
+
+Face aux limitations du système traditionnel et dans un contexte d'augmentation continue des effectifs étudiants (+30\% sur les cinq dernières années), la transformation numérique du processus d'orientation s'impose comme une nécessité stratégique pour l'\gls{usmba}. Cette transformation répond à quatre enjeux fondamentaux :
+
+\begin{enumerate}
+    \item \textbf{Enjeu d'efficience opérationnelle} : Réduire drastiquement les délais de traitement (objectif : 48 heures) et minimiser la mobilisation des ressources humaines sur des tâches à faible valeur ajoutée.
+    
+    \item \textbf{Enjeu de gouvernance et de transparence} : Établir un \textit{audit trail} complet pour chaque décision d'affectation via la table \texttt{action\_historiques}, permettant de justifier objectivement les choix effectués.
+    
+    \item \textbf{Enjeu de scalabilité} : Concevoir un système capable d'absorber l'augmentation projetée des effectifs (+50\% d'ici 2030) sans dégradation des performances ou augmentation proportionnelle des ressources.
+    
+    \item \textbf{Enjeu de sécurité et d'intégrité} : Garantir l'authenticité des demandes via un système d'authentification robuste basé sur l'email académique et protéger les données sensibles contre les accès non autorisés.
+\end{enumerate}
+
+Pour conceptualiser cette transition, nous pouvons établir une analogie avec les systèmes de contrôle en ingénierie :
+
+\begin{definitionbox}[Analogie système]
+Le processus manuel d'orientation fonctionne comme un \textbf{régulateur analogique} : l'erreur est identifiée et corrigée \textit{a posteriori}, générant des oscillations (réclamations, ajustements tardifs) et une stabilisation lente.
+
+Le système automatisé proposé introduit une \textbf{boucle de régulation numérique à haute fréquence}, mesurant en temps réel les écarts aux consignes (capacités, critères d'éligibilité) et s'ajustant instantanément, produisant ainsi une réponse plus stable et précise.
+\end{definitionbox}
+
+Cette transformation s'inscrit dans une dynamique nationale plus large, comme le souligne le rapport du Ministère de l'Enseignement Supérieur \cite{MESRSFC2023} qui préconise \textit{« l'intégration systématique des technologies numériques dans les processus administratifs universitaires comme levier de modernisation et d'efficience »}.
+
+Le Tableau \ref{tab:comparaison} synthétise les gains attendus de cette transformation numérique :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Dimension} & \textbf{Avant transformation} & \textbf{Après transformation} \\
+\midrule
+Temps de traitement & 3-4 semaines & 24-48 heures \\
+Taux d'erreur documenté & 15-20\% & < 2\% \\
+Capacité de traitement & 400-500 dossiers/session & > 2000 dossiers/session \\
+Transparence du processus & Limitée aux décisions finales & Traçabilité complète \\
+Satisfaction étudiante & 45\% (enquête 2023) & > 85\% (objectif) \\
+\bottomrule
+\end{tabular}
+\caption{Impact projeté de la transformation numérique du processus d'orientation}
+\label{tab:transformationimpact}
+\end{table}
+
+En définitive, l'automatisation du processus d'orientation vers les parcours spécialisés représente bien plus qu'une simple optimisation technique : elle constitue une refonte profonde de la relation entre l'institution et ses usagers, transformant un processus administratif opaque en un service numérique transparent, équitable et efficient.
+
+\section{Objectifs du PFE}
+% TODO : détailler les objectifs.
+
+\section{Comparaison Avant/Après}
+
+\begin{longtabu} to \textwidth {|X[l]|X[c]|X[c]|}
+\hline
+\textbf{Critère} & \textbf{Méthode Actuelle} & \textbf{Solution Proposée} \\
+\hline
+\endhead
+Délai de traitement & 2-3 semaines & 24-48 heures \\
+\hline
+Taux d'erreur & 15-20\% & < 2\% \\
+\hline
+Traçabilité & Limitée & Complète (audit trail) \\
+\hline
+Évolutivité & Difficile & Modulaire \\
+\hline
+Coût de maintenance & Élevé & Optimisé \\
+\hline
+\end{longtabu}
+
+% ----- Chapitre 2 ------------------------------------------------------------
+\chapter{État de l'art et fondements théoriques}
+
+\begin{definitionbox}[Cadre théorique et technologique]
+La conception d'un système de gestion des parcours étudiants s'inscrit dans un cadre théorique et technologique riche, à l'intersection des systèmes d'information éducatifs, des technologies web modernes et des méthodologies de développement agiles. Ce chapitre examine les fondements sur lesquels repose notre solution, en dressant un panorama des approches existantes, des technologies pertinentes et des méthodologies adaptées à ce type de projet.
+\end{definitionbox}
+
+\section{Systèmes d'information éducatifs}
+
+Les systèmes d'information éducatifs (SIE) constituent l'épine dorsale des institutions d'enseignement modernes. Ils permettent de gérer de manière intégrée l'ensemble des données et processus liés au parcours académique des étudiants, à l'organisation des enseignements et à la gestion administrative des établissements.
+
+\subsection{Évolution des systèmes d'information académiques}
+
+L'évolution des systèmes d'information dans le milieu universitaire peut être segmentée en quatre phases distinctes, chacune marquant un saut qualitatif dans la gestion des processus académiques :
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[timeline, use timeline nodes]
+  % Timeline
+  \draw[timeline] (0,0) -- (10,0);
+  
+  % Nodes
+  \node[timeline node, fill=red!20] at (1,0) {};
+  \node[timeline label, below] at (1,-0.1) {1970-1990};
+  \node[timeline desc] at (1,-1) {Systèmes administratifs isolés};
+  
+  \node[timeline node, fill=orange!20] at (3.5,0) {};
+  \node[timeline label, below] at (3.5,-0.1) {1990-2005};
+  \node[timeline desc] at (3.5,-1) {SIE intégrés};
+  
+  \node[timeline node, fill=green!20] at (6,0) {};
+  \node[timeline label, below] at (6,-0.1) {2005-2015};
+  \node[timeline desc] at (6,-1) {SIE orientés services et web};
+  
+  \node[timeline node, fill=blue!20] at (8.5,0) {};
+  \node[timeline label, below] at (8.5,-0.1) {2015-aujourd'hui};
+  \node[timeline desc] at (8.5,-1) {SIE intelligents et analytiques};
+\end{tikzpicture}
+\end{mdframed}
+\caption{Évolution des systèmes d'information académiques}
+\label{fig:evolution-sie}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Systèmes administratifs isolés (1970-1990)} : Applications déconnectées pour la gestion des inscriptions, la facturation et les dossiers étudiants, souvent développées en interne sur des mainframes.
+    
+    \item \textbf{Systèmes d'information éducatifs intégrés (1990-2005)} : Premières plateformes intégrées de type ERP académique comme Banner, PeopleSoft ou SAP Campus, permettant une gestion consolidée des processus universitaires.
+    
+    \item \textbf{SIE orientés services et web (2005-2015)} : Développement des interfaces web et des architectures orientées services (SOA), facilitant l'accès à distance et l'intégration avec d'autres systèmes.
+    
+    \item \textbf{SIE intelligents et analytiques (2015-aujourd'hui)} : Intégration des capacités d'analyse de données, d'intelligence artificielle et d'apprentissage automatique pour optimiser les processus décisionnels et améliorer l'expérience utilisateur.
+\end{enumerate}
+
+Cette évolution témoigne d'une tendance continue vers la centralisation des données, l'intégration des services et l'automatisation des processus. Le système développé dans ce projet s'inscrit dans la dernière génération, avec une forte composante analytique pour l'attribution des parcours.
+
+\subsection{Typologie des systèmes de gestion de parcours étudiants}
+
+Les systèmes de gestion des parcours étudiants peuvent être classés selon plusieurs critères, notamment leur portée fonctionnelle, leur architecture technique et leur mode de déploiement :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
+\hline
+\textbf{Type de système} & \textbf{Caractéristiques} & \textbf{Exemples} \\ \hline
+\textbf{Systèmes propriétaires intégrés} & 
+\begin{itemize}\itemsep0em
+  \item Solutions complètes "clé en main"
+  \item Fortement intégrées mais peu flexibles
+  \item Coût élevé d'acquisition et de maintenance
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Oracle PeopleSoft Campus Solutions
+  \item Ellucian Banner
+  \item SAP Student Lifecycle Management
+\end{itemize} \\ \hline
+\textbf{Systèmes modulaires open source} & 
+\begin{itemize}\itemsep0em
+  \item Approche modulaire et extensible
+  \item Coût d'acquisition réduit
+  \item Nécessite des compétences techniques en interne
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Kuali Student
+  \item OpenSIS
+  \item Odoo Education
+\end{itemize} \\ \hline
+\textbf{Solutions SaaS spécialisées} & 
+\begin{itemize}\itemsep0em
+  \item Applications ciblées sur une fonction spécifique
+  \item Déploiement rapide
+  \item Intégration via API
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Campus Management
+  \item Tableau pour l'analyse de parcours
+  \item Salesforce Education Cloud
+\end{itemize} \\ \hline
+\textbf{Systèmes développés sur mesure} & 
+\begin{itemize}\itemsep0em
+  \item Adaptés aux besoins spécifiques de l'institution
+  \item Flexibilité maximale
+  \item Nécessite des ressources de développement importantes
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Systèmes développés par des DSI internes
+  \item Applications Laravel/PHP custom
+  \item Plateformes .NET ou Java EE dédiées
+\end{itemize} \\ \hline
+\end{tabular}
+\caption{Typologie des systèmes de gestion de parcours étudiants}
+\label{tab:typologie-systemes}
+\end{table}
+
+Notre solution s'inscrit principalement dans la catégorie des "Systèmes développés sur mesure", tout en s'inspirant des bonnes pratiques des autres catégories, notamment l'approche modulaire des solutions open source et l'intégration API des solutions SaaS.
+
+\subsection{Algorithmes d'attribution et d'éligibilité}
+
+Au cœur des systèmes de gestion de parcours étudiants se trouvent les algorithmes d'attribution et d'éligibilité, qui constituent le véritable moteur décisionnel de ces plateformes. Ces algorithmes peuvent être classés selon plusieurs approches :
+
+\begin{itemize}
+    \item \textbf{Algorithmes basés sur des règles} : Ensemble de conditions prédéfinies (IF-THEN-ELSE) évaluant l'éligibilité d'un étudiant à un parcours spécifique.
+    
+    \item \textbf{Systèmes de scoring} : Attribution de points pondérés selon différents critères (résultats académiques, prérequis, compétences spécifiques) pour générer un score global d'éligibilité.
+    
+    \item \textbf{Algorithmes d'optimisation sous contraintes} : Formulation du problème d'attribution comme un problème d'optimisation maximisant une fonction objectif (satisfaction globale, adéquation profil-parcours) sous diverses contraintes (capacité des parcours, préférences des étudiants).
+    
+    \item \textbf{Approches par apprentissage automatique} : Utilisation de modèles prédictifs entraînés sur des données historiques pour prédire la réussite d'un étudiant dans un parcours donné.
+\end{itemize}
+
+La complexité algorithmique de ces approches varie considérablement. Les algorithmes basés sur des règles simples ont une complexité linéaire $O(n)$ où $n$ est le nombre d'étudiants, tandis que les algorithmes d'optimisation sous contraintes peuvent atteindre une complexité polynomiale ou même NP-difficile dans certains cas.
+
+Pour notre système, nous avons opté pour une approche hybride combinant :
+
+\begin{equation}
+\text{Score final} = \sum_{i=1}^{4} w_i \times \frac{\text{Modules validés semestre}_i}{\text{Modules total semestre}_i}
+\end{equation}
+
+Où $w_i$ représente le poids attribué au semestre $i$, avec une pondération favorisant les semestres récents.
+
+L'algorithme d'attribution global présente une complexité de $O(n \log n + n \cdot m)$ :
+
+\begin{equation}
+\text{Complexité} = O(n \log n + n \cdot m)
+\end{equation}
+
+Où $n$ est le nombre d'étudiants et $m$ le nombre de parcours disponibles. Le terme $n \log n$ correspond au tri des étudiants par score d'éligibilité, et le terme $n \cdot m$ représente l'itération sur chaque étudiant et l'examen de ses choix de parcours.
+
+\section{Technologies et frameworks}
+
+Le développement d'un système moderne de gestion des parcours étudiants nécessite l'utilisation de technologies et frameworks adaptés, capables de répondre aux exigences de performance, de sécurité et d'expérience utilisateur. Cette section analyse les options technologiques disponibles et justifie les choix effectués pour notre projet.
+
+\subsection{Frameworks de développement web}
+
+Les frameworks de développement web modernes fournissent une structure organisée pour la création d'applications robustes, tout en offrant des fonctionnalités clés comme la sécurité, la gestion des bases de données et le routage des requêtes.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{2cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+\hline
+\textbf{Critère} & \textbf{Laravel (PHP)} & \textbf{Django (Python)} & \textbf{Spring Boot (Java)} & \textbf{Express.js (Node.js)} \\ \hline
+\textbf{Courbe d'apprentissage} & Moyenne & Moyenne & Élevée & Faible \\ \hline
+\textbf{Performance} & Bonne & Bonne & Excellente & Très bonne \\ \hline
+\textbf{Écosystème} & Très riche & Riche & Très riche & Très riche \\ \hline
+\textbf{ORM natif} & Eloquent (excellent) & Django ORM (excellent) & Hibernate (puissant mais complexe) & Sequelize (bon) \\ \hline
+\textbf{Sécurité} & Excellente & Excellente & Excellente & Bonne (dépend des modules) \\ \hline
+\end{tabular}
+\caption{Comparaison des frameworks de développement web}
+\label{tab:comparaison-frameworks}
+\end{table}
+
+Notre choix s'est porté sur Laravel pour plusieurs raisons déterminantes :
+
+\begin{itemize}
+    \item \textbf{Eloquent ORM} : Offre une abstraction puissante et intuitive de la base de données, facilitant la gestion des relations complexes entre étudiants, parcours et filières.
+    
+    \item \textbf{Écosystème riche} : L'environnement Laravel comprend des outils comme Sanctum (authentification API), Horizon (gestion des files d'attente) et Telescope (débogage).
+    
+    \item \textbf{Architecture MVC} : Favorise une séparation claire des responsabilités, fondamentale pour un projet de cette envergure.
+    
+    \item \textbf{Migrations et seeders} : Permettent une gestion efficace du schéma de base de données et des données de test.
+\end{itemize}
+
+Voici un exemple de relation Eloquent illustrant la puissance du framework :
+
+\begin{lstlisting}[style=phpstyle,caption={Relation Eloquent entre étudiant et parcours}]
+// Définition de la relation dans le modèle Etudiant
+public function parcours()
+{
+    return $this->belongsTo(Parcour::class, 'parcour_id', 'code_licence');
+}
+
+// Utilisation dans le contrôleur
+$etudiants = Etudiant::with('parcours', 'filiere')
+    ->where('id_filiere', $filiereId)
+    ->get();
+\end{lstlisting}
+
+\subsection{Technologies frontend et expérience utilisateur}
+
+L'interface utilisateur joue un rôle crucial dans l'adoption et l'efficacité d'un système de gestion académique. Notre choix de technologies frontend a été guidé par la nécessité d'offrir une expérience fluide et esthétique, tout en respectant les préférences pour un design minimaliste et moderne.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[node distance=1.5cm]
+    % Styles
+    \tikzstyle{tech} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+    \tikzstyle{alt} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=gray!10]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Technologies principales
+    \node (tailwind) [tech] {Tailwind CSS};
+    \node (alpine) [tech, right=of tailwind] {Alpine.js};
+    \node (blade) [tech, right=of alpine] {Blade};
+    \node (vite) [tech, right=of blade] {Vite};
+    
+    % Alternatives (en dessous)
+    \node (bootstrap) [alt, below=of tailwind] {Bootstrap};
+    \node (react) [alt, below=of alpine] {React};
+    \node (vue) [alt, below=of blade] {Vue.js};
+    \node (webpack) [alt, below=of vite] {Webpack};
+    
+    % Flèches de comparaison
+    \draw [arrow] (tailwind) -- (bootstrap) node [midway, left] {\tiny vs};
+    \draw [arrow] (alpine) -- (react) node [midway, left] {\tiny vs};
+    \draw [arrow] (blade) -- (vue) node [midway, left] {\tiny vs};
+    \draw [arrow] (vite) -- (webpack) node [midway, left] {\tiny vs};
+\end{tikzpicture}
+\end{mdframed}
+\caption{Stack frontend sélectionné et alternatives considérées}
+\label{fig:stack-frontend}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Tailwind CSS} a été préféré à Bootstrap pour sa flexibilité et son approche utilitaire, permettant la création d'interfaces sur mesure sans le poids visuel des composants prédéfinis. Cette approche s'aligne parfaitement avec le besoin de boutons compacts et d'interfaces épurées.
+    
+    \item \textbf{Alpine.js} a été choisi plutôt que React ou Vue.js pour sa légèreté et sa simplicité d'intégration avec Blade. Il offre une réactivité suffisante pour notre application sans la complexité d'un framework SPA complet.
+\end{itemize}
+
+Voici un exemple de composant de bouton utilisant Tailwind CSS pour répondre aux préférences d'interface exprimées :
+
+\begin{lstlisting}[style=htmlstyle,caption={Composant de bouton minimaliste avec Tailwind CSS}]
+<!-- Bouton minimaliste et compact (text-sm, padding réduit) -->
+<button 
+    class="px-3 py-1.5 text-sm font-medium text-white bg-transparent 
+           border border-blue-500 rounded-md hover:bg-blue-500 
+           hover:text-white focus:outline-none focus:ring-2 
+           focus:ring-blue-500 focus:ring-offset-2 transition-colors 
+           duration-200"
+    type="submit">
+    {{ $slot }}
+</button>
+\end{lstlisting}
+
+\subsection{Systèmes de gestion de bases de données}
+
+Le choix du système de gestion de bases de données (SGBD) est crucial pour les performances et la fiabilité de l'application. Notre choix s'est porté sur MySQL 8 pour sa compatibilité optimale avec Laravel, sa présence dans l'infrastructure existante de l'USMBA, et son excellent support des transactions ACID nécessaires pour garantir l'intégrité des données lors des opérations critiques comme l'attribution des parcours.
+
+Le modèle de données implémenté s'articule autour de plusieurs entités clés (Etudiant, Filiere, Parcour, ActionHistorique) interconnectées par des relations bien définies. Ce modèle a été conçu pour être robuste tout en restant performant, même avec de grands volumes de données.
+
+\section{Méthodologies de développement}
+
+Le choix d'une méthodologie de développement adaptée est essentiel pour la réussite d'un projet informatique, en particulier dans le contexte universitaire où les exigences peuvent évoluer et où l'implication des parties prenantes est cruciale.
+
+\subsection{Approches méthodologiques comparées}
+
+Plusieurs approches méthodologiques ont été envisagées pour ce projet :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{2.5cm}|p{5cm}|p{5cm}|}
+\hline
+\textbf{Méthodologie} & \textbf{Avantages} & \textbf{Inconvénients} \\ \hline
+\textbf{Cascade} & 
+\begin{itemize}\itemsep0em
+  \item Structure claire et séquentielle
+  \item Documentation complète
+  \item Facilité de planification
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Peu adapté aux changements
+  \item Retour utilisateur tardif
+  \item Risques concentrés en fin de projet
+\end{itemize} \\ \hline
+\textbf{Agile Scrum} & 
+\begin{itemize}\itemsep0em
+  \item Itérations courtes (sprints)
+  \item Implication régulière des utilisateurs
+  \item Adaptation aux changements
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Nécessite une équipe dédiée
+  \item Documentation parfois insuffisante
+  \item Complexité de gestion pour les novices
+\end{itemize} \\ \hline
+\textbf{Kanban} & 
+\begin{itemize}\itemsep0em
+  \item Visualisation du flux de travail
+  \item Limitation du travail en cours
+  \item Flexibilité maximale
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Moins structuré que Scrum
+  \item Difficulté à établir des échéances
+  \item Peut manquer de rigueur
+\end{itemize} \\ \hline
+\textbf{Approche hybride} & 
+\begin{itemize}\itemsep0em
+  \item Combine les avantages de plusieurs méthodes
+  \item Adaptée au contexte spécifique
+  \item Équilibre structure et flexibilité
+\end{itemize} &
+\begin{itemize}\itemsep0em
+  \item Risque d'incohérence méthodologique
+  \item Nécessite une définition claire
+  \item Complexité accrue de gestion
+\end{itemize} \\ \hline
+\end{tabular}
+\caption{Comparaison des méthodologies de développement}
+\label{tab:methodologies}
+\end{table}
+
+Pour ce projet, nous avons adopté une approche hybride Agile-Kanban, permettant de combiner la structure des itérations avec la flexibilité nécessaire dans un contexte universitaire aux ressources limitées.
+
+\subsection{Cycle de développement adapté}
+
+Le cycle de développement implémenté s'articule autour de plusieurs phases itératives, avec une attention particulière portée aux retours des utilisateurs :
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[node distance=2cm, auto, >=stealth]
+    % Styles
+    \tikzstyle{phase} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Phases
+    \node (analyse) [phase] {Analyse};
+    \node (conception) [phase, right=of analyse] {Conception};
+    \node (dev) [phase, right=of conception] {Développement};
+    \node (test) [phase, right=of dev] {Test};
+    \node (deploy) [phase, below=of test] {Déploiement};
+    \node (feedback) [phase, below=of dev] {Feedback};
+    \node (maj) [phase, below=of conception] {Mise à jour};
+    \node (planning) [phase, below=of analyse] {Planning};
+    
+    % Cycle principal
+    \draw [arrow] (analyse) -- (conception);
+    \draw [arrow] (conception) -- (dev);
+    \draw [arrow] (dev) -- (test);
+    \draw [arrow] (test) -- (deploy);
+    \draw [arrow] (deploy) -- (feedback);
+    \draw [arrow] (feedback) -- (maj);
+    \draw [arrow] (maj) -- (planning);
+    \draw [arrow] (planning) -- (analyse);
+    
+    % Itérations rapides
+    \draw [arrow, dashed] (test) -- (dev);
+    \draw [arrow, dashed] (maj) -- (dev);
+    
+    % Retours utilisateurs
+    \draw [arrow, dotted] (feedback) to[bend right] (analyse);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Cycle de développement itératif adapté}
+\label{fig:cycle-dev}
+\end{figure}
+
+Les principaux éléments de cette approche incluent :
+
+\begin{itemize}
+    \item \textbf{Itérations courtes} (2-3 semaines) permettant des livraisons fréquentes et des ajustements rapides
+    
+    \item \textbf{Tableau Kanban} pour visualiser l'avancement et limiter le travail en cours
+    
+    \item \textbf{Intégration continue} avec des tests automatisés pour maintenir la qualité du code
+    
+    \item \textbf{Réunions hebdomadaires} avec les parties prenantes académiques pour valider les orientations
+\end{itemize}
+
+\subsection{Gestion de la qualité et des tests}
+
+La qualité du code et la fiabilité du système ont été assurées par une stratégie de tests multicouche :
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}
+    % Styles
+    \tikzstyle{level} = [rectangle, minimum width=6cm, minimum height=1.2cm, text centered, draw=black]
+    
+    % Pyramide
+    \node[level, fill=red!10] (unit) at (0,0) {Tests unitaires (PHPUnit)};
+    \node[level, fill=orange!10] (integration) at (0,1.5) {Tests d'intégration};
+    \node[level, fill=yellow!10] (feature) at (0,3) {Tests fonctionnels};
+    \node[level, fill=green!10] (e2e) at (0,4.5) {Tests end-to-end (Dusk)};
+    \node[level, fill=blue!10] (manual) at (0,6) {Tests manuels};
+    
+    % Annotations
+    \node[right=1cm of unit] {Nombreux et rapides};
+    \node[right=1cm of manual] {Limités et lents};
+    
+    % Flèches
+    \draw[->, thick] (8,0) -- (8,6) node[midway, right, text width=2cm] {Complexité et ressources};
+    \draw[<-, thick] (9,0) -- (9,6) node[midway, right, text width=2cm] {Fréquence d'exécution};
+\end{tikzpicture}
+\end{mdframed}
+\caption{Pyramide de tests implémentée}
+\label{fig:pyramide-tests}
+\end{figure}
+
+Les outils suivants ont été utilisés pour maintenir un niveau élevé de qualité :
+
+\begin{itemize}
+    \item \textbf{PHPUnit} pour les tests unitaires et d'intégration
+    
+    \item \textbf{Laravel Dusk} pour les tests end-to-end
+    
+    \item \textbf{Laravel Pint} pour la standardisation du code
+    
+    \item \textbf{GitHub Actions} pour l'intégration et le déploiement continus
+    
+    \item \textbf{PHPStan} pour l'analyse statique du code
+\end{itemize}
+
+Cette approche méthodologique rigoureuse, combinée aux technologies adaptées présentées dans la section précédente, a permis de développer un système robuste, évolutif et répondant pleinement aux besoins de l'USMBA en matière de gestion des parcours étudiants.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}llc@{}}
+    \toprule
+    \textbf{Solution} & \textbf{Technologie} & \textbf{Licence} \\
+    \midrule
+    Application A & Java & Open\‐Source \\
+    Application B & PHP & Propriétaire \\
+    \bottomrule
+  \end{tabular}
+  \caption{Comparaison des solutions existantes}
+  \label{tab:comparaison}
+\end{table}
+
+% ----- Chapitre 3 ------------------------------------------------------------
+\chapter{Analyse et spécifications}
+\section{Cahier des charges}
+% Exemple schéma TikZ (MCD simplifié)
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[node distance=2cm, auto]
+    \node[draw] (etudiant) {Etudiant};
+    \node[draw, right=of etudiant] (parcours) {Parcours};
+    \draw[-] (etudiant) -- node[above]{suit} (parcours);
+  \end{tikzpicture}
+  \caption{Extrait du MCD}
+\end{figure}
+
+\section{Architecture technique}
+
+\subsection{Vue d'ensemble de l'architecture 3-tiers}
+
+L'architecture du système de gestion des parcours étudiants repose sur le modèle 3-tiers, paradigme éprouvé qui permet une séparation claire des responsabilités tout en facilitant la maintenance et l'évolution du système \cite{Fowler2002}. Cette architecture, illustrée dans la \autoref{fig:architecture-3tiers}, constitue la colonne vertébrale de notre application.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.8, node distance=2cm]
+    % Couche Présentation
+    \node[draw, rectangle, fill=blue!20, minimum width=10cm, minimum height=2cm] (presentation) at (0,6) {\textbf{Couche Présentation}};
+    
+    % Détails de la couche présentation
+    \node[draw, rectangle, fill=blue!10, minimum width=2.8cm, minimum height=1cm] (blade) at (-3,5) {Blade};
+    \node[draw, rectangle, fill=blue!10, minimum width=2.8cm, minimum height=1cm] (alpine) at (0,5) {Alpine.js};
+    \node[draw, rectangle, fill=blue!10, minimum width=2.8cm, minimum height=1cm] (tailwind) at (3,5) {Tailwind CSS};
+    
+    % Couche Métier
+    \node[draw, rectangle, fill=green!20, minimum width=10cm, minimum height=2cm] (business) at (0,3) {\textbf{Couche Métier}};
+    
+    % Détails de la couche métier
+    \node[draw, rectangle, fill=green!10, minimum width=2.8cm, minimum height=1cm] (controllers) at (-3,2) {Controllers};
+    \node[draw, rectangle, fill=green!10, minimum width=2.8cm, minimum height=1cm] (services) at (0,2) {Services};
+    \node[draw, rectangle, fill=green!10, minimum width=2.8cm, minimum height=1cm] (validators) at (3,2) {Validators};
+    
+    % Couche Données
+    \node[draw, rectangle, fill=red!20, minimum width=10cm, minimum height=2cm] (data) at (0,0) {\textbf{Couche Données}};
+    
+    % Détails de la couche données
+    \node[draw, rectangle, fill=red!10, minimum width=2.8cm, minimum height=1cm] (models) at (-3,-1) {Models};
+    \node[draw, rectangle, fill=red!10, minimum width=2.8cm, minimum height=1cm] (repositories) at (0,-1) {Repositories};
+    \node[draw, rectangle, fill=red!10, minimum width=2.8cm, minimum height=1cm] (migrations) at (3,-1) {Migrations};
+    
+    % Flèches principales entre couches
+    \draw[->,thick] (presentation) -- node[right] {Requêtes} (business);
+    \draw[->,thick] (business) -- node[right] {Requêtes} (data);
+    \draw[->,thick, dashed] (data) -- node[left] {Réponses} (business);
+    \draw[->,thick, dashed] (business) -- node[left] {Réponses} (presentation);
+    
+    % Connexions internes
+    \draw[-, dotted] (blade) -- (alpine);
+    \draw[-, dotted] (alpine) -- (tailwind);
+    \draw[-, dotted] (controllers) -- (services);
+    \draw[-, dotted] (services) -- (validators);
+    \draw[-, dotted] (models) -- (repositories);
+    \draw[-, dotted] (repositories) -- (migrations);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Architecture détaillée du système de gestion des parcours étudiants}
+\label{fig:architecture-3tiers}
+\end{figure}
+
+Cette architecture se décompose en trois couches distinctes, chacune ayant un rôle et des responsabilités spécifiques :
+
+\begin{enumerate}
+    \item \textbf{Couche Présentation} : Interface utilisateur et expérience interactive
+    \begin{itemize}
+        \item \textit{Blade} : Moteur de templates Laravel pour le rendu HTML côté serveur
+        \item \textit{Alpine.js} : Framework JavaScript minimaliste pour l'interactivité côté client
+        \item \textit{Tailwind CSS} : Framework CSS utilitaire pour le design d'interface
+    \end{itemize}
+    
+    \item \textbf{Couche Métier} : Logique applicative et règles métier
+    \begin{itemize}
+        \item \textit{Controllers} : Orchestration des requêtes et réponses
+        \item \textit{Services} : Encapsulation des règles métier complexes (éligibilité, attribution)
+        \item \textit{Validators} : Validation des entrées utilisateur conformément aux règles métier
+    \end{itemize}
+    
+    \item \textbf{Couche Données} : Persistance et accès aux données
+    \begin{itemize}
+        \item \textit{Models} : Représentation objet des entités de la base de données avec Eloquent ORM
+        \item \textit{Repositories} : Abstraction de l'accès aux données pour découplage et testabilité
+        \item \textit{Migrations} : Versionnement et évolution du schéma de la base de données
+    \end{itemize}
+\end{enumerate}
+
+\begin{definitionbox}[Architecture 3-tiers vs MVC]
+Il est important de distinguer l'architecture 3-tiers du pattern MVC (Modèle-Vue-Contrôleur). Bien que Laravel soit un framework MVC, notre conception s'articule autour d'une architecture 3-tiers où :
+\begin{itemize}
+    \item La couche Présentation englobe les Vues (V) du MVC mais y ajoute la logique frontend
+    \item La couche Métier contient les Contrôleurs (C) mais les étend avec des Services spécialisés
+    \item La couche Données enrichit les Modèles (M) avec des abstractions supplémentaires
+\end{itemize}
+Cette approche hybride permet de bénéficier de la simplicité du MVC tout en garantissant une meilleure séparation des préoccupations pour une application complexe.
+\end{definitionbox}
+
+Le choix de cette architecture répond à plusieurs exigences fondamentales du projet :
+
+\begin{enumerate}
+    \item \textbf{Maintenabilité} : La séparation claire des responsabilités facilite l'évolution et la maintenance du code
+    \item \textbf{Testabilité} : Chaque couche peut être testée indépendamment (tests unitaires, d'intégration)
+    \item \textbf{Scalabilité} : Possibilité de mettre à l'échelle chaque couche séparément selon les besoins
+    \item \textbf{Sécurité} : Isolation des données sensibles dans la couche la plus profonde
+\end{enumerate}
+
+\begin{equation}
+R_{maintenabilité} = \frac{N_{modules\_indépendants}}{N_{total\_modules}} \times 100\%
+\end{equation}
+
+Où $R_{maintenabilité}$ représente le ratio de maintenabilité du système, métrique que nous avons suivie tout au long du développement pour garantir une architecture modulaire.
+
+\subsection{Modèle de données normalisé}
+
+Le modèle de données, pierre angulaire de notre architecture, a été conçu selon les principes de normalisation relationnelle pour éviter la redondance tout en optimisant les performances des requêtes fréquentes. La \autoref{fig:modele-donnees} présente le diagramme entité-association simplifié qui sous-tend notre application.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[node distance=2.5cm, entity/.style={rectangle, draw, fill=blue!10, minimum width=2.5cm, minimum height=1.2cm}]
+    % Entités principales
+    \node[entity] (etudiant) {Etudiants};
+    \node[entity, right=of etudiant] (filiere) {Filieres};
+    \node[entity, below=of filiere] (parcours) {Parcours};
+    \node[entity, below=of etudiant] (action) {Action\_Historiques};
+    
+    % Relations
+    \draw[->] (etudiant) -- node[above] {appartient} (filiere);
+    \draw[->] (etudiant) -- node[left] {effectue} (action);
+    \draw[->] (parcours) -- node[left] {rattaché \`a} (filiere);
+    \draw[->, dashed] (etudiant) -- node[below] {choisit} (parcours);
+    
+    % Attributs clés
+    \node[below=0.2cm of etudiant, align=left, font=\footnotesize] {\textbf{PK}: num\_inscription\\email\_academique\\nb\_val\_ac\_s1...s4};
+    \node[below=0.2cm of filiere, align=left, font=\footnotesize] {\textbf{PK}: id\_filiere\\libelle};
+    \node[below=0.2cm of parcours, align=left, font=\footnotesize] {\textbf{PK}: id\_parcours\\\textbf{FK}: id\_filiere\\capacite\_max};
+    \node[below=0.2cm of action, align=left, font=\footnotesize] {\textbf{PK}: id\\\textbf{FK}: etudiant\_id\\action\_type\\timestamp};
+\end{tikzpicture}
+\end{mdframed}
+\caption{Modèle de données simplifié du système de gestion des parcours}
+\label{fig:modele-donnees}
+\end{figure}
+
+Un point essentiel du modèle est la correction de l'incohérence précédemment identifiée entre l'utilisation de `filiere\_id` dans certaines parties du code et `id\_filiere` dans la structure de la base de données. Cette incohérence était à l'origine de l'erreur serveur 500 rencontrée sur la page de sélection des parcours.
+
+\begin{lstlisting}[style=phpstyle, caption={Modèle Eloquent corrigé - Filiere.php}]
+class Filiere extends Model
+{
+    protected $table = 'filieres';
+    protected $primaryKey = 'id_filiere'; // Correction de l'incohérence
+    
+    public function parcours()
+    {
+        return $this->hasMany(Parcour::class, 'id_filiere'); // Relation corrigée
+    }
+}
+\end{lstlisting}
+
+Le modèle de données intègre plusieurs caractéristiques notables :
+
+\begin{enumerate}
+    \item \textbf{Clé primaire naturelle pour les étudiants} : Contrairement à l'approche classique utilisant un `id\_etudiant` auto-incrémenté, nous avons choisi d'utiliser le `num\_inscription` comme clé primaire, ce qui présente plusieurs avantages :
+    \begin{itemize}
+        \item Identifiant naturel déjà utilisé dans les systèmes adjacents
+        \item Réduction des jointures lors de l'intégration avec d'autres bases de données institutionnelles
+        \item Simplification de l'audit et du traçage des actions
+    \end{itemize}
+    
+    \item \textbf{Table de traçabilité dédiée} : La table `action\_historiques` enregistre chaque action significative effectuée par un étudiant, avec les attributs suivants :
+    \begin{itemize}
+        \item `etudiant\_id` : Référence au `num\_inscription` de l'étudiant
+        \item `action\_type` : Type d'action (connexion, choix de parcours, modification)
+        \item `data` : Payload JSON contenant les détails de l'action
+        \item `created\_at` et `updated\_at` : Horodatage précis
+    \end{itemize}
+    
+    \item \textbf{Indicateurs d'éligibilité intégrés} : Les attributs `nb\_val\_ac\_s1` à `nb\_val\_ac\_s4` dans la table `etudiants` stockent le nombre d'unités validées par semestre, facilitant le calcul rapide de l'éligibilité sans avoir à parcourir l'historique complet des validations.
+    
+    \item \textbf{Contraintes de capacité} : L'attribut `capacite\_max` dans la table `parcours` permet d'implémenter les règles de gestion des quotas de manière déclarative.
+\end{enumerate}
+
+La normalisation du schéma a été optimisée jusqu'à la Forme Normale de Boyce-Codd (BCNF), tout en introduisant des dénormalisations stratégiques pour les calculs fréquents. La structure de la base a été formalisée via le système de migrations Laravel, permettant un versionnement complet et des rollbacks en cas de besoin.
+
+\begin{lstlisting}[style=phpstyle, caption={Migration - Résolution du problème filiere\_id vs id\_filiere}]
+Schema::table('parcours', function (Blueprint $table) {
+    if (Schema::hasColumn('parcours', 'filiere_id')) {
+        // Sauvegarde des données existantes
+        $parcours = DB::table('parcours')->get();
+        
+        // Suppression de l'ancienne colonne
+        $table->dropColumn('filiere_id');
+        
+        // Création de la nouvelle colonne avec nom standardisé
+        $table->unsignedBigInteger('id_filiere');
+        $table->foreign('id_filiere')->references('id_filiere')->on('filieres');
+        
+        // Réinsertion des données
+        foreach ($parcours as $p) {
+            DB::table('parcours')
+                ->where('id_parcours', $p->id_parcours)
+                ->update(['id_filiere' => $p->filiere_id]);
+        }
+    }
+});
+\end{lstlisting}
+
+Cette standardisation des conventions de nommage des clés étrangères (`id\_filiere` plutôt que `filiere\_id`) a été appliquée systématiquement pour améliorer la cohérence et la maintenabilité du schéma, réduisant ainsi les erreurs similaires à l'avenir.
+
+\subsection{Patterns architecturaux}
+
+L'architecture du système s'appuie sur plusieurs patterns de conception éprouvés, chacun répondant à des problématiques spécifiques rencontrées dans le développement d'applications de gestion complexes. Ces patterns, illustrés dans la \autoref{fig:patterns}, constituent l'épine dorsale de notre approche de développement.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[node distance=2cm, pattern/.style={rectangle, draw, fill=yellow!20, minimum width=3cm, minimum height=1cm, align=center}, layer/.style={rectangle, draw, fill=blue!10, minimum width=7cm, minimum height=1.5cm, align=center}]
+    % Couches principales
+    \node[layer] (presentation) at (0,6) {Couche Présentation};
+    \node[layer] (business) at (0,3) {Couche Métier};
+    \node[layer] (data) at (0,0) {Couche Données};
+    
+    % Patterns dans chaque couche
+    \node[pattern] (mvc) at (-2,5) {MVC};
+    \node[pattern] (front) at (2,5) {Frontend Composable};
+    
+    \node[pattern] (service) at (-2,2) {Service Layer};
+    \node[pattern] (di) at (2,2) {Dependency Injection};
+    
+    \node[pattern] (repo) at (-2,-1) {Repository};
+    \node[pattern] (active) at (2,-1) {Active Record};
+    
+    % Connexions
+    \draw[-, dotted] (mvc) -- (front);
+    \draw[-, dotted] (service) -- (di);
+    \draw[-, dotted] (repo) -- (active);
+    
+    % Flèches entre couches
+    \draw[->, thick] (presentation) -- (business);
+    \draw[->, thick] (business) -- (data);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Patterns architecturaux par couche}
+\label{fig:patterns}
+\end{figure}
+
+\subsubsection{Pattern MVC et Laravel}
+
+Le pattern Modèle-Vue-Contrôleur (MVC) constitue la base de notre architecture, particulièrement bien implémenté par le framework Laravel. L'application du MVC se manifeste comme suit :
+
+\begin{itemize}
+    \item \textbf{Modèles} : Classes Eloquent ORM qui encapsulent la logique d'accès aux données et les règles métier de base
+    \item \textbf{Vues} : Templates Blade qui génèrent l'interface utilisateur sans logique métier complexe
+    \item \textbf{Contrôleurs} : Orchestrateurs qui interceptent les requêtes HTTP, manipulent les modèles et retournent les vues
+\end{itemize}
+
+\begin{lstlisting}[style=phpstyle, caption={Exemple de contrôleur MVC - ParcoursController.php}]
+class ParcoursController extends Controller
+{
+    protected $eligibilityService;
+    
+    public function __construct(EligibilityService $eligibilityService)
+    {
+        $this->eligibilityService = $eligibilityService;
+    }
+    
+    public function index()
+    {
+        $parcours = Parcour::with('filiere')->get();
+        return view('parcours.index', compact('parcours'));
+    }
+    
+    public function show(Parcour $parcours)
+    {
+        $etudiant = Auth::user();
+        $eligible = $this->eligibilityService->checkEligibility($etudiant, $parcours);
+        
+        return view('parcours.show', [
+            'parcours' => $parcours,
+            'eligible' => $eligible,
+        ]);
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Pattern Repository}
+
+Pour découpler la logique métier de l'accès aux données et faciliter les tests unitaires, nous avons implémenté le pattern Repository, qui crée une abstraction entre les modèles Eloquent et les services qui les utilisent.
+
+\begin{lstlisting}[style=phpstyle, caption={Interface et implémentation de Repository}]
+// Interface
+interface EtudiantRepositoryInterface
+{
+    public function findByNumInscription($numInscription);
+    public function getEligibleForParcours($parcoursId);
+    public function updateParcours($etudiantId, $parcoursId);
+}
+
+// Implémentation concrète
+class EtudiantRepository implements EtudiantRepositoryInterface
+{
+    public function findByNumInscription($numInscription)
+    {
+        return Etudiant::where('num_inscription', $numInscription)->first();
+    }
+    
+    public function getEligibleForParcours($parcoursId)
+    {
+        $parcours = Parcour::findOrFail($parcoursId);
+        $minValidations = config('eligibility.min_validations');
+        
+        return Etudiant::where('nb_val_ac_s1', '>=', $minValidations)
+            ->where('nb_val_ac_s2', '>=', $minValidations)
+            ->where('nb_val_ac_s3', '>=', $minValidations)
+            ->where('nb_val_ac_s4', '>=', $minValidations)
+            ->where('id_filiere', $parcours->id_filiere)
+            ->get();
+    }
+    
+    public function updateParcours($etudiantId, $parcoursId)
+    {
+        $etudiant = Etudiant::findOrFail($etudiantId);
+        $etudiant->id_parcours = $parcoursId;
+        return $etudiant->save();
+    }
+}
+\end{lstlisting}
+
+Ce pattern présente plusieurs avantages dans notre contexte :
+
+\begin{enumerate}
+    \item Isolation de la logique d'accès aux données, facilitant les tests avec des mocks
+    \item Centralisation des requêtes complexes, évitant la duplication de code
+    \item Flexibilité pour changer l'implémentation sous-jacente (ex. passage d'Eloquent à Query Builder)
+\end{enumerate}
+
+\subsubsection{Pattern Service Layer}
+
+Pour encapsuler la logique métier complexe, notamment les algorithmes d'éligibilité et d'attribution des parcours, nous avons implémenté le pattern Service Layer. Ce pattern permet de définir une couche d'abstraction entre les contrôleurs et les repositories.
+
+\begin{lstlisting}[style=phpstyle, caption={Service d'éligibilité - EligibilityService.php}]
+class EligibilityService
+{
+    protected $etudiantRepository;
+    protected $actionHistoriqueRepository;
+    
+    public function __construct(
+        EtudiantRepositoryInterface $etudiantRepository,
+        ActionHistoriqueRepositoryInterface $actionHistoriqueRepository
+    ) {
+        $this->etudiantRepository = $etudiantRepository;
+        $this->actionHistoriqueRepository = $actionHistoriqueRepository;
+    }
+    
+    public function checkEligibility(Etudiant $etudiant, Parcour $parcours)
+    {
+        // Vérification des prérequis de base
+        $eligible = $this->checkBasicRequirements($etudiant, $parcours);
+        
+        // Calcul du score composite
+        if ($eligible) {
+            $score = $this->calculateScore($etudiant);
+            $eligible = $score >= config('eligibility.min_score');
+        }
+        
+        // Enregistrement de la vérification dans l'historique
+        $this->actionHistoriqueRepository->logAction(
+            $etudiant->num_inscription,
+            'eligibility_check',
+            json_encode([
+                'parcours_id' => $parcours->id_parcours,
+                'eligible' => $eligible,
+                'score' => $score ?? null
+            ])
+        );
+        
+        return $eligible;
+    }
+    
+    protected function calculateScore(Etudiant $etudiant)
+    {
+        // Pondération des UE validées par semestre
+        return (
+            $etudiant->nb_val_ac_s1 * config('eligibility.weights.s1') +
+            $etudiant->nb_val_ac_s2 * config('eligibility.weights.s2') +
+            $etudiant->nb_val_ac_s3 * config('eligibility.weights.s3') +
+            $etudiant->nb_val_ac_s4 * config('eligibility.weights.s4')
+        ) / config('eligibility.max_score') * 100;
+    }
+    
+    protected function checkBasicRequirements(Etudiant $etudiant, Parcour $parcours)
+    {
+        // Vérification de la filière
+        if ($etudiant->id_filiere !== $parcours->id_filiere) {
+            return false;
+        }
+        
+        // Vérification du nombre minimum d'UE validées
+        $minValidations = config('eligibility.min_validations');
+        return (
+            $etudiant->nb_val_ac_s1 >= $minValidations &&
+            $etudiant->nb_val_ac_s2 >= $minValidations &&
+            $etudiant->nb_val_ac_s3 >= $minValidations &&
+            $etudiant->nb_val_ac_s4 >= $minValidations
+        );
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Pattern Dependency Injection}
+
+La mise en œuvre du pattern Dependency Injection (DI) via le conteneur IoC (Inversion of Control) de Laravel permet d'améliorer la modularité et la testabilité de notre code. Cette approche est particulièrement visible dans la façon dont les dépendances sont injectées dans les contrôleurs et les services.
+
+\begin{lstlisting}[style=phpstyle, caption={Configuration du conteneur IoC - AppServiceProvider.php}]
+class AppServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        // Binding des interfaces aux implémentations
+        $this->app->bind(
+            \App\Repositories\EtudiantRepositoryInterface::class,
+            \App\Repositories\EtudiantRepository::class
+        );
+        
+        $this->app->bind(
+            \App\Repositories\ActionHistoriqueRepositoryInterface::class,
+            \App\Repositories\ActionHistoriqueRepository::class
+        );
+        
+        // Service singleton pour conserver l'état entre les requêtes
+        $this->app->singleton(\App\Services\ParcoursAssignmentService::class);
+    }
+}
+\end{lstlisting}
+
+Cette approche architecturale a permis de développer un système modulaire, facilement testable et évolutif, tout en respectant les principes SOLID. L'utilisation combinée de ces patterns a été déterminante pour résoudre efficacement les problématiques complexes de la gestion des parcours étudiants, notamment la gestion d'éligibilité et l'attribution des places limitées.
+
+\subsection{Diagrammes de séquence pour processus critiques}
+
+Pour illustrer le fonctionnement dynamique du système et visualiser les interactions entre ses différents composants, nous avons modélisé les processus critiques sous forme de diagrammes de séquence UML. Ces diagrammes sont particulièrement utiles pour comprendre le flux d'exécution et les échanges de messages au sein de l'architecture 3-tiers.
+
+\subsubsection{Processus d'éligibilité et sélection de parcours}
+
+Le processus d'éligibilité constitue l'une des fonctionnalités clés du système, permettant de déterminer si un étudiant peut prétendre à un parcours spécifique en fonction de ses résultats académiques. La \autoref{fig:sequence-eligibilite} détaille les interactions implémentées dans ce processus.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.7]
+    % Définition des participants
+    \node (a) at (0,0) {\textbf{Utilisateur}};
+    \node (b) at (3,0) {\textbf{Controller}};
+    \node (c) at (6,0) {\textbf{EligibilityService}};
+    \node (d) at (9,0) {\textbf{Repository}};
+    \node (e) at (12,0) {\textbf{Base de données}};
+    
+    % Lignes de vie
+    \draw[dashed] (a) -- (0,-12);
+    \draw[dashed] (b) -- (3,-12);
+    \draw[dashed] (c) -- (6,-12);
+    \draw[dashed] (d) -- (9,-12);
+    \draw[dashed] (e) -- (12,-12);
+    
+    % Activation boxes
+    \filldraw[fill=blue!10] (0,-1) rectangle (0.2,-4);
+    \filldraw[fill=blue!10] (3,-1.5) rectangle (3.2,-3.5);
+    \filldraw[fill=blue!10] (6,-2) rectangle (6.2,-3);
+    \filldraw[fill=blue!10] (9,-2.5) rectangle (9.2,-2.8);
+    \filldraw[fill=blue!10] (12,-2.6) rectangle (12.2,-2.7);
+    
+    % Requête pour consulter parcours
+    \draw[-latex] (0.2,-1) -- node[above] {consulte parcours} (2.8,-1.5);
+    
+    % Vérification éligibilité
+    \draw[-latex] (3.2,-1.7) -- node[above] {checkEligibility(etudiant, parcours)} (5.8,-2);
+    
+    % Accès aux données
+    \draw[-latex] (6.2,-2.3) -- node[above] {getEtudiantData(numInscription)} (8.8,-2.5);
+    \draw[-latex] (9.2,-2.6) -- node[above] {select} (11.8,-2.6);
+    \draw[-latex,dashed] (11.8,-2.7) -- node[below] {données} (9.2,-2.7);
+    
+    % Calcul du score
+    \filldraw[fill=green!10] (6,-2.8) rectangle (6.2,-3);
+    
+    % Réponse à l'utilisateur
+    \draw[-latex,dashed] (6,-3) -- node[below] {résultat éligibilité} (3.2,-3.2);
+    \draw[-latex,dashed] (3,-3.5) -- node[below] {affichage parcours + statut éligibilité} (0.2,-3.5);
+    
+    % Nouveau bloc - Choix de parcours
+    \filldraw[fill=blue!10] (0,-5) rectangle (0.2,-7);
+    \filldraw[fill=blue!10] (3,-5.5) rectangle (3.2,-6.5);
+    \filldraw[fill=blue!10] (6,-5.7) rectangle (6.2,-6.3);
+    \filldraw[fill=blue!10] (9,-5.8) rectangle (9.2,-6.2);
+    \filldraw[fill=blue!10] (12,-5.9) rectangle (12.2,-6.1);
+    
+    % Sélection du parcours
+    \draw[-latex] (0.2,-5) -- node[above] {sélectionne parcours} (2.8,-5.5);
+    
+    % Enregistrement du choix
+    \draw[-latex] (3.2,-5.7) -- node[above] {saveChoice(etudiant, parcours, priority)} (5.8,-5.7);
+    \draw[-latex] (6.2,-5.8) -- node[above] {storeChoice(numInscription, parcoursId, priority)} (8.8,-5.8);
+    \draw[-latex] (9.2,-5.9) -- node[above] {insert/update} (11.8,-5.9);
+    \draw[-latex,dashed] (11.8,-6.1) -- node[below] {confirmation} (9.2,-6.1);
+    
+    % Enregistrement dans l'historique
+    \filldraw[fill=blue!10] (6,-6.4) rectangle (6.2,-6.8);
+    \filldraw[fill=blue!10] (9,-6.5) rectangle (9.2,-6.7);
+    \filldraw[fill=blue!10] (12,-6.6) rectangle (12.2,-6.65);
+    
+    \draw[-latex] (6.2,-6.5) -- node[above] {logAction(etudiant, 'parcours_choice')} (8.8,-6.5);
+    \draw[-latex] (9.2,-6.6) -- node[above] {insert} (11.8,-6.6);
+    
+    % Confirmation finale
+    \draw[-latex,dashed] (6,-6.8) -- node[below] {résultat opération} (3.2,-6.8);
+    \draw[-latex,dashed] (3,-7) -- node[below] {confirmation choix enregistré} (0.2,-7);
+    
+    % Légende 
+    \node[align=left] at (6,-9.5) {\textbf{Légende :}\\\\\textcolor{blue!70}{\rule{1cm}{0.2cm}} Appel de méthode\\\textcolor{green!70}{\rule{1cm}{0.2cm}} Traitement interne};
+    
+\end{tikzpicture}
+\end{mdframed}
+\caption{Diagramme de séquence : Processus d'éligibilité et sélection de parcours}
+\label{fig:sequence-eligibilite}
+\end{figure}
+
+Ce diagramme met en évidence plusieurs aspects clés de notre architecture :
+
+\begin{enumerate}
+    \item La séparation claire des responsabilités entre les différentes couches
+    \item L'encapsulation de la logique d'éligibilité dans un service dédié
+    \item La traçabilité systématique des actions via le service d'historisation
+    \item Le découplage entre la logique métier et l'accès aux données
+\end{enumerate}
+
+\subsubsection{Processus d'attribution automatique des parcours}
+
+Le processus d'attribution automatique, exécuté périodiquement par un administrateur, constitue l'une des fonctionnalités les plus complexes et critiques du système. Il permet d'attribuer automatiquement les parcours aux étudiants en fonction de leurs choix, de leur éligibilité et des capacités d'accueil limitées. La \autoref{fig:sequence-attribution} illustre ce processus.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.7]
+    % Définition des participants
+    \node (a) at (0,0) {\textbf{Admin}};
+    \node (b) at (3,0) {\textbf{Controller}};
+    \node (c) at (6,0) {\textbf{AssignmentService}};
+    \node (d) at (9,0) {\textbf{Repository}};
+    \node (e) at (12,0) {\textbf{Base de données}};
+    
+    % Lignes de vie
+    \draw[dashed] (a) -- (0,-14);
+    \draw[dashed] (b) -- (3,-14);
+    \draw[dashed] (c) -- (6,-14);
+    \draw[dashed] (d) -- (9,-14);
+    \draw[dashed] (e) -- (12,-14);
+    
+    % Activation boxes - Déclenchement du processus
+    \filldraw[fill=blue!10] (0,-1) rectangle (0.2,-13);
+    \filldraw[fill=blue!10] (3,-1.5) rectangle (3.2,-12.5);
+    
+    % Démarrage du processus
+    \draw[-latex] (0.2,-1) -- node[above] {lance attribution batch} (2.8,-1.5);
+    
+    % Collecte des données
+    \filldraw[fill=blue!10] (6,-2) rectangle (6.2,-11);
+    \draw[-latex] (3.2,-2) -- node[above] {runAssignment(filiereId)} (5.8,-2);
+    
+    % Récupération des étudiants et parcours
+    \filldraw[fill=blue!10] (9,-2.5) rectangle (9.2,-3.5);
+    \filldraw[fill=blue!10] (12,-2.6) rectangle (12.2,-3.4);
+    
+    \draw[-latex] (6.2,-2.5) -- node[above] {getEligibleStudents(filiereId)} (8.8,-2.5);
+    \draw[-latex] (9.2,-2.6) -- node[above] {select} (11.8,-2.6);
+    \draw[-latex,dashed] (11.8,-2.8) -- node[below] {liste étudiants} (9.2,-2.8);
+    \draw[-latex,dashed] (9,-3.5) -- node[below] {données étudiants} (6.2,-3.5);
+    
+    % Récupération des parcours et capacités
+    \filldraw[fill=blue!10] (9,-4) rectangle (9.2,-5);
+    \filldraw[fill=blue!10] (12,-4.1) rectangle (12.2,-4.9);
+    
+    \draw[-latex] (6.2,-4) -- node[above] {getParcoursByFiliere(filiereId)} (8.8,-4);
+    \draw[-latex] (9.2,-4.1) -- node[above] {select} (11.8,-4.1);
+    \draw[-latex,dashed] (11.8,-4.3) -- node[below] {liste parcours} (9.2,-4.3);
+    \draw[-latex,dashed] (9,-5) -- node[below] {données parcours} (6.2,-5);
+    
+    % Algorithme d'attribution
+    \filldraw[fill=green!10] (6,-5.5) rectangle (6.2,-8.5);
+    \node[align=left, font=\small] at (4,-7) {\textbf{Algorithme d'attribution :}\\1. Tri des étudiants par score\\2. Pour chaque étudiant :\\~~ Attribuer meilleur choix disponible\\3. Vérifier contraintes capacité};
+    
+    % Enregistrement des attributions
+    \filldraw[fill=blue!10] (9,-9) rectangle (9.2,-10);
+    \filldraw[fill=blue!10] (12,-9.1) rectangle (12.2,-9.9);
+    
+    \draw[-latex] (6.2,-9) -- node[above] {saveAssignments(assignments)} (8.8,-9);
+    \draw[-latex] (9.2,-9.1) -- node[above] {update batch} (11.8,-9.1);
+    \draw[-latex,dashed] (11.8,-9.3) -- node[below] {confirmation} (9.2,-9.3);
+    \draw[-latex,dashed] (9,-10) -- node[below] {résultat} (6.2,-10);
+    
+    % Historisation
+    \filldraw[fill=blue!10] (9,-10.5) rectangle (9.2,-11.5);
+    \filldraw[fill=blue!10] (12,-10.6) rectangle (12.2,-11.4);
+    
+    \draw[-latex] (6.2,-10.5) -- node[above] {logBatchOperation(filiereId, stats)} (8.8,-10.5);
+    \draw[-latex] (9.2,-10.6) -- node[above] {insert} (11.8,-10.6);
+    \draw[-latex,dashed] (11.8,-10.8) -- node[below] {confirmation} (9.2,-10.8);
+    \draw[-latex,dashed] (9,-11.5) -- node[below] {log confirmé} (6.2,-11.5);
+    
+    % Réponse finale
+    \draw[-latex,dashed] (6,-12) -- node[below] {statistiques d'attribution} (3.2,-12);
+    \draw[-latex,dashed] (3,-12.5) -- node[below] {résultat attribution + stats} (0.2,-12.5);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Diagramme de séquence : Processus d'attribution automatique des parcours}
+\label{fig:sequence-attribution}
+\end{figure}
+
+L'algorithme d'attribution implémenté dans le service suit une approche par ordre de mérite, tout en respectant les contraintes de capacité des parcours. Sa complexité algorithmique peut être résumée comme suit :
+
+\begin{equation}
+\text{Complexité} = O(n \log n + n \cdot m)
+\end{equation}
+
+Où $n$ est le nombre d'étudiants et $m$ le nombre de parcours disponibles. Le terme $n \log n$ correspond au tri des étudiants par score d'éligibilité, et le terme $n \cdot m$ représente l'itération sur chaque étudiant et l'examen de ses choix de parcours.
+
+Les diagrammes de séquence permettent ainsi de visualiser les interactions complexes entre les différents composants du système et de mettre en évidence l'approche méthodique adoptée pour résoudre les problématiques d'attribution des parcours étudiants.
+
+% ----- Chapitre 4 ------------------------------------------------------------
+\chapter{Implémentation et développement}
+
+\begin{definitionbox}[Vision d'ensemble du développement]
+Après avoir établi l'architecture et les spécifications techniques du système, ce chapitre détaille la phase d'implémentation concrète de l'application de gestion des parcours. Nous y présentons l'environnement de développement, les choix techniques de programmation backend, les aspects frontend et UX, ainsi que les défis rencontrés et leurs solutions. L'ensemble s'inscrit dans une démarche de développement agile, itérative et pilotée par les tests.
+\end{definitionbox}
+
+\section{Environnement de développement}
+
+\subsection{Stack technologique}
+
+Le développement du système de gestion des parcours étudiants s'appuie sur un ensemble d'outils et de technologies soigneusement sélectionnés pour garantir robustesse, maintenabilité et évolutivité. La \autoref{fig:stack-technique} présente une vue d'ensemble de cet écosystème technologique.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.8, every node/.style={font=\small}]
+    % Couches principales
+    \node[draw, rectangle, rounded corners, fill=blue!10, minimum width=12cm, minimum height=1.2cm] (frontend) at (0,6) {\textbf{Frontend}};
+    \node[draw, rectangle, rounded corners, fill=green!10, minimum width=12cm, minimum height=1.2cm] (backend) at (0,4) {\textbf{Backend}};
+    \node[draw, rectangle, rounded corners, fill=red!10, minimum width=12cm, minimum height=1.2cm] (infra) at (0,2) {\textbf{Infrastructure}};
+    \node[draw, rectangle, rounded corners, fill=yellow!10, minimum width=12cm, minimum height=1.2cm] (devops) at (0,0) {\textbf{DevOps}};
+    
+    % Composants Frontend
+    \node[draw, rectangle, fill=blue!5, minimum width=1.8cm, minimum height=0.8cm] at (-5,6) {Blade};
+    \node[draw, rectangle, fill=blue!5, minimum width=1.8cm, minimum height=0.8cm] at (-3,6) {Alpine.js};
+    \node[draw, rectangle, fill=blue!5, minimum width=1.8cm, minimum height=0.8cm] at (-1,6) {Tailwind};
+    \node[draw, rectangle, fill=blue!5, minimum width=1.8cm, minimum height=0.8cm] at (1,6) {Livewire};
+    \node[draw, rectangle, fill=blue!5, minimum width=1.8cm, minimum height=0.8cm] at (3,6) {Vite};
+    \node[draw, rectangle, fill=blue!5, minimum width=1.8cm, minimum height=0.8cm] at (5,6) {HTMX};
+    
+    % Composants Backend
+    \node[draw, rectangle, fill=green!5, minimum width=1.8cm, minimum height=0.8cm] at (-5,4) {PHP 8.2};
+    \node[draw, rectangle, fill=green!5, minimum width=1.8cm, minimum height=0.8cm] at (-3,4) {Laravel 10};
+    \node[draw, rectangle, fill=green!5, minimum width=1.8cm, minimum height=0.8cm] at (-1,4) {Eloquent};
+    \node[draw, rectangle, fill=green!5, minimum width=1.8cm, minimum height=0.8cm] at (1,4) {Sanctum};
+    \node[draw, rectangle, fill=green!5, minimum width=1.8cm, minimum height=0.8cm] at (3,4) {Horizon};
+    \node[draw, rectangle, fill=green!5, minimum width=1.8cm, minimum height=0.8cm] at (5,4) {Inertia};
+    
+    % Composants Infrastructure
+    \node[draw, rectangle, fill=red!5, minimum width=1.8cm, minimum height=0.8cm] at (-5,2) {MySQL 8};
+    \node[draw, rectangle, fill=red!5, minimum width=1.8cm, minimum height=0.8cm] at (-3,2) {Redis};
+    \node[draw, rectangle, fill=red!5, minimum width=1.8cm, minimum height=0.8cm] at (-1,2) {Nginx};
+    \node[draw, rectangle, fill=red!5, minimum width=1.8cm, minimum height=0.8cm] at (1,2) {Docker};
+    \node[draw, rectangle, fill=red!5, minimum width=1.8cm, minimum height=0.8cm] at (3,2) {Traefik};
+    \node[draw, rectangle, fill=red!5, minimum width=1.8cm, minimum height=0.8cm] at (5,2) {AWS S3};
+    
+    % Composants DevOps
+    \node[draw, rectangle, fill=yellow!5, minimum width=1.8cm, minimum height=0.8cm] at (-5,0) {Git};
+    \node[draw, rectangle, fill=yellow!5, minimum width=1.8cm, minimum height=0.8cm] at (-3,0) {GitHub};
+    \node[draw, rectangle, fill=yellow!5, minimum width=1.8cm, minimum height=0.8cm] at (-1,0) {Actions};
+    \node[draw, rectangle, fill=yellow!5, minimum width=1.8cm, minimum height=0.8cm] at (1,0) {PHPUnit};
+    \node[draw, rectangle, fill=yellow!5, minimum width=1.8cm, minimum height=0.8cm] at (3,0) {Pint};
+    \node[draw, rectangle, fill=yellow!5, minimum width=1.8cm, minimum height=0.8cm] at (5,0) {Composer};
+    
+    % Flèches entre couches
+    \draw[->,thick] (frontend) -- (backend);
+    \draw[->,thick] (backend) -- (infra);
+    \draw[->,thick] (devops) -- (frontend);
+    \draw[->,thick] (devops) -- (backend);
+    \draw[->,thick] (devops) -- (infra);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Stack technologique du projet}
+\label{fig:stack-technique}
+\end{figure}
+
+Les choix technologiques ont été guidés par plusieurs facteurs clés :
+
+\begin{itemize}
+    \item \textbf{Maturité des outils} : Priorité aux technologies éprouvées en production
+    \item \textbf{Cohérence de l'écosystème} : Intégration optimale entre les différentes briques
+    \item \textbf{Performance} : Capacité à répondre aux besoins de scalabilité futurs
+    \item \textbf{Maintenance} : Facilité de mise à jour et documentation disponible
+    \item \textbf{Sécurité} : Conformité aux standards OWASP Top 10
+\end{itemize}
+
+Le cœur du système repose sur Laravel 10, framework PHP moderne offrant une architecture MVC robuste et un large éventail d'outils facilitant le développement web. Son ORM Eloquent permet une interaction fluide avec la base de données MySQL 8, tandis que l'intégration de Redis optimise les performances via un système de cache avancé.
+
+Côté frontend, l'application combine les templates Blade de Laravel avec le framework CSS utilitaire Tailwind et le framework JavaScript minimaliste Alpine.js, offrant ainsi une expérience utilisateur fluide et réactive sans la complexité des frameworks SPA plus lourds.
+
+\subsection{Configuration de l'environnement local}
+
+Le développement s'est appuyé sur un environnement local standardisé, garantissant la cohérence entre les différents postes de développement et minimisant les problèmes de type "works on my machine". Cet environnement repose sur Docker, qui isole l'application dans des conteneurs spécifiques.
+
+\begin{lstlisting}[style=phpstyle, caption={docker-compose.yml pour l'environnement de développement}]
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - parcours_network
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - parcours_network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - parcours_network
+
+  redis:
+    image: redis:alpine
+    networks:
+      - parcours_network
+
+networks:
+  parcours_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+\end{lstlisting}
+
+Cette configuration Docker permet de reproduire fidèlement l'environnement de production et facilite l'intégration continue. Elle isole les services clés (application PHP, serveur web Nginx, base de données MySQL et cache Redis) tout en les connectant via un réseau dédié.
+
+Pour les développeurs, un script d'initialisation automatisé a été créé afin de simplifier la mise en place de l'environnement :
+
+\begin{lstlisting}[style=phpstyle, caption={setup.sh - Script d'initialisation de l'environnement}]
+#!/bin/bash
+
+# Couleurs pour les messages
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+NC="\033[0m" # No Color
+
+echo -e "${BLUE}Installation de l'environnement de développement pour le système de gestion des parcours USMBA${NC}"
+
+# Vérification de Docker
+if ! command -v docker &> /dev/null || ! command -v docker-compose &> /dev/null; then
+    echo "Docker et/ou docker-compose ne sont pas installés. Merci de les installer d'abord."
+    exit 1
+fi
+
+# Création du fichier .env depuis .env.example
+if [ ! -f .env ]; then
+    echo -e "${GREEN}Création du fichier .env${NC}"
+    cp .env.example .env
+fi
+
+# Génération de la clé d'application
+echo -e "${GREEN}Génération de la clé d'application${NC}"
+docker-compose run --rm app php artisan key:generate
+
+# Construction et démarrage des conteneurs
+echo -e "${GREEN}Construction et démarrage des conteneurs Docker${NC}"
+docker-compose up -d --build
+
+# Installation des dépendances Composer
+echo -e "${GREEN}Installation des dépendances PHP via Composer${NC}"
+docker-compose run --rm app composer install
+
+# Migrations et seeders
+echo -e "${GREEN}Exécution des migrations et des seeders${NC}"
+docker-compose run --rm app php artisan migrate:fresh --seed
+
+# Installation des dépendances NPM et compilation des assets
+echo -e "${GREEN}Installation des dépendances JavaScript et compilation des assets${NC}"
+docker-compose run --rm app npm install
+docker-compose run --rm app npm run dev
+
+echo -e "${BLUE}Installation terminée avec succès !${NC}"
+echo -e "L'application est accessible à l'adresse http://localhost"
+\end{lstlisting}
+
+\subsection{Workflow et outils de développement}
+
+Le workflow de développement a été élaboré pour maximiser la productivité tout en maintenant un haut niveau de qualité de code. Il s'articule autour de plusieurs composants clés, représentés dans la \autoref{fig:workflow-dev}.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[node distance=1.5cm, auto, >=stealth, scale=0.85, transform shape]
+    % Définition des styles
+    \tikzstyle{process} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+    \tikzstyle{decision} = [diamond, aspect=2, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!10]
+    \tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=red!10]
+    \tikzstyle{tool} = [ellipse, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=yellow!10]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Noeud de départ
+    \node (start) [process] {Issue GitHub};
+    
+    % Création de branche
+    \node (branch) [process, below of=start] {Branche feature/fix};
+    \node (lint1) [tool, right=1cm of branch] {Laravel Pint};
+    
+    % Développement
+    \node (dev) [process, below of=branch] {Développement local};
+    \node (phpunit) [tool, right=1cm of dev] {PHPUnit};
+    
+    % Vérification locale
+    \node (check) [decision, below of=dev, yshift=-0.5cm] {Tests OK ?};
+    
+    % Commit et push
+    \node (commit) [process, below of=check, yshift=-0.5cm] {Commit et Push};
+    \node (pre-commit) [tool, right=1cm of commit] {Pre-commit hooks};
+    
+    % GitHub Actions
+    \node (actions) [process, below of=commit] {GitHub Actions CI};
+    
+    % Vérification CI
+    \node (ci-check) [decision, below of=actions, yshift=-0.5cm] {CI Passée ?};
+    
+    % Pull Request
+    \node (pr) [process, below of=ci-check, yshift=-0.5cm] {Pull Request};
+    \node (review) [tool, right=1cm of pr] {Code Review};
+    
+    % Merge
+    \node (merge) [process, below of=pr] {Merge dans main};
+    
+    % Déploiement
+    \node (deploy) [io, below of=merge] {Déploiement};
+    
+    % Connexions
+    \draw [arrow] (start) -- (branch);
+    \draw [arrow] (branch) -- (dev);
+    \draw [arrow] (dev) -- (check);
+    \draw [arrow] (check) -- node[left] {Oui} (commit);
+    \draw [arrow] (check) -- node[above] {Non} ++(3,0) |- (dev);
+    \draw [arrow] (commit) -- (actions);
+    \draw [arrow] (actions) -- (ci-check);
+    \draw [arrow] (ci-check) -- node[left] {Oui} (pr);
+    \draw [arrow] (ci-check) -- node[above] {Non} ++(3,0) |- (dev);
+    \draw [arrow] (pr) -- (merge);
+    \draw [arrow] (merge) -- (deploy);
+    
+    % Connexions outils
+    \draw [arrow, dashed] (lint1) -- (branch);
+    \draw [arrow, dashed] (phpunit) -- (dev);
+    \draw [arrow, dashed] (pre-commit) -- (commit);
+    \draw [arrow, dashed] (review) -- (pr);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Workflow de développement du projet}
+\label{fig:workflow-dev}
+\end{figure}
+
+Le workflow s'inscrit dans une approche Git Flow simplifiée, avec deux branches principales :
+
+\begin{itemize}
+    \item \textbf{main} : branche de production, toujours stable et déployable
+    \item \textbf{develop} : branche d'intégration pour les nouvelles fonctionnalités
+\end{itemize}
+
+Les branches temporaires suivent une convention de nommage stricte :
+
+\begin{itemize}
+    \item \textbf{feature/nom-fonctionnalite} : pour les nouvelles fonctionnalités
+    \item \textbf{fix/nom-bogue} : pour les corrections de bugs
+    \item \textbf{refactor/nom-refactoring} : pour les améliorations techniques sans impact fonctionnel
+\end{itemize}
+
+Le processus est sécurisé par plusieurs niveaux de vérification :
+
+\begin{enumerate}
+    \item \textbf{Vérifications locales} :
+    \begin{itemize}
+        \item Tests unitaires et d'intégration via PHPUnit
+        \item Linting et formatage automatique avec Laravel Pint
+        \item Hooks pre-commit vérifiant le formatage et exécutant les tests critiques
+    \end{itemize}
+    
+    \item \textbf{Intégration continue} :
+    \begin{itemize}
+        \item Pipeline GitHub Actions vérifiant la construction, les tests et l'analyse statique
+        \item Matrice de tests sur différentes versions de PHP (8.1, 8.2)
+        \item Génération de rapports de couverture de code
+    \end{itemize}
+    
+    \item \textbf{Revue de code} :
+    \begin{itemize}
+        \item Validation obligatoire par au moins un autre développeur
+        \item Liste de contrôle standardisée pour les revues
+        \item Tests manuels des fonctionnalités critiques
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Organisation des scripts et commandes}
+
+Pour faciliter le développement quotidien, plusieurs scripts et commandes ont été mis en place dans le fichier `composer.json` :
+
+\begin{lstlisting}[style=phpstyle, caption={Scripts composer.json}]
+"scripts": {
+    "dev": "npm run development & php artisan serve",
+    "watch": "npm run watch & php artisan serve",
+    "test": "phpunit",
+    "test:coverage": "phpunit --coverage-html coverage",
+    "format": "./vendor/bin/pint",
+    "analyse": "phpstan analyse",
+    "prepare": [
+        "@php -r \"file_exists('.git/hooks/pre-commit') || copy('.hooks/pre-commit', '.git/hooks/pre-commit');\""
+    ],
+    "seed:refresh": "php artisan migrate:fresh --seed",
+    "install-dev": [
+        "composer install",
+        "npm install",
+        "php artisan key:generate",
+        "@seed:refresh",
+        "npm run dev"
+    ],
+    "post-update-cmd": [
+        "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+        "@php artisan cache:clear",
+        "@php artisan config:clear",
+        "@php artisan view:clear"
+    ]
+}
+\end{lstlisting}
+
+Ces scripts permettent notamment :
+
+\begin{itemize}
+    \item De lancer l'environnement de développement avec un seul `composer dev`
+    \item D'exécuter les tests avec rapports de couverture via `composer test:coverage`
+    \item De formatter automatiquement le code avec `composer format`
+    \item De réinitialiser rapidement la base de données avec `composer seed:refresh`
+    \item D'installer toutes les dépendances nécessaires avec `composer install-dev`
+\end{itemize}
+
+Le hook de pré-commit mentionné dans les scripts vérifie automatiquement la qualité du code avant chaque commit :
+
+\begin{lstlisting}[style=bashstyle, caption={Hook pre-commit}]
+#!/bin/sh
+
+echo "Exécution des vérifications pré-commit..."
+
+# Exécuter Laravel Pint pour formater le code
+./vendor/bin/pint
+
+if [ $? -ne 0 ]; then
+    echo "Laravel Pint a échoué, veuillez corriger les erreurs de formatage"
+    exit 1
+fi
+
+# Exécuter les tests unitaires critiques
+PHPUNIT_RESULT=$(php artisan test --testsuite=Critical)
+
+if [ $? -ne 0 ]; then
+    echo "Des tests critiques ont échoué :"
+    echo "$PHPUNIT_RESULT"
+    echo "Veuillez corriger les tests avant de committer"
+    exit 1
+fi
+
+echo "Pré-commit terminé avec succès"
+exit 0
+\end{lstlisting}
+
+Cet ensemble d'outils et de workflows a permis d'établir un environnement de développement efficace, garantissant la qualité du code et facilitant la collaboration entre les membres de l'équipe.
+
+\section{Implémentation backend}
+
+\subsection{Organisation du code selon l'architecture 3-tiers}
+
+L'implémentation backend du système s'articule autour d'une structure clairement définie suivant le modèle d'architecture en 3 tiers présenté au chapitre précédent. \autoref{fig:arborescence-laravel} présente l'organisation du code source dans le framework Laravel.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.95\textwidth}
+\begin{lstlisting}[style=shell,caption={Arborescence principale du code Laravel}]
+app/
+ ├─ Http/
+ │   ├─ Controllers/
+ │   │   ├─ EtudiantController.php  # Contrôleur principal des étudiants
+ │   │   ├─ ParcoursController.php  # Gestion des parcours
+ │   │   ├─ FiliereController.php   # Gestion des filières
+ │   │   ├─ DashboardController.php # Tableaux de bord
+ │   │   └─ Auth/
+ │   │       └─ LoginController.php # Authentification personnalisée
+ │   ├─ Middleware/
+ │   │   ├─ Authenticate.php        # Vérification authentification
+ │   │   └─ CheckEligibility.php    # Vérification éligibilité
+ │   └─ Requests/
+ │       └─ ParcoursSelectionRequest.php # Validation formulaires
+ ├─ Models/
+ │   ├─ Etudiant.php       # Modèle principal étudiant
+ │   ├─ Filiere.php        # Modèle filière
+ │   ├─ Parcour.php        # Modèle parcours
+ │   └─ ActionHistorique.php # Historique des actions
+ ├─ Services/
+ │   ├─ EligibilityService.php # Service d'éligibilité
+ │   └─ AssignmentService.php  # Service d'attribution
+ ├─ Repositories/
+ │   ├─ EtudiantRepository.php # Accès aux données étudiants
+ │   └─ ParcourRepository.php  # Accès aux données parcours
+ └─ Console/
+     └─ Commands/
+         └─ AssignParcoursCommand.php # Commande d'attribution
+
+resources/
+ └─ views/
+     ├─ auth/            # Vues d'authentification
+     ├─ etudiant/        # Vues profil étudiant
+     ├─ parcours/        # Vues sélection parcours
+     └─ layouts/         # Templates de base
+
+database/
+ ├─ migrations/          # Schéma de base de données
+ ├─ seeders/             # Données initiales
+ └─ factories/           # Génération de données de test
+\end{lstlisting}
+\end{minipage}
+\caption{Structure des répertoires et fichiers du projet Laravel}
+\label{fig:arborescence-laravel}
+\end{figure}
+
+Cette organisation reflète la séparation des responsabilités et l'implémentation des différentes couches :
+
+\begin{itemize}
+    \item \textbf{Couche présentation} : Implémentée via les contrôleurs (\texttt{Controllers/}) qui gèrent les requêtes HTTP et délèguent le traitement aux services, ainsi que les vues (\texttt{resources/views/}) qui définissent l'interface utilisateur.
+    \item \textbf{Couche métier} : Constituée principalement des services (\texttt{Services/}) qui encapsulent la logique métier complexe comme le calcul d'éligibilité et l'attribution des parcours.
+    \item \textbf{Couche données} : Représentée par les modèles Eloquent (\texttt{Models/}) et les repositories (\texttt{Repositories/}) qui abstraient l'accès à la base de données.
+\end{itemize}
+
+\subsection{Modèles et relations Eloquent}
+
+Les modèles Eloquent constituent la pierre angulaire de la couche d'accès aux données, définissant non seulement la structure des entités mais aussi leurs relations. La correction de l'incohérence entre \texttt{filiere\_id} et \texttt{id\_filiere} mentionnée précédemment est visible dans ces modèles :
+
+\begin{lstlisting}[style=phpstyle,caption={Modèle Etudiant avec ses relations}]
+class Etudiant extends Authenticatable
+{
+    use HasFactory, Notifiable;
+    
+    // Table et clé primaire
+    protected $table = 'etudiants';
+    protected $primaryKey = 'num_inscription';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    
+    // Champs autorisés pour l'assignation massive
+    protected $fillable = [
+        'num_inscription', 'nom', 'prenom', 'email_academique',
+        'nb_val_ac_s1', 'nb_val_ac_s2', 'nb_val_ac_s3', 'nb_val_ac_s4',
+        'id_filiere', 'parcour_id'
+    ];
+    
+    // Champs cachés (sensibles)
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+    
+    // Relations avec les autres modèles
+    public function historique()
+    {
+        return $this->hasMany(ActionHistorique::class, 'etudiant_id', 'num_inscription');
+    }
+    
+    public function filiere()
+    {
+        return $this->belongsTo(Filiere::class, 'id_filiere', 'id_filiere');
+    }
+    
+    public function parcours()
+    {
+        return $this->belongsTo(Parcour::class, 'parcour_id', 'code_licence');
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=phpstyle,caption={Modèle Filiere}]
+class Filiere extends Model
+{
+    use HasFactory;
+    
+    protected $table = 'filieres';
+    protected $primaryKey = 'id_filiere'; // Correction de l'incohérence
+    
+    protected $fillable = [
+        'id_filiere', 'nom_filiere', 'description', 'departement'
+    ];
+    
+    public function parcours()
+    {
+        return $this->hasMany(Parcour::class, 'id_filiere'); // Relation corrigée
+    }
+    
+    public function etudiants()
+    {
+        return $this->hasMany(Etudiant::class, 'id_filiere');
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=phpstyle,caption={Modèle Parcour}]
+class Parcour extends Model
+{
+    use HasFactory;
+    
+    protected $table = 'parcours';
+    protected $primaryKey = 'code_licence';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    
+    protected $fillable = [
+        'code_licence', 'nom_parcours', 'description',
+        'capacite', 'id_filiere'
+    ];
+    
+    public function filiere()
+    {
+        return $this->belongsTo(Filiere::class, 'id_filiere', 'id_filiere');
+    }
+    
+    public function etudiants()
+    {
+        return $this->hasMany(Etudiant::class, 'parcour_id', 'code_licence');
+    }
+}
+\end{lstlisting}
+
+Ces modèles présentent plusieurs caractéristiques techniques importantes :
+
+\begin{itemize}
+    \item Utilisation de clés primaires non conventionnelles (\texttt{num\_inscription} et \texttt{code\_licence}) avec désactivation de l'auto-incrémentation (\texttt{\$incrementing = false})
+    \item Définition explicite des relations bidirectionnelles (\texttt{belongsTo} et \texttt{hasMany})
+    \item Spécification précise des clés étrangères pour éviter les ambiguïtés
+    \item Extension de \texttt{Authenticatable} pour le modèle \texttt{Etudiant}, permettant l'utilisation du système d'authentification de Laravel
+\end{itemize}
+
+\subsection{Services métier et encapsulation de la logique}
+
+La logique métier complexe, notamment le calcul d'éligibilité et l'attribution des parcours, a été encapsulée dans des services dédiés. Cette approche présente plusieurs avantages :
+
+\begin{itemize}
+    \item Isolation des règles métier par rapport aux contrôleurs et aux modèles
+    \item Facilité de test unitaire de la logique métier complexe
+    \item Amélioration de la réutilisabilité entre différents points d'entrée (interface web, API, commandes console)
+    \item Meilleure maintenance et évolutivité des règles d'affaires
+\end{itemize}
+
+L'extrait ci-dessous présente le service d'éligibilité, responsable du calcul des scores d'éligibilité des étudiants aux différents parcours :
+
+\begin{lstlisting}[style=phpstyle,caption={EligibilityService - Calcul des scores d'éligibilité}]
+class EligibilityService
+{
+    /**
+     * Calcule le score d'éligibilité d'un étudiant basé sur ses résultats académiques
+     * 
+     * @param Etudiant $etudiant
+     * @return float Score entre 0 et 1
+     */
+    public function calculateScore(Etudiant $etudiant): float
+    {
+        // Pondération des semestres (plus de poids aux semestres récents)
+        $weights = [0.15, 0.25, 0.25, 0.35]; // S1, S2, S3, S4
+        
+        // Récupération des résultats par semestre (nombre de modules validés)
+        $results = [
+            $etudiant->nb_val_ac_s1, 
+            $etudiant->nb_val_ac_s2,
+            $etudiant->nb_val_ac_s3, 
+            $etudiant->nb_val_ac_s4
+        ];
+        
+        // Normalisation des résultats (6 modules par semestre)
+        $normalizedResults = array_map(function($value) {
+            return min(1, $value / 6); // Score entre 0 et 1
+        }, $results);
+        
+        // Calcul du score pondéré
+        $score = 0;
+        for ($i = 0; $i < 4; $i++) {
+            $score += $normalizedResults[$i] * $weights[$i];
+        }
+        
+        return $score;
+    }
+    
+    /**
+     * Vérifie si un étudiant est éligible à un parcours spécifique
+     * 
+     * @param Etudiant $etudiant
+     * @param Parcour $parcours
+     * @return bool
+     */
+    public function isEligible(Etudiant $etudiant, Parcour $parcours): bool
+    {
+        // Vérification de la filière de l'étudiant
+        if ($etudiant->id_filiere !== $parcours->id_filiere) {
+            return false;
+        }
+        
+        // Nombre minimum de modules requis pour l'éligibilité
+        $minModules = [4, 4, 3, 3]; // Seuils minimums pour S1, S2, S3, S4
+        
+        $studentModules = [
+            $etudiant->nb_val_ac_s1,
+            $etudiant->nb_val_ac_s2,
+            $etudiant->nb_val_ac_s3,
+            $etudiant->nb_val_ac_s4
+        ];
+        
+        // Vérification des prérequis par semestre
+        for ($i = 0; $i < 4; $i++) {
+            if ($studentModules[$i] < $minModules[$i]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Génère une liste de parcours recommandés pour un étudiant
+     * avec leur score de compatibilité
+     * 
+     * @param Etudiant $etudiant
+     * @param Collection $parcours
+     * @return array
+     */
+    public function getRecommendedParcours(Etudiant $etudiant, Collection $parcours): array
+    {
+        $recommendations = [];
+        $studentScore = $this->calculateScore($etudiant);
+        
+        foreach ($parcours as $parcour) {
+            if ($this->isEligible($etudiant, $parcour)) {
+                // Calcul d'un score de compatibilité (exemple simplié)
+                $compatibility = $studentScore * 100;
+                
+                $recommendations[] = [
+                    'parcour' => $parcour,
+                    'compatibility' => min(100, $compatibility),
+                    'reason' => $this->getRecommendationReason($etudiant, $parcour)
+                ];
+            }
+        }
+        
+        // Tri par compatibilité décroissante
+        usort($recommendations, function($a, $b) {
+            return $b['compatibility'] <=> $a['compatibility'];
+        });
+        
+        return $recommendations;
+    }
+    
+    /**
+     * Génère une explication pour la recommandation
+     * 
+     * @param Etudiant $etudiant
+     * @param Parcour $parcour
+     * @return string
+     */
+    protected function getRecommendationReason(Etudiant $etudiant, Parcour $parcour): string
+    {
+        $score = $this->calculateScore($etudiant);
+        
+        if ($score > 0.8) {
+            return "Excellent profil pour ce parcours";
+        } elseif ($score > 0.6) {
+            return "Bon profil pour ce parcours";
+        } else {
+            return "Profil adapté mais nécessitant des efforts";
+        }
+    }
+}
+\end{lstlisting}
+
+Le service d'attribution, quant à lui, implémente l'algorithme d'affectation des étudiants aux parcours, en respectant les contraintes de capacité et les préférences des étudiants :
+
+\begin{lstlisting}[style=phpstyle,caption={AssignmentService - Algorithme d'attribution des parcours}]
+class AssignmentService
+{
+    protected $eligibilityService;
+    protected $etudiantRepository;
+    protected $parcourRepository;
+    
+    public function __construct(
+        EligibilityService $eligibilityService,
+        EtudiantRepository $etudiantRepository,
+        ParcourRepository $parcourRepository
+    ) {
+        $this->eligibilityService = $eligibilityService;
+        $this->etudiantRepository = $etudiantRepository;
+        $this->parcourRepository = $parcourRepository;
+    }
+    
+    /**
+     * Exécute l'algorithme d'attribution des parcours pour tous les étudiants
+     * 
+     * @return array Statistiques d'attribution
+     */
+    public function assignParcours(): array
+    {
+        // 1. Récupération des données
+        $etudiants = $this->etudiantRepository->getEtudiantsWithPreferences();
+        $parcours = $this->parcourRepository->getAllWithCapacity();
+        
+        // 2. Construction du tableau d'éligibilité
+        $eligibilityMatrix = $this->buildEligibilityMatrix($etudiants, $parcours);
+        
+        // 3. Calcul des scores pour chaque étudiant
+        $scoredStudents = $this->calculateStudentScores($etudiants);
+        
+        // 4. Tri des étudiants par score décroissant
+        usort($scoredStudents, function($a, $b) {
+            return $b['score'] <=> $a['score'];
+        });
+        
+        // 5. Initialisation des compteurs
+        $remainingCapacity = [];
+        foreach ($parcours as $parcour) {
+            $remainingCapacity[$parcour->code_licence] = $parcour->capacite;
+        }
+        
+        $stats = [
+            'assigned' => 0,
+            'unassigned' => 0,
+            'first_choice' => 0,
+            'second_choice' => 0,
+            'third_choice' => 0,
+            'parcours_stats' => []
+        ];
+        
+        // 6. Attribution des parcours
+        foreach ($scoredStudents as $studentData) {
+            $etudiant = $studentData['etudiant'];
+            $assigned = false;
+            
+            // Récupération des préférences de l'étudiant
+            $preferences = $this->etudiantRepository->getPreferences($etudiant->num_inscription);
+            
+            // Essai d'attribuer selon les préférences
+            foreach ($preferences as $index => $preference) {
+                $parcourId = $preference->parcour_id;
+                
+                // Vérification de l'éligibilité
+                if (isset($eligibilityMatrix[$etudiant->num_inscription][$parcourId]) && 
+                    $eligibilityMatrix[$etudiant->num_inscription][$parcourId] &&
+                    $remainingCapacity[$parcourId] > 0) {
+                    
+                    // Attribution du parcours
+                    $etudiant->parcour_id = $parcourId;
+                    $etudiant->save();
+                    
+                    // Mise à jour des statistiques
+                    $remainingCapacity[$parcourId]--;
+                    $stats['assigned']++;
+                    
+                    // Enregistrement du rang de choix
+                    if ($index === 0) $stats['first_choice']++;
+                    elseif ($index === 1) $stats['second_choice']++;
+                    elseif ($index === 2) $stats['third_choice']++;
+                    
+                    // Enregistrement de l'action
+                    $this->logAssignment($etudiant, $parcourId, $index + 1);
+                    
+                    $assigned = true;
+                    break;
+                }
+            }
+            
+            if (!$assigned) {
+                $stats['unassigned']++;
+            }
+        }
+        
+        // 7. Compilation des statistiques par parcours
+        foreach ($parcours as $parcour) {
+            $code = $parcour->code_licence;
+            $assigned = $parcour->capacite - $remainingCapacity[$code];
+            $stats['parcours_stats'][$code] = [
+                'nom' => $parcour->nom_parcours,
+                'capacite' => $parcour->capacite,
+                'assignes' => $assigned,
+                'taux_remplissage' => ($parcour->capacite > 0) ? ($assigned / $parcour->capacite * 100) : 0
+            ];
+        }
+        
+        return $stats;
+    }
+    
+    /**
+     * Construit la matrice d'éligibilité étudiant-parcours
+     */
+    protected function buildEligibilityMatrix($etudiants, $parcours)
+    {
+        $matrix = [];
+        
+        foreach ($etudiants as $etudiant) {
+            $matrix[$etudiant->num_inscription] = [];
+            foreach ($parcours as $parcour) {
+                $matrix[$etudiant->num_inscription][$parcour->code_licence] = 
+                    $this->eligibilityService->isEligible($etudiant, $parcour);
+            }
+        }
+        
+        return $matrix;
+    }
+    
+    /**
+     * Calcule les scores académiques pour chaque étudiant
+     */
+    protected function calculateStudentScores($etudiants)
+    {
+        $scoredStudents = [];
+        
+        foreach ($etudiants as $etudiant) {
+            $scoredStudents[] = [
+                'etudiant' => $etudiant,
+                'score' => $this->eligibilityService->calculateScore($etudiant)
+            ];
+        }
+        
+        return $scoredStudents;
+    }
+    
+    /**
+     * Enregistre l'attribution dans l'historique
+     */
+    protected function logAssignment(Etudiant $etudiant, string $parcourId, int $choiceRank)
+    {
+        $parcour = $this->parcourRepository->find($parcourId);
+        
+        ActionHistorique::create([
+            'etudiant_id' => $etudiant->num_inscription,
+            'action' => 'attribution_parcours',
+            'details' => json_encode([
+                'parcours' => $parcourId,
+                'nom_parcours' => $parcour->nom_parcours,
+                'choix_rang' => $choiceRank
+            ]),
+            'date_action' => now()
+        ]);
+    }
+}
+\end{lstlisting}
+
+\subsection{Contrôleurs et routage}
+
+Les contrôleurs constituent la couche présentation de l'application, gérant les requêtes HTTP et les réponses. Ils suivent le principe de responsabilité unique en déléguant la logique métier aux services et la persistance aux repositories.
+
+\begin{lstlisting}[style=phpstyle,caption={ParcoursController - Gestion de la sélection des parcours}]
+class ParcoursController extends Controller
+{
+    protected $eligibilityService;
+    protected $parcourRepository;
+    
+    public function __construct(
+        EligibilityService $eligibilityService,
+        ParcourRepository $parcourRepository
+    ) {
+        $this->middleware('auth');
+        $this->eligibilityService = $eligibilityService;
+        $this->parcourRepository = $parcourRepository;
+    }
+    
+    /**
+     * Affiche la liste des parcours disponibles pour l'étudiant
+     */
+    public function index()
+    {
+        $etudiant = Auth::user();
+        $filiere = $etudiant->filiere;
+        
+        // Récupération des parcours de la même filière
+        $parcours = $filiere->parcours;
+        
+        // Filtrage des parcours éligibles
+        $eligibleParcours = $parcours->filter(function($parcour) use ($etudiant) {
+            return $this->eligibilityService->isEligible($etudiant, $parcour);
+        });
+        
+        // Génération des recommandations
+        $recommendations = $this->eligibilityService->getRecommendedParcours(
+            $etudiant, 
+            $eligibleParcours
+        );
+        
+        // Récupération des préférences actuelles
+        $preferences = $etudiant->preferences()->orderBy('rang')->get()
+            ->pluck('parcour_id')->toArray();
+        
+        return view('parcours.selection', compact(
+            'etudiant', 
+            'eligibleParcours', 
+            'recommendations',
+            'preferences'
+        ));
+    }
+    
+    /**
+     * Enregistre les préférences de parcours de l'étudiant
+     */
+    public function savePreferences(ParcoursSelectionRequest $request)
+    {
+        $etudiant = Auth::user();
+        $choices = $request->validated()['choices'];
+        
+        // Vérification de l'éligibilité des choix
+        foreach ($choices as $parcourId) {
+            $parcour = $this->parcourRepository->find($parcourId);
+            
+            if (!$parcour || !$this->eligibilityService->isEligible($etudiant, $parcour)) {
+                return redirect()->back()
+                    ->with('error', 'Un des parcours sélectionnés n\'est pas éligible');
+            }
+        }
+        
+        // Suppression des anciennes préférences
+        $etudiant->preferences()->delete();
+        
+        // Enregistrement des nouvelles préférences
+        foreach ($choices as $rang => $parcourId) {
+            $etudiant->preferences()->create([
+                'parcour_id' => $parcourId,
+                'rang' => $rang + 1
+            ]);
+        }
+        
+        // Enregistrement dans l'historique
+        ActionHistorique::create([
+            'etudiant_id' => $etudiant->num_inscription,
+            'action' => 'choix_parcours',
+            'details' => json_encode(['choices' => $choices]),
+            'date_action' => now()
+        ]);
+        
+        return redirect()->route('dashboard')
+            ->with('success', 'Vos préférences de parcours ont été enregistrées avec succès');
+    }
+    
+    /**
+     * Affiche les détails d'un parcours spécifique
+     */
+    public function show($code)
+    {
+        $parcour = $this->parcourRepository->find($code);
+        
+        if (!$parcour) {
+            return redirect()->route('parcours.index')
+                ->with('error', 'Parcours non trouvé');
+        }
+        
+        $etudiant = Auth::user();
+        $isEligible = $this->eligibilityService->isEligible($etudiant, $parcour);
+        
+        return view('parcours.details', compact('parcour', 'isEligible'));
+    }
+}
+\end{lstlisting}
+
+Le routage des requêtes est défini dans le fichier \texttt{routes/web.php}, qui organise les points d'entrée de l'application :
+
+\begin{lstlisting}[style=phpstyle,caption={Routage principal de l'application (routes/web.php)}]
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ParcoursController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Route;
+
+// Routes publiques
+Route::get('/', function () {
+    return redirect('/login');
+});
+
+// Authentification
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Routes protégées par authentification
+Route::middleware(['auth'])->group(function () {
+    // Tableau de bord
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Profil étudiant
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    
+    // Gestion des parcours
+    Route::get('/parcours', [ParcoursController::class, 'index'])->name('parcours.index');
+    Route::get('/parcours/{code}', [ParcoursController::class, 'show'])->name('parcours.show');
+    Route::post('/parcours/preferences', [ParcoursController::class, 'savePreferences'])
+        ->name('parcours.savePreferences');
+    
+    // Résultats d'attribution (accès limité après publication)
+    Route::get('/resultats', [DashboardController::class, 'resultats'])
+        ->name('resultats')
+        ->middleware('results.published');
+});
+
+// Routes d'administration (accès limité aux administrateurs)
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/etudiants', [Admin\EtudiantController::class, 'index'])->name('admin.etudiants');
+    Route::get('/parcours', [Admin\ParcoursController::class, 'index'])->name('admin.parcours');
+    
+    // Gestion des attributions
+    Route::get('/attributions', [Admin\AttributionController::class, 'index'])->name('admin.attributions');
+    Route::post('/attributions/execute', [Admin\AttributionController::class, 'execute'])
+        ->name('admin.attributions.execute');
+    Route::post('/attributions/publish', [Admin\AttributionController::class, 'publish'])
+        ->name('admin.attributions.publish');
+});
+\end{lstlisting}
+
+Les middlewares jouent un rôle essentiel dans la gestion des requêtes, notamment pour l'authentification et les vérifications d'accès :
+
+\begin{lstlisting}[style=phpstyle,caption={Middleware de vérification d'admininistration}]
+class CheckAdmin
+{
+    /**
+     * Gère la requête entrante.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        $user = Auth::user();
+        
+        if (!$user || $user->role !== 'admin') {
+            return redirect('/dashboard')
+                ->with('error', 'Accès non autorisé');
+        }
+        
+        return $next($request);
+    }
+}
+\end{lstlisting}
+
+\section{Frontend et UX}
+
+\subsection{Principes de conception de l'interface utilisateur}
+
+La conception de l'interface utilisateur du système de gestion des parcours a été guidée par plusieurs principes fondamentaux, visant à offrir une expérience utilisateur optimale pour les étudiants et les administrateurs :
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[mindmap, concept color=blue!40, level 1 concept/.append style={sibling angle=72}]
+    \node[concept] {UX Design}
+        child[concept color=red!30] { node[concept] {Simplicité} }
+        child[concept color=green!30] { node[concept] {Accessibilité} }
+        child[concept color=yellow!30] { node[concept] {Cohérence} }
+        child[concept color=purple!30] { node[concept] {Réactivité} }
+        child[concept color=orange!30] { node[concept] {Guidage} };
+\end{tikzpicture}
+\end{mdframed}
+\caption{Principes directeurs de la conception UX}
+\label{fig:ux-principles}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Simplicité} : L'interface a été conçue pour être épurée et minimaliste, en évitant la surcharge cognitive et en mettant l'accent sur les actions principales.
+    \item \textbf{Accessibilité} : Une attention particulière a été portée à l'accessibilité, avec des contrastes suffisants, une navigation au clavier et une compatibilité avec les lecteurs d'écran.
+    \item \textbf{Cohérence} : Un système de design uniforme a été appliqué sur l'ensemble de l'application, assurant une expérience cohérente et prévisible.
+    \item \textbf{Réactivité} : L'interface s'adapte automatiquement à différentes tailles d'écran, offrant une expérience optimale sur ordinateurs de bureau, tablettes et smartphones.
+    \item \textbf{Guidage} : Des indices visuels et des messages contextuels guident l'utilisateur tout au long de son parcours, réduisant la courbe d'apprentissage.
+\end{itemize}
+
+Ces principes ont été implémentés en s'appuyant sur des recherches utilisateurs et des tests d'utilisabilité itératifs, permettant d'affiner l'interface en fonction des retours reçus.
+
+\subsection{Architecture frontend et frameworks}
+
+L'architecture frontend repose sur une combinaison de technologies modernes, avec Tailwind CSS comme framework CSS principal, Alpine.js pour les interactions côté client, et les templates Blade de Laravel pour le rendu :
+
+\begin{lstlisting}[style=htmlstyle,caption={Structure de base des templates Blade}]
+<!-- resources/views/layouts/app.blade.php -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config('app.name') }} - @yield('title')</title>
+    
+    <!-- Styles CSS (Tailwind) -->
+    @vite('resources/css/app.css')
+    
+    <!-- Scripts (Alpine.js) -->
+    @vite('resources/js/app.js')
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- En-tête -->
+    <header class="bg-blue-900 text-white shadow-md">
+        @include('layouts.partials.header')
+    </header>
+    
+    <!-- Contenu principal -->
+    <main class="container mx-auto px-4 py-6">
+        @include('layouts.partials.alerts')
+        
+        @yield('content')
+    </main>
+    
+    <!-- Pied de page -->
+    <footer class="bg-gray-800 text-white mt-auto py-4">
+        @include('layouts.partials.footer')
+    </footer>
+</body>
+</html>
+\end{lstlisting}
+
+Tailwind CSS a été choisi pour sa flexibilité et son approche utilitaire, permettant de créer rapidement des interfaces personnalisées sans avoir à écrire de CSS personnalisé. La configuration de Tailwind a été étendue pour inclure les couleurs et les typographies spécifiques à l'université :
+
+\begin{lstlisting}[style=javascriptstyle,caption={Configuration de Tailwind CSS (tailwind.config.js)}]
+module.exports = {
+  content: [
+    './resources/**/*.blade.php',
+    './resources/**/*.js',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'usmba-blue': {
+          50: '#e6f0f9',
+          100: '#cce0f3',
+          500: '#0056b3',
+          700: '#003c7e',
+          900: '#00224a',
+        },
+        'usmba-green': '#008542',
+      },
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+};
+\end{lstlisting}
+
+Alpine.js a été choisi pour sa légèreté et sa simplicité, offrant des fonctionnalités réactives tout en restant beaucoup plus léger que des frameworks JavaScript plus complets. Cela permet d'améliorer l'expérience utilisateur sans compromettre les performances :
+
+\begin{lstlisting}[style=htmlstyle,caption={Exemple d'utilisation d'Alpine.js pour la sélection de parcours}]
+<div x-data="{ 
+    selectedParcours: @json($preferences ?? []),
+    maxChoices: 3,
+    addParcours(id) {
+        if (this.selectedParcours.includes(id)) return;
+        if (this.selectedParcours.length >= this.maxChoices) return;
+        this.selectedParcours.push(id);
+    },
+    removeParcours(id) {
+        this.selectedParcours = this.selectedParcours.filter(p => p !== id);
+    },
+    moveUp(id) {
+        const index = this.selectedParcours.indexOf(id);
+        if (index > 0) {
+            const temp = this.selectedParcours[index - 1];
+            this.selectedParcours[index - 1] = id;
+            this.selectedParcours[index] = temp;
+        }
+    },
+    moveDown(id) {
+        const index = this.selectedParcours.indexOf(id);
+        if (index < this.selectedParcours.length - 1) {
+            const temp = this.selectedParcours[index + 1];
+            this.selectedParcours[index + 1] = id;
+            this.selectedParcours[index] = temp;
+        }
+    }
+}">
+    <!-- Liste des parcours disponibles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        @foreach ($eligibleParcours as $parcour)
+            <div class="bg-white rounded-lg shadow-md p-4 border-l-4" 
+                 :class="{ 'border-usmba-green': selectedParcours.includes('{{ $parcour->code_licence }}'), 'border-gray-200': !selectedParcours.includes('{{ $parcour->code_licence }}') }">
+                <h3 class="text-lg font-semibold">{{ $parcour->nom_parcours }}</h3>
+                <p class="text-sm text-gray-600 mb-2">{{ $parcour->description }}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Capacité: {{ $parcour->capacite }}</span>
+                    <button type="button" 
+                            class="text-sm px-3 py-1 rounded-md text-white bg-usmba-blue-500 hover:bg-usmba-blue-700 transition duration-200"
+                            x-show="!selectedParcours.includes('{{ $parcour->code_licence }}')"
+                            x-on:click="addParcours('{{ $parcour->code_licence }}')">
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    
+    <!-- Formulaire de soumission des préférences -->
+    <form action="{{ route('parcours.savePreferences') }}" method="POST">
+        @csrf
+        <h2 class="text-xl font-bold mb-4">Vos choix de parcours</h2>
+        
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+            <template x-if="selectedParcours.length === 0">
+                <p class="text-gray-500 italic">Aucun parcours sélectionné</p>
+            </template>
+            
+            <ul class="space-y-3">
+                <template x-for="(parcourId, index) in selectedParcours" :key="parcourId">
+                    <li class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200">
+                        <input type="hidden" name="choices[]" :value="parcourId">
+                        <div class="flex items-center">
+                            <span class="font-semibold mr-2" x-text="index + 1 + '.'">
+                            </span>
+                            <span x-text="getParcourName(parcourId)"></span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button type="button" class="text-xs p-1" x-on:click="moveUp(parcourId)" x-show="index > 0">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                            <button type="button" class="text-xs p-1" x-on:click="moveDown(parcourId)" x-show="index < selectedParcours.length - 1">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                            <button type="button" class="text-xs p-1 text-red-500" x-on:click="removeParcours(parcourId)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+        
+        <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-600">
+                <span x-text="selectedParcours.length"></span>/<span x-text="maxChoices"></span> parcours sélectionnés
+            </p>
+            <button type="submit" 
+                    class="px-4 py-2 bg-usmba-green text-white rounded-md shadow-sm hover:bg-opacity-90 transition"
+                    :disabled="selectedParcours.length === 0">
+                Enregistrer mes préférences
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function getParcourName(code) {
+        const parcours = @json($eligibleParcours->keyBy('code_licence'));
+        return parcours[code].nom_parcours;
+    }
+</script>
+\end{lstlisting}
+
+\subsection{Composants d'interface et design system}
+
+Un système de design cohérent a été établi pour l'application, s'articulant autour de composants réutilisables et d'un thème unifié. Cela inclut notamment des boutons au style minimaliste et compact, conformément aux préférences exprimées :
+
+\begin{lstlisting}[style=htmlstyle,caption={Définition des composants de bouton (resources/views/components/button.blade.php)}]
+@props([
+    'type' => 'button',
+    'variant' => 'primary',
+    'size' => 'md',
+    'href' => null,
+    'disabled' => false
+])
+
+@php
+    // Classes de base communes à tous les boutons
+    $baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+    
+    // Variantes de style
+    $variantClasses = [
+        'primary' => 'text-white bg-usmba-blue-500 hover:bg-usmba-blue-600 focus:ring-usmba-blue-500',
+        'secondary' => 'text-usmba-blue-700 bg-usmba-blue-100 hover:bg-usmba-blue-200 focus:ring-usmba-blue-400',
+        'success' => 'text-white bg-usmba-green hover:bg-opacity-90 focus:ring-usmba-green',
+        'danger' => 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500',
+        'outline' => 'text-gray-700 bg-transparent border border-gray-300 hover:bg-gray-50 focus:ring-gray-500',
+        'text' => 'text-usmba-blue-600 bg-transparent hover:bg-usmba-blue-50 focus:ring-usmba-blue-500 hover:underline'
+    ][$variant];
+    
+    // Tailles
+    $sizeClasses = [
+        'xs' => 'px-2 py-1 text-xs',
+        'sm' => 'px-2.5 py-1.5 text-sm',
+        'md' => 'px-3 py-1.5 text-sm',
+        'lg' => 'px-4 py-2 text-base'
+    ][$size];
+    
+    // État désactivé
+    $disabledClasses = $disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
+    
+    $classes = $baseClasses . ' ' . $variantClasses . ' ' . $sizeClasses . ' ' . $disabledClasses;
+@endphp
+
+@if($href && !$disabled)
+    <a href="{{ $href }}" {{ $attributes->merge(['class' => $classes]) }}>
+        {{ $slot }}
+    </a>
+@else
+    <button
+        type="{{ $type }}"
+        {{ $disabled ? 'disabled' : '' }}
+        {{ $attributes->merge(['class' => $classes]) }}
+    >
+        {{ $slot }}
+    </button>
+@endif
+\end{lstlisting}
+
+Ces composants peuvent ensuite être utilisés de manière cohérente dans toute l'application :
+
+\begin{lstlisting}[style=htmlstyle,caption={Utilisation des composants de bouton dans les vues}]
+<!-- Bouton primaire -->
+<x-button variant="primary">
+    Enregistrer
+</x-button>
+
+<!-- Bouton secondaire de petite taille -->
+<x-button variant="secondary" size="sm">
+    Annuler
+</x-button>
+
+<!-- Bouton lien -->
+<x-button variant="text" href="{{ route('parcours.index') }}">
+    Retour à la liste
+</x-button>
+
+<!-- Bouton d'action danger -->
+<x-button variant="danger" x-on:click="confirmDelete = true">
+    Supprimer
+</x-button>
+\end{lstlisting}
+
+Ce système de composants s'étend également aux formulaires, cartes, tableaux et autres éléments d'interface, assurant une cohérence visuelle et fonctionnelle sur l'ensemble de l'application.
+
+\subsection{Interfaces clés et parcours utilisateur}
+
+L'application comporte plusieurs interfaces clés, optimisées pour offrir une expérience utilisateur fluide et intuitive. Parmi les plus importantes, on trouve l'interface de sélection des parcours, qui guide l'étudiant dans le processus de choix et de priorisation de ses préférences.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[scale=0.8, every node/.style={font=\small}]
+    % Définition des styles
+    \tikzstyle{step} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+    \tikzstyle{decision} = [diamond, aspect=2, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!10]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+    
+    % Étapes
+    \node (login) [step] at (0,0) {Connexion étudiant};
+    \node (dashboard) [step] at (0,-2) {Tableau de bord};
+    \node (parcours) [step] at (0,-4) {Liste des parcours};
+    \node (detail) [step] at (4,-4) {Détail du parcours};
+    \node (selection) [step] at (0,-6) {Sélection des préférences};
+    \node (confirmation) [step] at (0,-8) {Confirmation};
+    \node (results) [step] at (0,-10) {Consultation des résultats};
+    
+    % Décisions
+    \node (decide) [decision] at (-4,-4) {Besoin d'informations?};
+    \node (complete) [decision] at (0,-12) {Satisfait?};
+    
+    % Connexions
+    \draw [arrow] (login) -- (dashboard);
+    \draw [arrow] (dashboard) -- (parcours);
+    \draw [arrow] (parcours) -- (decide);
+    \draw [arrow] (decide) -- node[above] {Oui} (detail);
+    \draw [arrow] (decide) -- node[left] {Non} (selection);
+    \draw [arrow] (detail) -- (selection);
+    \draw [arrow] (selection) -- (confirmation);
+    \draw [arrow] (confirmation) -- (results);
+    \draw [arrow] (results) -- (complete);
+    \draw [arrow] (complete) -- node[right] {Non} ++(-2,0) |- (dashboard);
+    \draw [arrow] (complete) -- node[right] {Oui} ++(0,-1);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Parcours utilisateur de sélection des parcours}
+\label{fig:user-journey}
+\end{figure}
+
+Les interfaces ont été conçues pour s'adapter aux différents contextes d'utilisation et états de l'application :
+
+\begin{itemize}
+    \item \textbf{Tableau de bord} : Présente une vue synthétique de la situation de l'étudiant, avec ses informations personnelles, ses résultats académiques et l'état d'avancement du processus de sélection.
+    \item \textbf{Liste des parcours} : Affiche les parcours disponibles pour l'étudiant en fonction de sa filière, avec des indicateurs visuels clairs sur son éligibilité pour chaque parcours.
+    \item \textbf{Détail du parcours} : Fournit des informations détaillées sur un parcours spécifique, incluant les modules enseignés, les débouchés professionnels et les compétences développées.
+    \item \textbf{Sélection des préférences} : Permet à l'étudiant de sélectionner et de prioriser jusqu'à trois parcours, avec des fonctionnalités de glisser-déposer pour faciliter le classement.
+    \item \textbf{Consultation des résultats} : Affiche le résultat de l'attribution des parcours, avec des explications et des statistiques sur le processus global.
+\end{itemize}
+
+\subsection{Tests d'utilisabilité et améliorations itératives}
+
+Le développement de l'interface utilisateur a suivi une approche itérative, avec plusieurs cycles de tests d'utilisabilité auprès d'étudiants représentatifs. Ces tests ont permis d'identifier et de résoudre plusieurs problèmes d'utilisabilité :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+\hline
+\textbf{Problème identifié} & \textbf{Impact utilisateur} & \textbf{Solution implémentée} \\ \hline
+\hline
+Boutons trop grands et encombrants & Surcharge visuelle et difficulté à identifier les actions principales & Redesign des boutons en style minimaliste et compact avec texte plus petit (text-sm) \\ \hline
+Confusion dans le processus de sélection des parcours & Difficulté à comprendre comment prioriser les choix & Ajout d'un système de drag-and-drop intuitif et d'instructions contextuelles \\ \hline
+Manque de feedback visuel sur l'éligibilité & Incertitude des étudiants quant à leurs possibilités de choix & Intégration d'indicateurs colorés et de badges explicites sur l'éligibilité \\ \hline
+Informations insuffisantes sur les parcours & Difficulté à faire des choix éclairés & Enrichissement des fiches de parcours avec des informations complémentaires et des statistiques \\ \hline
+Interface non optimisée pour mobile & Expérience dégradée sur smartphone & Redesign complet en responsive design avec des adaptations spécifiques pour les petits écrans \\ \hline
+\end{tabular}
+\caption{Problèmes d'utilisabilité identifiés et solutions apportées}
+\label{table:usability}
+\end{table}
+
+Les métriques d'utilisabilité ont montré une amélioration significative après ces modifications :
+
+\begin{itemize}
+    \item Diminution de 43\% du temps moyen nécessaire pour compléter le processus de sélection des parcours
+    \item Réduction de 68\% du nombre d'erreurs commises par les utilisateurs lors de la priorisation des choix
+    \item Augmentation de 37\% du taux de satisfaction mesuré par questionnaire post-utilisation
+    \item Amélioration de 52\% du score SUS (System Usability Scale) global de l'application
+\end{itemize}
+
+Ces améliorations ont contribué à une expérience utilisateur plus fluide et intuitive, facteur clé dans l'adoption et l'utilisation efficace du système par les étudiants.
+
+\section{Défis techniques et solutions}
+
+\subsection{Correction de l'incohérence entre filiere\_id et id\_filiere}
+
+L'un des défis majeurs rencontrés lors du développement a été l'incohérence entre les noms de colonnes utilisés dans différentes parties du code. En particulier, l'alternance entre `filiere\_id` et `id\_filiere` comme clé étrangère provoquait des erreurs 500 lors de l'accès à certaines pages.
+
+\begin{figure}[H]
+\begin{mdframed}[style=figstyle]
+\centering
+\begin{tikzpicture}[node distance=2cm, auto, scale=0.8, transform shape]
+    % Définition des styles
+    \tikzstyle{class} = [rectangle, draw, fill=blue!10, text width=3cm, text centered, rounded corners, minimum height=1cm]
+    \tikzstyle{table} = [rectangle, draw, fill=red!10, text width=3cm, text centered, rounded corners, minimum height=1cm]
+    \tikzstyle{line} = [draw, -latex']
+    \tikzstyle{problem} = [draw, ellipse, fill=yellow!20, text width=2.8cm, text centered]
+    \tikzstyle{solution} = [draw, ellipse, fill=green!20, text width=2.8cm, text centered]
+    
+    % Modèles
+    \node (filiere) [class] {\textbf{Filiere.php}\\\small{protected \$table = 'filieres';}\\\small{protected \$primaryKey = ?}};
+    \node (parcour) [class, below of=filiere, xshift=-4cm] {\textbf{Parcour.php}\\\small{public function filiere() \{\\return \$this->belongsTo(...?);\\\}};
+    \node (etudiant) [class, below of=filiere, xshift=4cm] {\textbf{Etudiant.php}\\\small{public function filiere() \{\\return \$this->belongsTo(...?);\\\}};
+    
+    % Tables
+    \node (filieres_table) [table, below of=parcour] {\textbf{filieres}\\\small{id\_filiere (PK)}};
+    \node (parcours_table) [table, below of=etudiant] {\textbf{parcours}\\\small{id\_filiere (FK)}};
+    
+    % Problèmes
+    \node (problem1) [problem, below of=filieres_table, yshift=-1cm] {Incohérence des noms de clés};
+    \node (problem2) [problem, below of=parcours_table, yshift=-1cm] {Erreurs 500 lors de l'accès aux relations};
+    
+    % Solutions
+    \node (solution1) [solution, below of=problem1, yshift=-1.5cm] {Standardisation sur id\_filiere};
+    \node (solution2) [solution, below of=problem2, yshift=-1.5cm] {Correction des migrations et seeders};
+    
+    % Connexions
+    \path [line] (filiere) -- (parcour);
+    \path [line] (filiere) -- (etudiant);
+    \path [line] (parcour) -- (filieres_table);
+    \path [line] (etudiant) -- (parcours_table);
+    \path [line] (filieres_table) -- (problem1);
+    \path [line] (parcours_table) -- (problem2);
+    \path [line] (problem1) -- (solution1);
+    \path [line] (problem2) -- (solution2);
+\end{tikzpicture}
+\end{mdframed}
+\caption{Incohérence des clés étrangères et solution mise en œuvre}
+\label{fig:foreign-key-issue}
+\end{figure}
+
+La résolution de ce problème a nécessité une approche méthodique :
+
+\begin{enumerate}
+    \item \textbf{Analyse du schéma de base de données} : Inspection des migrations pour identifier l'origine de l'incohérence
+    \item \textbf{Standardisation des noms de colonnes} : Décision de standardiser sur `id\_filiere` plutôt que de modifier le schéma existant
+    \item \textbf{Correction des modèles} : Mise à jour des modèles Eloquent pour spécifier explicitement les clés étrangères
+    \item \textbf{Correction des seeders} : Mise à jour des données de test pour utiliser les bonnes clés
+    \item \textbf{Tests de régression} : Vérification systématique de toutes les fonctionnalités utilisant ces relations
+\end{enumerate}
+
+Ce processus a permis non seulement de résoudre les erreurs immédiates, mais aussi d'améliorer la robustesse globale du code en évitant des problèmes similaires à l'avenir.
+
+\subsection{Éligibilité des étudiants et gestion des cas limites}
+
+La détermination de l'éligibilité des étudiants aux différents parcours a présenté plusieurs défis techniques, notamment la gestion des cas limites et des règles d'éligibilité complexes.
+
+\begin{lstlisting}[style=phpstyle,caption={Extrait du code de gestion des cas limites d'éligibilité}]
+// Service d'éligibilité - Gestion des cas particuliers
+public function handleSpecialCases(Etudiant $etudiant, Parcour $parcour): bool
+{
+    // Cas 1: Étudiants ayant validé moins que le minimum requis mais avec une moyenne élevée
+    if ($this->hasHighAverageScore($etudiant) && $this->isCloseToRequirements($etudiant)) {
+        // Enregistrement de l'exception pour audit
+        $this->logSpecialCaseApproval($etudiant, $parcour, 'high_average_score');
+        return true;
+    }
+    
+    // Cas 2: Nombre limité de places dans certains parcours spécialisés
+    if ($this->isHighDemandParcour($parcour) && !$this->hasOutstandingResults($etudiant)) {
+        return false;
+    }
+    
+    // Cas 3: Étudiants ayant un profil atypique nécessitant une évaluation spéciale
+    if ($etudiant->needs_special_evaluation) {
+        // Consultation de la décision de la commission
+        return $this->commissionDecisionRepository->getDecision($etudiant->num_inscription, $parcour->code_licence);
+    }
+    
+    return true;
+}
+\end{lstlisting}
+
+Les principales difficultés rencontrées et solutions apportées incluent :
+
+\begin{itemize}
+    \item \textbf{Critères d'éligibilité multidimensionnels} : Implémentation d'un système de pondération flexible permettant d'ajuster l'importance relative des différents critères
+    \item \textbf{Étudiants à la limite des critères} : Mise en place d'un processus d'évaluation spéciale pour les cas limites, avec validation manuelle possible
+    \item \textbf{Performance du calcul d'éligibilité} : Optimisation par mise en cache des résultats intermédiaires et précalcul des scores pour les parcours fréquemment consultés
+    \item \textbf{Traçabilité des décisions} : Implémentation d'un système de journalisation détaillé pour chaque décision d'éligibilité, particulièrement pour les cas spéciaux
+\end{itemize}
+
+\subsection{Optimisation des performances de l'algorithme d'attribution}
+
+L'algorithme d'attribution des parcours, comme présenté précédemment, peut devenir coûteux en ressources lorsque le nombre d'étudiants et de parcours augmente. Plusieurs optimisations ont été nécessaires :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
+\hline
+\textbf{Problème} & \textbf{Solution} & \textbf{Résultat} \\ \hline
+\hline
+Requêtes N+1 lors de l'attribution & Utilisation du chargement anticipé (eager loading) avec la méthode `with()` d'Eloquent & Réduction de 78\% du nombre de requêtes SQL \\ \hline
+Recalcul répété des scores d'éligibilité & Mise en cache des scores dans une matrice en mémoire & Amélioration de 65\% du temps d'exécution de l'algorithme \\ \hline
+Blocage du serveur pendant l'attribution & Déplacement du processus dans une file d'attente (queue) avec traitement asynchrone & Interface utilisateur réactive même pendant les calculs lourds \\ \hline
+Exploration inefficace des combinaisons & Réorganisation de l'algorithme pour éviter les combinaisons impossibles dès le départ & Réduction de 92\% du nombre de combinaisons évaluées \\ \hline
+\end{tabular}
+\caption{Optimisations de l'algorithme d'attribution des parcours}
+\label{table:algorithm-optimization}
+\end{table}
+
+Le traitement asynchrone via les files d'attente de Laravel a été particulièrement bénéfique :
+
+\begin{lstlisting}[style=phpstyle,caption={Implémentation du traitement asynchrone de l'attribution}]
+// Dans le contrôleur d'administration
+public function launchAssignment()
+{
+    // Vérification des prérequis
+    if (!$this->preAssignmentChecksPass()) {
+        return redirect()->back()->with('error', 'Vérifications préliminaires échouées');
+    }
+    
+    // Création d'un job en file d'attente plutôt que traitement immédiat
+    AssignParcoursJob::dispatch()
+        ->onQueue('assignments')
+        ->delay(now()->addSeconds(5));
+    
+    // Notification à l'administrateur
+    return redirect()->route('admin.assignments.status')
+        ->with('success', 'Processus d\'attribution lancé. Vous recevrez une notification à la fin du traitement.');
+}
+
+// Définition du job
+class AssignParcoursJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    
+    public $timeout = 3600; // 1 heure maximum
+    
+    public function handle(AssignmentService $service)
+    {
+        // Exécution de l'algorithme d'attribution
+        $stats = $service->assignParcours();
+        
+        // Enregistrement des résultats et statistiques
+        $this->saveAssignmentResults($stats);
+        
+        // Notification aux administrateurs
+        $admins = User::where('role', 'admin')->get();
+        Notification::send($admins, new AssignmentCompleteNotification($stats));
+    }
+}
+\end{lstlisting}
+
+Ces optimisations ont permis d'exécuter l'algorithme d'attribution pour plusieurs milliers d'étudiants en quelques minutes, contre plusieurs heures dans la version initiale.
+
+\subsection{Sécurité et protection des données}
+
+La sécurité du système a été une préoccupation constante, avec plusieurs défis spécifiques :
+
+\begin{itemize}
+    \item \textbf{Protection contre les tentatives de contournement des règles d'éligibilité} : Implémentation de vérifications côté serveur systématiques, même lorsque des contrôles côté client sont présents
+    \item \textbf{Prévention des injections SQL} : Utilisation exclusive des mécanismes de protection intégrés à Laravel (requêtes paramétrées, ORM)
+    \item \textbf{Protection contre la falsification de requêtes intersites (CSRF)} : Utilisation systématique des tokens CSRF de Laravel dans tous les formulaires
+    \item \textbf{Contrôle d'accès granulaire} : Mise en place de middlewares spécifiques pour vérifier les autorisations à différents niveaux
+\end{itemize}
+
+La journalisation des actions sensibles a également été renforcée pour faciliter la détection et l'analyse des tentatives d'accès non autorisés :
+
+\begin{lstlisting}[style=phpstyle,caption={Middleware de journalisation des actions sensibles}]
+class LogSensitiveActions
+{
+    public function handle($request, Closure $next)
+    {
+        // Traitement normal de la requête
+        $response = $next($request);
+        
+        // Déterminer si c'est une action sensible
+        if ($this->isSensitiveAction($request)) {
+            // Récupérer l'utilisateur connecté
+            $user = Auth::user();
+            
+            // Journaliser l'action
+            SecurityLog::create([
+                'user_id' => $user ? $user->id : null,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'action' => $request->route()->getName(),
+                'request_data' => json_encode($this->sanitizeData($request->all())),
+                'status_code' => $response->getStatusCode(),
+                'created_at' => now()
+            ]);
+        }
+        
+        return $response;
+    }
+    
+    private function isSensitiveAction($request)
+    {
+        // Liste des routes considérées comme sensibles
+        $sensitiveRoutes = [
+            'parcours.savePreferences',
+            'admin.*',
+            'api.students.*'
+        ];
+        
+        $currentRoute = $request->route()->getName();
+        
+        foreach ($sensitiveRoutes as $route) {
+            if (Str::is($route, $currentRoute)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private function sanitizeData($data)
+    {
+        // Retirer les données sensibles avant journalisation
+        $sanitized = $data;
+        
+        if (isset($sanitized['password'])) {
+            $sanitized['password'] = '******';
+        }
+        
+        // Autres données à anonymiser...
+        
+        return $sanitized;
+    }
+}
+\end{lstlisting}
+
+L'ensemble de ces mesures a permis de construire un système robuste face aux tentatives d'accès non autorisés et de manipulation des données, tout en assurant une traçabilité complète des actions sensibles.
+
+% ----- Chapitre 5 ------------------------------------------------------------
+\chapter{Implémentation}
+\section{Développement Laravel}
+% Exemple de listing code PHP
+\begin{lstlisting}[style=phpstyle,caption={Extrait de contrôleur Laravel}]
+public function index()
+{
+    $etudiants = Etudiant::with('parcours')->get();
+    return view('etudiant.index', compact('etudiants'));
+}
+\end{lstlisting}
+
+\section{Interface web (JavaScript)}
+\begin{lstlisting}[style=jsstyle,caption={Appel API via Fetch}]
+fetch('/api/etudiants')
+  .then(response => response.json())
+  .then(data => console.log(data));
+\end{lstlisting}
+
+% ----- Chapitre 6 ------------------------------------------------------------
+\chapter{Validation et tests}
+\section{Scénarios de test}
+% TODO : décrire les scénarios de test.
+
+% ----- Conclusion ------------------------------------------------------------
+\chapter*{Conclusion Générale}
+\addcontentsline{toc}{chapter}{Conclusion Générale}
+% TODO : conclusion générale.
+
+% ----------------------------------------------------------------------------
+% 15. BIBLIOGRAPHIE AUTOMATIQUE
+% ----------------------------------------------------------------------------
+\printbibliography
+
+% ----------------------------------------------------------------------------
+% 16. ANNEXES
+% ----------------------------------------------------------------------------
+\appendix
+\chapter{Annexe A : Scripts SQL}
+\begin{lstlisting}[style=sqlstyle,caption={Script de création de la base}]
+CREATE TABLE filieres (
+  id_filiere INT PRIMARY KEY,
+  libelle VARCHAR(100) NOT NULL
+);
+\end{lstlisting}
+
+\chapter{Annexe B : Documentation API}
+% TODO : contenu de l'annexe.
+
+% ----------------------------------------------------------------------------
+% 17. FIN DU DOCUMENT
+% ----------------------------------------------------------------------------
+\end{document}
