@@ -53,8 +53,8 @@ class ResultatsAcademiquesSeeder extends Seeder
             ],
         ];
 
-        // Ru00e9cupu00e9rer tous les u00e9tudiants
-        $etudiants = Etudiant::all();
+        // Récupérer tous les étudiants
+        $etudiants = Etudiant::orderBy('num_inscription')->get();
 
         foreach ($etudiants as $etudiant) {
             // Log pour suivre la progression
@@ -62,16 +62,17 @@ class ResultatsAcademiquesSeeder extends Seeder
             
             // Pour chaque semestre
             foreach ($modulesParSemestre as $semestre => $modules) {
+                $nbValides = 0;
                 // Pour chaque module dans le semestre
                 foreach ($modules as $module) {
-                    // Générer une note aléatoire entre 5 et 18
-                    $note = rand(50, 180) / 10;
+                    // Générer une note aléatoire mais logique
+                    $note = rand(80, 160) / 10; // 8.0 – 16.0
                     
                     // Déterminer le statut en fonction de la note
                     $statut = $note >= 10 ? 'validé' : 'non_validé';
                     
                     // Créer l'enregistrement
-                    ResultatAcademique::create([
+                    $result = ResultatAcademique::create([
                         'num_inscription' => $etudiant->num_inscription,
                         'semestre' => $semestre,
                         'code_module' => $module['code'],
@@ -80,7 +81,16 @@ class ResultatsAcademiquesSeeder extends Seeder
                         'coefficient' => $module['coefficient'],
                         'statut' => $statut,
                     ]);
+
+                    // Compter les modules validés pour le semestre
+                    if ($statut === 'validé') {
+                        $nbValides++;
+                    }
                 }
+
+                // Mettre à jour le compteur global sur l'étudiant
+                $column = 'nb_val_ac_' . strtolower($semestre);
+                $etudiant->increment($column, $nbValides);
             }
             
             // Enregistrer une action dans l'historique de l'étudiant

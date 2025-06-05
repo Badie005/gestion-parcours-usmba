@@ -1,367 +1,212 @@
-# Structure Complète du Mémoire PFE
+# Structure du Rapport de Stage
 ## Système de Gestion des Parcours Étudiants - USMBA
 
----
-
-## 📋 Vue d'ensemble du mémoire
-
-**Titre proposé :** "Conception et développement d'un système automatisé de gestion des parcours étudiants : Application à l'Université Sidi Mohamed Ben Abdellah"
-
-**Volume total :** 90-110 pages  
-**Durée de présentation :** 20-25 minutes  
-**Public :** Jury académique + représentants secteur éducatif
-
----
-
-## 🏗️ Structure détaillée par chapitre
-
-### Pages liminaires (8-10 pages)
-
-- **Page de garde** (1 page)
-- **Dédicaces et remerciements** (2 pages)
-- **Résumé/Abstract** (2 pages) - français/anglais
-- **Table des matières détaillée** (2 pages)
-- **Liste des figures et tableaux** (1 page)
-- **Glossaire technique** (1-2 pages)
-
----
-
-## 📖 CHAPITRE I - Contexte et problématique (12-15 pages)
-
-### 1.1 Contexte institutionnel (4-5 pages)
-**Objectif pédagogique :** Démontrer la compréhension de l'environnement métier
-
-- Présentation de l'USMBA (structure, effectifs, organisation)
-- Organisation pédagogique actuelle (filières, parcours, validation)
-- Processus d'orientation traditionnel et ses acteurs
-- Enjeux stratégiques de la transformation numérique
-
-**Éléments visuels requis :**
-- Organigramme de l'université
-- Schéma du processus d'orientation actuel
-- Tableau comparatif "Avant/Après" numérique
-
-### 1.2 Analyse de l'existant et limitations (4-5 pages)
-**Objectif pédagogique :** Capacité d'analyse critique des systèmes existants
-
-- Audit des méthodes manuelles (Excel, formulaires papier)
-- Identification des points de friction (délais, erreurs, opacité)
-- Analyse des risques (sécurité, cohérence, traçabilité)
-- Benchmarking avec d'autres universités
-
-**Analogie technique :** Comme un système de régulation analogique vs numérique, où les ajustements manuels créent des oscillations et imprécisions
-
-### 1.3 Problématique et objectifs (4-5 pages)
-**Objectif pédagogique :** Formulation claire d'une problématique technique
-
-- Énoncé de la problématique centrale
-- Objectifs généraux et spécifiques
-- Contraintes techniques et métier
-- Critères de réussite mesurables
-
----
-
-## 🔬 CHAPITRE II - État de l'art et fondements théoriques (15-18 pages)
-
-### 2.1 Systèmes d'information éducatifs (5-6 pages)
-**Objectif pédagogique :** Maîtrise des concepts théoriques du domaine
-
-- Architecture des SIE (Student Information Systems)
-- Normes et standards (SCORM, LTI, xAPI)
-- Patterns d'attribution automatisée
-- Cas d'usage dans l'enseignement supérieur
-
-### 2.2 Technologies et frameworks (5-6 pages)
-**Objectif pédagogique :** Justification technique des choix architecturaux
-
-- Analyse comparative des frameworks PHP (Laravel vs Symfony vs CodeIgniter)
-- Patterns architecturaux (MVC, Repository, Service Layer)
-- Sécurisation des applications web (OWASP Top 10)
-- Optimisation frontend moderne (Vite, Alpine.js, Tailwind)
-
-**Analogie technique :** Framework comme châssis automobile - la robustesse de Laravel comparable à une architecture modulaire d'un véhicule industriel
-
-### 2.3 Méthodologies de développement (4-6 pages)
-**Objectif pédagogique :** Application des bonnes pratiques de génie logiciel
-
-- Cycle de développement agile adapté au contexte universitaire
-- Patterns de conception appliqués (Strategy, Observer, Factory)
-- Qualité logicielle et tests
-- Documentation technique
-
----
-
-## ⚙️ CHAPITRE III - Conception et architecture (18-22 pages)
-
-### 3.1 Analyse des besoins (4-5 pages)
-**Objectif pédagogique :** Capacité de recueil et formalisation des exigences
-
-- Personas et cas d'usage détaillés
-- Exigences fonctionnelles (avec priorités MoSCoW)
-- Exigences non-fonctionnelles (performance, sécurité, évolutivité)
-- Matrice de traçabilité des exigences
-
-**Éléments visuels requis :**
-- Diagrammes de cas d'usage UML
-- User stories avec critères d'acceptation
-- Matrice exigences/fonctionnalités
-
-### 3.2 Architecture technique (6-8 pages)
-**Objectif pédagogique :** Conception d'architecture logicielle robuste
-
-- Architecture 3-tiers détaillée
-- Modèle de données normalisé (MCD/MPD)
-- Patterns architecturaux appliqués
-- Diagrammes de séquence pour processus critiques
-
-**Analogie technique :** Architecture comme système de distribution électrique - couches bien isolées, transformateurs (services) entre niveaux de tension (données/métier/présentation)
-
-**Éléments visuels requis :**
-- Diagramme d'architecture technique
-- Schéma de base de données avec cardinalités
-- Diagrammes de séquence (attribution automatique, validation manuelle)
-- Schéma de sécurité et flux de données
-
-### 3.3 Spécifications techniques (4-5 pages)
-**Objectif pédagogique :** Maîtrise des spécifications détaillées
-
-- API REST - contrats d'interface
-- Algorithmes d'attribution (pseudo-code + complexité)
-- Stratégies de persistence et caching
-- Mécanismes de sécurité (authentification, autorisation, audit)
-
-### 3.4 Interfaces utilisateur (4-4 pages)
-**Objectif pédagogique :** Design d'expérience utilisateur
-
-- Maquettes wireframes et prototypes
-- Charte graphique et guidelines
-- Responsive design et accessibilité
-- Parcours utilisateur optimisés
-
----
-
-## 🛠️ CHAPITRE IV - Implémentation et développement (20-25 pages)
-
-### 4.1 Environnement de développement (3-4 pages)
-**Objectif pédagogique :** Maîtrise de l'outillage professionnel
-
-- Stack technique détaillée avec justifications
-- Configuration d'environnement (Docker, Vagrant ou natif)
-- Outils de qualité (PHPStan, ESLint, tests)
-- Workflow de développement et déploiement
-
-### 4.2 Implémentation backend (8-10 pages)
-**Objectif pédagogique :** Développement backend professionnel
-
-- Structure du projet Laravel (arborescence, conventions)
-- Modèles Eloquent et gestion des relations complexes
-- Services métier et logique d'attribution
-- Gestion des exceptions et logging
-
-**Code à inclure :**
-```php
-// Exemple de service d'éligibilité
-class EligibilityService {
-    public function calculateEligibility(Student $student, Course $course): EligibilityResult
-    {
-        // Logique métier détaillée
-    }
-}
-```
-
-### 4.3 Frontend et expérience utilisateur (5-6 pages)
-**Objectif pédagogique :** Développement frontend moderne
-
-- Architecture Blade + Alpine.js + Tailwind
-- Composants réutilisables et state management
-- Optimisations performance (lazy loading, code splitting)
-- Accessibilité et responsive design
-
-### 4.4 Défis techniques et solutions (4-5 pages)
-**Objectif pédagogique :** Résolution de problèmes complexes
-
-- Compatibilité avec schéma DB existant
-- Gestion des contraintes de performance
-- Sécurisation et audit trail
-- Solutions d'interopérabilité
-
-**Analogie technique :** Intégration legacy comme greffe d'organe - nécessite adaptation des interfaces sans perturber le fonctionnement global
-
----
-
-## 🧪 CHAPITRE V - Tests et validation (8-12 pages)
-
-### 5.1 Stratégie de tests (2-3 pages)
-**Objectif pédagogique :** Maîtrise des méthodes de validation
-
-- Pyramide de tests (unitaires, intégration, e2e)
-- Tests de charge et performance
-- Tests de sécurité et audit
-- Validation avec utilisateurs finaux
-
-### 5.2 Résultats et métriques (3-4 pages)
-**Objectif pédagogique :** Analyse quantitative des performances
-
-- Métriques de performance (temps de réponse, débit)
-- Taux de couverture de tests
-- Analyse de la qualité du code (complexité cyclomatique)
-- Retours utilisateurs et satisfaction
-
-### 5.3 Validation fonctionnelle (3-5 pages)
-**Objectif pédagogique :** Vérification de conformité métier
-
-- Scénarios de test détaillés
-- Validation des algorithmes d'attribution
-- Tests de non-régression
-- Certification sécurité
-
-**Éléments visuels requis :**
-- Captures d'écran annotées des fonctionnalités
-- Graphiques de performance
-- Tableaux de résultats de tests
-
----
-
-## 📊 CHAPITRE VI - Analyse critique et perspectives (8-10 pages)
-
-### 6.1 Bilan technique (3-4 pages)
-**Objectif pédagogique :** Auto-évaluation critique
-
-- Objectifs atteints vs planifiés
-- Choix techniques : bénéfices et limitations
-- Leçons apprises et retour d'expérience
-- Points d'amélioration identifiés
-
-### 6.2 Impact et retour sur investissement (2-3 pages)
-**Objectif pédagogique :** Évaluation de la valeur créée
-
-- Gains quantifiés (temps, erreurs, satisfaction)
-- Impact organisationnel et changement
-- Coût total de possession (TCO)
-- Indicateurs de réussite métier
-
-### 6.3 Évolutions et perspectives (3-3 pages)
-**Objectif pédagogique :** Vision prospective et innovation
-
-- Feuille de route d'évolution
-- Intégration avec écosystème (ENT, APOGEE)
-- Technologies émergentes (IA, ML pour recommandation)
-- Scalabilité vers d'autres établissements
-
-**Analogie technique :** Évolution comme mise à niveau d'un système embarqué - possibilité de firmware updates sans changer le hardware
-
----
-
-## 🎯 CONCLUSION GÉNÉRALE (3-4 pages)
-
-**Objectif pédagogique :** Synthèse et ouverture
-
-- Rappel de la problématique et contribution
-- Synthèse des résultats obtenus
-- Compétences acquises et montée en expertise
-- Ouverture vers projets futurs
-
----
-
-## 📚 Éléments complémentaires
-
-### Bibliographie (3-4 pages)
-- **Sources académiques** (20-25 références) : IEEE, ACM, revues spécialisées
-- **Documentation technique** : Laravel, PHP, standards web
-- **Études sectorielles** : transformation numérique universités
-- **Normes et standards** : ISO 27001, GDPR, accessibilité
-
-### Annexes (15-20 pages)
-- **Annexe A :** Code source principal (extraits commentés)
-- **Annexe B :** Schémas techniques détaillés
-- **Annexe C :** Captures d'écran complètes
-- **Annexe D :** Documentation utilisateur
-- **Annexe E :** Spécifications techniques d'installation
-- **Annexe F :** Résultats de tests détaillés
-
----
-
-## 🎖️ Critères d'évaluation à satisfaire
-
-### Excellence technique (30%)
-- Maîtrise des technologies modernes
-- Qualité architecturale et code
-- Respect des bonnes pratiques
-- Innovation dans les solutions
-
-### Démarche scientifique (25%)
-- Rigueur méthodologique
-- Analyse critique des choix
-- Validation expérimentale
-- Bibliographie de qualité
-
-### Impact métier (20%)
-- Compréhension des enjeux
-- Solutions adaptées au contexte
-- Mesure de la valeur créée
-- Viabilité opérationnelle
-
-### Communication (15%)
-- Clarté de la rédaction
-- Qualité des visuels
-- Structuration logique
-- Présentation orale
-
-### Ouverture et perspectives (10%)
-- Vision prospective
-- Capacité d'extrapolation
-- Conscience des limites
-- Propositions d'amélioration
-
----
-
-## 💡 Points de différenciation recommandés
-
-1. **Analogies techniques** intégrées naturellement dans l'explication
-2. **Métriques quantifiées** à chaque étape de validation
-3. **Schémas architecturaux** professionnels avec notations standards
-4. **Code commenté et optimisé** montrant l'expertise technique
-5. **Retour d'expérience critique** démontrant la maturité professionnelle
-
-Cette structure équilibre théorie, technique et pratique pour démontrer une expertise complète adaptée aux enjeux du secteur éducatif.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-🔧 Comparaison avec un système embarqué
-Pensez à votre mémoire comme un contrôleur industriel :
-
-Couche acquisition (Chapitres I-II) : Capture des besoins et état de l'art
-Couche traitement (Chapitres III-IV) : Conception et implémentation
-Couche supervision (Chapitres V-VI) : Validation et optimisation
-📊 Répartition optimale des efforts
-Phase	Pages	Temps estimé	Priorité
-Rédaction technique	40-50	60%	Critique
-Analyse critique	15-20	20%	Importante
-Mise en forme/visuels	10-15	15%	Nécessaire
-Révisions/peaufinage	-	5%	Essentielle
-🎯 Conseil stratégique
-Votre avantage concurrentiel réside dans les défis techniques résolus (gestion des conventions DB non-standard, sécurité renforcée). Mettez l'accent sur ces aspects pour démontrer votre capacité à résoudre des problèmes complexes en contexte contraint.
-
-Les annexes avec le code source bien commenté et les schémas techniques détaillés renforceront significativement l'impact de votre démonstration d'expertise.
-
-
-
-
+## 1. Pages Préparatoires
+
+| Élément             | Statut      | Description                                                              |
+|---------------------|-------------|--------------------------------------------------------------------------|
+| **Page de garde**   | Obligatoire | Logo USMBA, titre du projet, nom étudiant, année, noms des tuteurs        |
+| **Dédicace**        | Facultatif  | -                                                                        |
+| **Remerciements**   | Obligatoire | Placés après la page de garde                                            |
+| **Résumé**          | Obligatoire | 150 mots + version anglaise (ABSTRACT)                                   |
+| **Sommaire**        | Obligatoire | Grands titres avec numéros de pages                                       |
+| **Liste des figures**| Selon besoin| Schémas, diagrammes, captures d'écran (sur feuille séparée)              |
+| **Liste des tableaux**| Selon besoin| Tableaux de données, matrices (sur feuille séparée)                      |
+| **Liste des acronymes**| Selon besoin| USMBA, SIE, MVC, PHP, SQL, HTML, CSS, JS, CRUD etc.                      |
+
+## 2. Introduction Générale (1-2 pages)
+
+> *Introduction partielle du rapport global*
+
+### 2.1 Contexte Général du Stage
+- Présentation de l'organisme d'accueil : USMBA (Université Sidi Mohamed Ben Abdellah).
+  - Historique et développement.
+  - Structure organisationnelle (facultés, services pertinents).
+- Importance de la transformation numérique dans le secteur de l'éducation supérieure.
+
+### 2.2 Problématique et Objectifs du Projet
+- Description du projet : Développement d'une application web pour la gestion des parcours étudiants.
+- Problèmes à résoudre (ex: difficultés de suivi, manque de centralisation, processus manuels).
+- Objectifs principaux du stage et du projet (ex: améliorer l'efficacité administrative, offrir une meilleure expérience aux étudiants).
+- Périmètre fonctionnel attendu du système.
+
+### 2.3 Plan du Rapport
+- Annonce de la structure du rapport et brève description de chaque chapitre.
+
+## 3. Développement (Cœur du rapport)
+
+> Chaque chapitre débute par une introduction partielle et se conclut par une conclusion partielle, conformément au guide.
+
+### Chapitre 1 : Cadre du Projet et Analyse de l'Existant (approx. 10-15 pages)
+
+> *Introduction partielle du chapitre 1*
+
+#### 1.1 L'USMBA et la Gestion des Parcours Étudiants
+- Rôle spécifique du service ou département d'accueil au sein de l'USMBA.
+- Processus existants de gestion des parcours avant le projet (manuels, semi-automatisés).
+- Identification des acteurs impliqués (administration, scolarité, étudiants, enseignants).
+
+#### 1.2 Analyse des Besoins et Spécifications
+- Recueil des besoins auprès des utilisateurs potentiels.
+- Analyse des limitations des systèmes ou processus existants.
+- Définition des spécifications fonctionnelles clés :
+  - Gestion des informations des étudiants (profils, inscriptions).
+  - Gestion des filières et des parcours (création, modification).
+  - Processus de choix et de validation des parcours par les étudiants.
+  - Suivi de la progression académique.
+  - Génération de documents administratifs (ex: attestations).
+  - Gestion des utilisateurs et des rôles (étudiants, administrateurs).
+- Définition des spécifications non-fonctionnelles :
+  - Sécurité des données.
+  - Performance et scalabilité.
+  - Ergonomie et accessibilité.
+  - Maintenabilité et évolutivité.
+
+#### 1.3 Justification des Choix Technologiques Initiaux
+- Brève présentation des technologies envisagées et pourquoi (ex: pertinence de Laravel pour un développement rapide et structuré).
+
+> *Conclusion partielle du chapitre 1*
+
+### Chapitre 2 : Conception et Développement du Système (approx. 25-35 pages)
+
+> *Introduction partielle du chapitre 2*
+
+#### 2.1 Architecture et Environnement de Développement
+- **Stack Technique Adoptée** : Laravel (PHP), MySQL, Tailwind CSS, JavaScript (Vue.js/React/Alpine.js si applicable).
+- **Architecture Logicielle** : Modèle MVC (Modèle-Vue-Contrôleur), approche orientée services.
+- **Base de Données** :
+  - Schéma conceptuel et relationnel (MCD, MLD).
+  - Description des tables principales (ex: `etudiants` avec `num_inscription` comme PK, `filieres`, `parcours`, `action_historiques`, etc.).
+  - Prise en compte des relations et contraintes (ex: `id_filiere`).
+- **Environnement de Développement** : Outils (VS Code, Composer, NPM/Yarn, Git), serveurs (Apache/Nginx, MySQL).
+- **Gestion de Version** : Utilisation de Git et plateformes (GitHub/GitLab).
+
+#### 2.2 Développement Backend
+- **Modèles Eloquent** : Implémentation des modèles et de leurs relations.
+- **Contrôleurs** : Logique de gestion des requêtes HTTP.
+- **Services** : Centralisation de la logique métier (ex: `App\Services\ReNote\AttestationPdfService` pour la génération de PDF sécurisés avec QR code, hash, watermark).
+- **Migrations et Seeders** : Gestion de la structure de la base de données et peuplement initial (ex: `TestDataSeeder`, `EtudiantSeeder`, `ActionHistoriqueSeeder` et leur ordre d'exécution).
+- **Authentification et Autorisation** : Mécanisme d'authentification (Laravel Auth customisé pour `email_academique`), gestion des rôles et permissions (ex: Spatie Permissions).
+- **Sécurité** : Protection contre les failles courantes (XSS, CSRF, injections SQL), validation des données.
+- **Logging et Monitoring** : Utilisation de `spatie/laravel-activitylog` pour le suivi des actions, `spatie/laravel-health` pour le health check.
+- **Gestion des Tâches Asynchrones** : Utilisation de Laravel Horizon pour les files d'attente (si applicable).
+
+#### 2.3 Développement Frontend
+- **Interface Utilisateur (UI)** : Utilisation de Blade pour les vues, intégration de Tailwind CSS pour le style.
+- **Expérience Utilisateur (UX)** : Conception d'interfaces intuitives et responsives, respect des préférences USER (boutons modernes, minimalistes, compacts).
+- **Composants Réutilisables** : Développement de composants Blade ou JavaScript.
+- **Interactivité** : Utilisation de JavaScript pour dynamiser les interfaces (si applicable).
+
+#### 2.4 Implémentation des Fonctionnalités Clés
+- **Gestion des Étudiants** : CRUD pour les profils, inscriptions.
+- **Gestion des Filières et Parcours** : Création, affichage, modification.
+- **Processus de Sélection des Parcours** : Interface pour les étudiants, validation par l'administration, gestion de l'éligibilité (ex: `nb_val_ac_s1` etc.).
+- **Génération d'Attestations** : Détail du fonctionnement du `AttestationPdfService`.
+- **Historique des Actions** : Suivi des modifications et actions importantes.
+- **Tableaux de Bord** : Visualisation des données pour les administrateurs.
+
+#### 2.5 Tests et Validation
+- **Tests Unitaires et d'Intégration** : Utilisation de PHPUnit.
+- **Tests Fonctionnels** : Scénarios de test pour valider les fonctionnalités.
+- **Débogage et Correction** : Outils et méthodes utilisés.
+
+> *Conclusion partielle du chapitre 2*
+
+### Chapitre 3 : Bilan du Stage et Perspectives (approx. 10-15 pages)
+
+> *Introduction partielle du chapitre 3*
+
+#### 3.1 Acquis du Stage
+- **Compétences Techniques** : Maîtrise de Laravel, PHP, MySQL, Tailwind CSS, Git, etc.
+- **Compétences en Gestion de Projet** : Planification, suivi des tâches, respect des délais.
+- **Compétences en Résolution de Problèmes** : Analyse et résolution des bugs et défis techniques.
+- **Compétences Relationnelles** : Travail en autonomie, communication avec les encadrants (si applicable).
+
+#### 3.2 Difficultés Rencontrées et Solutions Apportées
+- **Défis Techniques Spécifiques** :
+  - Problèmes de migration de base de données (ex: `filiere_id` vs `id_filiere`).
+  - Gestion des dépendances entre seeders.
+  - Complexité de certaines logiques métier (ex: éligibilité, génération de PDF sécurisés).
+  - Adaptation à des conventions de nommage ou structures de données existantes.
+- **Stratégies de Résolution** : Recherche documentaire, débogage, échanges avec les encadrants, tests itératifs.
+- **Leçons Apprises** : Importance de la rigueur, de la communication, de la veille technologique.
+
+#### 3.3 Évaluation du Projet et Auto-évaluation
+- Conformité du système développé par rapport aux objectifs initiaux.
+- Points forts de la solution (ex: robustesse, maintenabilité, ergonomie).
+- Points faibles ou limitations identifiées.
+- Bilan personnel sur l'expérience de stage.
+
+#### 3.4 Perspectives d'Évolution du Projet
+- Fonctionnalités supplémentaires envisageables (ex: notifications, intégration avec d'autres systèmes de l'USMBA).
+- Améliorations techniques possibles (ex: refactoring, optimisation des performances).
+- Potentiel de déploiement à plus grande échelle.
+
+> *Conclusion partielle du chapitre 3*
+
+## 4. Conclusion Générale (1-2 pages)
+
+- Rappel des objectifs du stage et du projet.
+- Synthèse des principaux résultats obtenus et des réalisations.
+- Bilan global de l'expérience professionnelle et des apports du stage.
+- Ouverture sur les perspectives d'avenir (professionnelles et pour le projet).
+
+## 5. Références Bibliographiques
+
+- Ouvrages techniques consultés.
+- Documentations officielles (Laravel, PHP, MySQL, Tailwind CSS, etc.).
+- Articles scientifiques ou de blog pertinents.
+- Ressources web (Stack Overflow, forums spécialisés).
+
+## 6. Annexes
+
+> Les annexes doivent être clairement identifiées (Annexe A, Annexe B, etc.) et paginées.
+
+- **Annexe A : Diagrammes Techniques**
+  - Schéma de l'architecture globale de l'application.
+  - Diagramme de classes (si pertinent).
+  - Modèle Conceptuel de Données (MCD) et Modèle Logique de Données (MLD) de la base.
+- **Annexe B : Captures d'Écran Clés**
+  - Principales interfaces utilisateur (connexion, tableau de bord, sélection de parcours, profil étudiant, etc.).
+  - Exemples de documents générés (attestations).
+- **Annexe C : Extraits de Code Significatifs**
+  - Portions de code illustrant des algorithmes complexes, des configurations spécifiques ou des solutions originales (ex: `AttestationPdfService`, logique d'authentification customisée, une migration complexe).
+  - *Ne pas inclure tout le code source, seulement des extraits pertinents et commentés.*
+- **Annexe D : Guide d'Installation et de Configuration (simplifié)**
+  - Prérequis logiciels (PHP, Composer, Node.js, MySQL).
+  - Étapes d'installation (clonage du dépôt, `composer install`, `npm install`, configuration du `.env`, `php artisan key:generate`).
+  - Lancement des migrations et seeders (`php artisan migrate --seed`).
+  - Accès à l'application.
+- **Annexe E : Glossaire (si nécessaire)**
+  - Définition des termes techniques ou acronymes spécifiques au projet ou au domaine.
+
+## Présentation Matérielle
+
+### Format du Texte
+- **Support** : Papier blanc A4 (210 × 297 mm), recto uniquement.
+- **Mise en page** :
+  - Marges : 2 cm sur tous les côtés + reliure gauche 0,5 cm.
+  - Justification : Alignement gauche et droite.
+  - Interligne : 1,5.
+  - Espacement paragraphes : 6 pts avant/après.
+
+### Typographie
+- **Texte courant** : Times 12 points.
+- **Titres de Chapitres** : Times 16 points, gras.
+- **Sous-sections (Niveau 1)** : Times 14 points, gras.
+- **Sous-sous-sections (Niveau 2)** : Times 12 points, gras.
+- **Détails (ex: légendes)** : Times 10 ou 12 points, italique ou normal.
+
+### Règles de Pagination
+- Numérotation en chiffres arabes (1, 2, 3...).
+- Position : Bas de page, à droite.
+- Exception : Page de titre non numérotée. Les pages préparatoires (remerciements, sommaire, etc.) peuvent avoir une numérotation en chiffres romains (i, ii, iii...). 
+
+### Tableaux et Figures
+- **Numérotation** : Chiffres arabes par ordre d'apparition dans chaque chapitre (ex: Figure 1.1, Tableau 2.3) ou séquentielle pour tout le document.
+- **Présentation** :
+  - Titre au-dessus du tableau/figure.
+  - Numéro à gauche du titre.
+  - Titre explicite et concis.
+  - Source si applicable, en dessous.
+  - Éviter la coupure sur deux pages si possible.

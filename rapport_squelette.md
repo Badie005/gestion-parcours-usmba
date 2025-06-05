@@ -1,7 +1,6 @@
 <!-- =====================================================================================
  RAPPORT DE STAGE – SQUELETTE
  Structure conforme à `structur_rapport.md` et directives `Guide.md`
- Les sections marquées TODO seront complétées dans les étapes suivantes.
  ===================================================================================== -->
 
 # Page de garde
@@ -26,11 +25,11 @@ Année universitaire : **2024-2025**
 
 ---
 
-## Résumé
-<!-- TODO: Résumé (≈150 mots) -->
+## Résumé (FR)
+<!-- TODO: Résumé (~150 mots) -->
 
-### ABSTRACT
-<!-- TODO: Abstract in English -->
+### ABSTRACT (EN)
+<!-- TODO: English abstract -->
 
 ---
 
@@ -40,35 +39,35 @@ Année universitaire : **2024-2025**
 ---
 
 ## Liste des figures
-<!-- TODO: À compléter selon besoin -->
+<!-- TODO: Compléter si nécessaire -->
 
 ## Liste des tableaux
-<!-- TODO: À compléter selon besoin -->
+<!-- TODO: Compléter si nécessaire -->
 
 ## Liste des acronymes
 <!-- TODO: USMBA, SIE, MVC, etc. -->
 
 ---
 
-# 2. Introduction *(1-2 pages)*
+# 2. Introduction (1-2 pages)
 
 ## 2.1 Présentation de l'USMBA
 <!-- TODO -->
 
 ## 2.2 Mission spécifique
-<!-- TODO: Description de la mission confiée, objectifs et enjeux -->
+<!-- TODO: Objectifs et enjeux du projet -->
 
 ## 2.3 Plan de rédaction
-<!-- TODO: Présentation des chapitres du rapport -->
+<!-- TODO: Présentation des chapitres -->
 
 ---
 
 # 3. Développement  
-> Chaque chapitre débute par une introduction partielle et se conclut par une conclusion partielle.
+> Chaque chapitre commence par une introduction partielle et se termine par une conclusion partielle.
 
-## Chapitre 1 : Organigramme de l'entreprise *(15-20 pages)*
+## Chapitre 1 : Organigramme de l'entreprise (15-20 pages)
 
-### Introduction du chapitre
+### Introduction
 <!-- TODO -->
 
 ### 1.1 Structure de l'USMBA
@@ -80,14 +79,14 @@ Année universitaire : **2024-2025**
 ### 1.3 Enjeux et défis
 <!-- TODO -->
 
-### Conclusion du chapitre
+### Conclusion
 <!-- TODO -->
 
 ---
 
-## Chapitre 2 : Activités réalisées en stage *(30-35 pages)*
+## Chapitre 2 : Activités réalisées en stage (30-35 pages)
 
-### Introduction du chapitre
+### Introduction
 <!-- TODO -->
 
 ### 2.1 Technologies et outils
@@ -102,14 +101,14 @@ Année universitaire : **2024-2025**
 ### 2.4 Fonctionnalités principales
 <!-- TODO -->
 
-### Conclusion du chapitre
+### Conclusion
 <!-- TODO -->
 
 ---
 
-## Chapitre 3 : Bilan du stage *(15-20 pages)*
+## Chapitre 3 : Bilan du stage (15-20 pages)
 
-### Introduction du chapitre
+### Introduction
 <!-- TODO -->
 
 ### 3.1 Apports personnels
@@ -121,18 +120,18 @@ Année universitaire : **2024-2025**
 ### 3.3 Perspectives d'évolution
 <!-- TODO -->
 
-### Conclusion du chapitre
+### Conclusion
 <!-- TODO -->
 
 ---
 
-# 4. Conclusion Générale *(2-3 pages)*
+# 4. Conclusion générale (2-3 pages)
 <!-- TODO -->
 
 ---
 
-# 5. Références Bibliographiques
-<!-- TODO: Liste des sources -->
+# 5. Références bibliographiques
+<!-- TODO -->
 
 ---
 
@@ -152,4 +151,4 @@ Année universitaire : **2024-2025**
 
 ---
 
-*(Fin du squelette – remplir les blocs TODO.)*
+*(Fin du squelette – remplissez les blocs TODO.)*

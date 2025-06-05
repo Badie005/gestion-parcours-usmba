@@ -56,6 +56,8 @@ return new class extends Migration
             $table->string('prenom_ar', 100)->nullable();
             $table->string('email_academique')->unique();
             $table->string('password');
+            // Indique si l'étudiant a déjà modifié son mot de passe initial
+            $table->boolean('password_changed')->default(false);
             $table->date('date_naissance')->nullable();
             $table->string('lieu_naissance_fr', 100)->nullable();
             $table->string('lieu_naissance_ar', 100)->nullable();

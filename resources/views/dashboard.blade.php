@@ -10,7 +10,7 @@
 
             <!-- Section d'état du profil et des étapes -->
             <div class="mb-6 rounded-lg shadow-md border border-blue-50 overflow-hidden" style="background: transparent !important;">
-                <div class="p-5 max-w-4xl mx-auto w-3/5 rounded-lg shadow-md bg-white" style="pointer-events: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                <div class="p-5 max-w-7xl mx-auto w-full rounded-lg shadow-md bg-white" style="pointer-events: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
 
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#0085c7] dark:text-[#A8F1FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
