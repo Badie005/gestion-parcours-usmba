@@ -18,7 +18,7 @@
         <div class="min-h-screen" style="background-color: rgb(226 240 255 / 86%);">
             @include('layouts.navigation')
 
-
+            @include('components.flash-messages')
 
             <!-- Page Content -->
             <main class="pt-16 mt-8 [&>*]:shadow-md [&>*]:rounded-lg" style="margin-top: 64px;">

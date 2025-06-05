@@ -75,7 +75,7 @@
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 ease-in-out">
                                             <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ $resultat->titre_module }}</td>
                                             <td class="px-4 py-3 text-center text-sm font-medium {{ $resultat->note >= 10 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
-                                                {{ number_format($resultat->note, 2) }}
+                                                {{ isset($resultat->note) ? number_format($resultat->note, 2) : 'N/A' }}
                                             </td>
                                             <td class="px-4 py-3 text-center text-sm">
                                                 @if($resultat->estValide())
@@ -122,7 +122,7 @@
                     Statistiques
                 </h4>
                 
-                <div id="statistics-content" class="hidden">
+                <div id="statistics-content" class="block">
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Graphique des moyennes -->
@@ -268,14 +268,14 @@
             }
         });
         
-        // Graphique des modules validu00e9s
+        // Graphique des modules validés
         const modulesCtx = document.getElementById('modulesChart').getContext('2d');
         const modulesChart = new Chart(modulesCtx, {
             type: 'bar',
             data: {
                 labels: semestres,
                 datasets: [{
-                    label: 'Modules validu00e9s',
+                    label: 'Modules validés',
                     data: modulesValides,
                     backgroundColor: 'rgba(59, 130, 246, 0.7)',
                     borderColor: 'rgba(59, 130, 246, 1)',
@@ -363,10 +363,10 @@
             }
         }
         
-        // Initialiser la section des statistiques (cachée par défaut)
+        // Initialiser la section des statistiques (visible par défaut)
         document.addEventListener('DOMContentLoaded', function() {
             const chevron = document.getElementById('stats-chevron');
-            chevron.style.transform = 'rotate(0)';
+            chevron.style.transform = 'rotate(180deg)';
         });
     </script>
 

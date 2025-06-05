@@ -47,37 +47,22 @@ class LoginRequest extends FormRequest
         $email = $this->input('email');
         $user = DB::table('etudiants')->where('email_academique', $email)->first();
         
-        // Si l'utilisateur n'existe pas, créer un utilisateur de test pour dépanage
+        // Si l'utilisateur n'existe pas, retourner une erreur
         if (!$user) {
-            // Créer un utilisateur de test si celui avec cet email n'existe pas
-            DB::table('etudiants')->insert([
-                'num_inscription' => '20252022',
-                'nom_fr' => 'Test',
-                'prenom_fr' => 'Utilisateur',
-                'email_academique' => $email,
-                'password' => Hash::make($this->input('password')),
-                'filiere_id' => 'INF',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-            
-            // Réessayer de récupérer l'utilisateur
-            $user = DB::table('etudiants')->where('email_academique', $email)->first();
-        }
-
-        // Utiliser le guard 'web' qui a été configuré pour utiliser le provider 'etudiants'
-        $credentials = [
-            'email_academique' => $email,
-            'password' => $this->input('password'),
-        ];
-
-        if (! Auth::guard('web')->attempt($credentials, $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed') . ' - Vérifiez vos identifiants. Un compte de test a été créé si nécessaire.',
+                'email' => [__('Les informations d\'identification fournies sont incorrectes.')],
             ]);
         }
+
+        // Vérifier le mot de passe
+        if (!Hash::check($this->input('password'), $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => [__('Les informations d\'identification fournies sont incorrectes.')],
+            ]);
+        }
+
+        // Si tout est correct, authentifier l'utilisateur
+        Auth::loginUsingId($user->num_inscription);
 
         RateLimiter::clear($this->throttleKey());
     }

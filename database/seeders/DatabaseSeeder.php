@@ -6,6 +6,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TestDataSeeder;
+use Database\Seeders\LargeSampleSeeder;
+use Database\Seeders\ResultatsAcademiquesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,9 +18,10 @@ class DatabaseSeeder extends Seeder
     {
         // Utiliser les seeders dans le bon ordre pour respecter les contraintes
         $this->call([
-            TestDataSeeder::class,     // D'abord les filieres et parcours
-            EtudiantSeeder::class,     // Ensuite les étudiants
-            ActionHistoriqueSeeder::class, // Enfin l'historique des actions
+            TestDataSeeder::class,          // Filieres & Parcours
+            LargeSampleSeeder::class,       // +150 exemples réalistes
+            ResultatsAcademiquesSeeder::class, // Génère les notes pour chaque étudiant
+            ActionHistoriqueSeeder::class,  // Historique d'actions pour tous
         ]);
         
         // N'utilisez pas User::factory() car nous utilisons le modèle Etudiant pour l'authentification
