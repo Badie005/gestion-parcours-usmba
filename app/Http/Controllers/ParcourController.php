@@ -382,13 +382,31 @@ class ParcourController extends Controller
             
             // Préparer les données de l'étudiant
             $etudiant = $this->prepareEtudiantData($etudiant);
+
+            // --- Référence et hash natif ---
+            $reference = 'GPE-' . str_pad($etudiant->num_inscription, 5, '0', STR_PAD_LEFT) . '-' . now()->format('Ymd');
+            $hash = hash('sha256', $reference);
             
-            // Générer le PDF via le facade barryvdh/dompdf, plus fiable dans Laravel
+            // Générer un QR code via une URL externe (solution temporaire)
+            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?' . http_build_query([
+                'size' => '120x120',
+                'data' => $reference,
+                'ecc' => 'H',
+                'margin' => 1,
+                'qzone' => 1,
+                'format' => 'png'
+            ]);
+            $qr = base64_encode(file_get_contents($qrUrl));
+            
+            // Générer le PDF avec filigrane CSS
             $pdf = PDF::loadView('parcours.pdf', [
                 'etudiant' => $etudiant,
                 'filiere'  => $filiere,
                 'parcour'  => $parcour,
-                'date'     => now()->format('d/m/Y')
+                'date'     => now()->format('d/m/Y'),
+                'qr'       => $qr,
+                'hash'     => $hash,
+                'reference'=> $reference
             ])->setPaper('A4', 'portrait');
             
             // Définir le nom du fichier PDF

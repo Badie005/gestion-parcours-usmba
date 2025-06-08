@@ -148,6 +148,42 @@
             clear: both;
             display: table;
         }
+        
+        /* Filigrane de fond */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 800 400"><text x="50%" y="50%" font-family="Arial" font-size="80" fill-opacity="0.05" text-anchor="middle" dominant-baseline="middle" transform="rotate(-45, 200, 200)">USMBA - {{ $reference }}</text></svg>') center/50% repeat;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* QR code en bas à droite */
+        .qr-code {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 80px;
+            opacity: 0.8;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        
+        /* Hash en bas de page */
+        .document-hash {
+            font-family: monospace;
+            font-size: 8px;
+            color: #666;
+            word-break: break-all;
+            margin-top: 10px;
+            padding: 5px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
     </style>
 </head>
 <body>
@@ -250,10 +286,15 @@
         </tr>
     </table>
     
-    <!-- Pied de page -->
+    <!-- QR code -->
+    <img src="data:image/png;base64,{{ $qr }}" class="qr-code" alt="Code de vérification">
+    
+    <!-- Pied de page avec hash -->
     <div class="footer">
-        <p>Ce document est généré automatiquement par l'application de Gestion des Parcours Étudiants.</p>
-        <p>Pour toute question, veuillez contacter l'administration à l'adresse: administration@universite.fr</p>
+        <p>Document généré le {{ now()->format('d/m/Y H:i') }} - Ce document est un original électronique</p>
+        <div class="document-hash">
+            <strong>Vérification:</strong> {{ $hash }}
+        </div>
     </div>
 </body>
 </html>
