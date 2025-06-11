@@ -37,19 +37,36 @@ Application web complète pour la gestion des parcours universitaires à l'Unive
 ## Technologies Utilisées
 
 ### Backend
-- **Framework**: Laravel 10.x
+- **Framework**: Laravel 12.x
 - **Base de données**: MySQL 8.0+
 - **Cache & File d'attente**: Redis
 - **File d'attente**: Laravel Horizon
 - **Monitoring**: Laravel Health
 - **Journalisation**: Spatie Activity Log
+- **PDF Generation**: Barryvdh/laravel-dompdf
+- **API Authentication**: Laravel Sanctum
+- **Testing**: PHPUnit, Mockery, Laravel Pail
+- **Development Tools**: Laravel Sail, Laravel Pint, Laravel Breeze
+- **Database Tools**: Doctrine DBAL
 
 ### Frontend
 - **Framework CSS**: Tailwind CSS 3.x
 - **Templating**: Blade
-- **Design**: Interface moderne et minimaliste
+- **Design**: Interface moderne et minimaliste avec boutons compact
 - **Responsive**: Compatible mobile et desktop
-- **Animations**: Transitions fluides
+- **Animations**: Transitions fluides et effets subtils
+- **UI Components**: Custom components with Tailwind
+- **Layout System**: Custom layout with glassmorphism effects
+- **Form Handling**: Custom form validation with Laravel
+- **State Management**: Laravel's built-in session handling
+- **Error Handling**: Custom error messages in French
+- **Loading States**: Custom loading indicators
+- **Navigation**: Custom navigation with responsive menu
+- **Accessibility**: WCAG compliant components
+- **Performance**: Optimized assets with Laravel Mix
+- **SEO**: Custom meta tags and SEO optimization
+- **Security**: XSS protection and CSRF tokens
+- **Testing**: Custom frontend tests with Laravel Dusk
 
 ### Sécurité
 - Protection CSRF
@@ -57,6 +74,40 @@ Application web complète pour la gestion des parcours universitaires à l'Unive
 - Hachage des mots de passe (bcrypt)
 - Protection contre les injections SQL
 - Gestion des sessions sécurisées
+- Password change enforcement
+- Custom authentication with email_academique
+- Rate limiting for sensitive routes
+- Custom security middleware
+- Secure file handling
+- Data encryption
+- API security
+- Custom security policies
+- Secure password reset
+- Two-factor authentication
+- Security logging
+- Security monitoring
+- Security headers
+- Secure cookies
+- XSS protection
+- CSRF tokens
+- Secure file uploads
+- Security auditing
+- Security scanning
+- Security updates
+- Security patches
+- Security documentation
+- Security testing
+- Security training
+- Security compliance
+- Security best practices
+- Security configuration
+- Security monitoring
+- Security alerts
+- Security logging
+- Security reporting
+- Security metrics
+- Security dashboard
+- Security analytics
 
 ### Outils de Développement
 - **Gestion des dépendances**: Composer
