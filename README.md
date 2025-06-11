@@ -127,28 +127,27 @@ Ce projet est sous licence [MIT](LICENSE).
 - PHP 8.1 ou plus récent
 - Composer 2.0 ou plus récent
 - Node.js 16 ou plus récent
-- npm 8 ou plus récent
-- Serveur de base de données MySQL 5.7+ ou MariaDB 10.2+
-
 ## Mises à jour récentes
 
 ### Sécurité et gestion des comptes
-
 - Ajout du changement de mot de passe obligatoire à la première connexion
 - Amélioration du formulaire de changement de mot de passe dans le profil étudiant
 - Enregistrement des actions de connexion et de changement de mot de passe dans l'historique
 - Messages d'erreur de validation améliorés en français
+- Installation de Laravel Horizon pour la gestion des files d'attente
+- Installation de Laravel Health pour le monitoring de l'application
+- Installation de Spatie Activity Log pour le suivi des actions
 
 ### Gestion des parcours
-
 - Correction des problèmes de sélection des parcours avec la mise à jour des relations entre les tables
 - Amélioration de l'interface de sélection des parcours avec un design plus moderne et interactif
 - Vérification des prérequis académiques pour l'éligibilité aux parcours
 - Ajout de la gestion des crédits validés par semestre pour la validation des parcours
 - Amélioration de la validation côté serveur pour assurer l'intégrité des données
+- Correction des problèmes de migration avec la colonne id_filiere
+- Mise à jour des seeders pour utiliser la nomenclature correcte des champs
 
 ### Interface utilisateur
-
 - Nouvelle barre de navigation avec effet glassmorphism (transparent et flou) fixée en haut de la page
 - Ajout d'ombres portées (drop shadows) sur tous les composants principaux pour une meilleure profondeur visuelle
 - Effets de transition et d'animation au survol des éléments interactifs
@@ -160,7 +159,6 @@ Ce projet est sous licence [MIT](LICENSE).
 - Fond blanc pour la section "Progression de votre parcours académique" pour un contraste optimal
 
 ### Corrections techniques
-
 - Correction des attributs de modèle Etudiant pour utiliser les noms de colonnes appropriés (num_inscription, email_academique, nom_fr, prenom_fr)
 - Ajout de la colonne `password_changed` pour suivre l'état du changement de mot de passe
 - Correction de la relation entre les tables en remplaçant 'filiere_id' par 'id_filiere'
@@ -169,6 +167,9 @@ Ce projet est sous licence [MIT](LICENSE).
 - Optimisation des calculs statistiques pour les résultats académiques
 - Correction des bugs d'affichage des graphiques Chart.js
 - Gestion robuste des cas où les données sont manquantes
+- Ajout du service AttestationPdfService pour la génération sécurisée des PDF avec QR code, hash et protection
+- Mise en place du système de throttling pour les routes sensibles
+- Ajout de l'endpoint de health check
 
 ## Installation pour le développement
 
