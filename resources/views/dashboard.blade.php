@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
 
             <!-- Section d'état du profil et des étapes -->
             <div class="mb-6 rounded-lg shadow-md border border-blue-50 overflow-hidden" style="background: transparent !important;">
