@@ -7,7 +7,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px;">
             <div class="bg-white overflow-hidden shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="p-6 text-gray-900">
                     <!-- Les messages flash sont maintenant gérés par le composant dans le layout -->

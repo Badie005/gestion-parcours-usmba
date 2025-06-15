@@ -180,6 +180,19 @@ Ce projet est sous licence [MIT](LICENSE).
 - Node.js 16 ou plus récent
 ## Mises à jour récentes
 
+### Interface & Layout (Juin 2025)
+- Nettoyage de la barre latérale du profil (suppression des doublons, consolidation d'un seul `<nav>`).
+- Sidebar désormais fixe sous le header (`top:260px`) avec navigation centrée verticalement.
+- Suppression du bouton burger ; la sidebar reste toujours visible.
+- Ajustement des marges et paddings pour éviter les chevauchements :
+  - `padding-top: 48px` sur la page Parcours.
+  - `margin-top: 40px` sur les pages Résultats Académiques, Parcours et Confirmation.
+- Conformité renforcée aux préférences UI minimalistes (boutons compacts, effets de survol subtils).
+- Corrections mineures d'accessibilité et de responsive design.
+- Positionnement fixe du système de notifications sous le header (`top:80px; z-60`) pour rester visible sans chevauchement avec la sidebar.
+
+
+
 ### Sécurité et gestion des comptes
 - Ajout du changement de mot de passe obligatoire à la première connexion
 - Amélioration du formulaire de changement de mot de passe dans le profil étudiant
