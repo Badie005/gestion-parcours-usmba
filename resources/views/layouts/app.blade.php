@@ -18,10 +18,14 @@
         <div class="min-h-screen" style="background-color: rgb(226 240 255 / 86%);">
             @include('layouts.navigation')
 
-            @include('components.flash-messages')
+            <div class="fixed inset-x-0 top-[80px] z-60 flex justify-center pointer-events-none">
+                    <div class="w-full max-w-md px-4 pointer-events-auto">
+                        @include('components.flash-messages')
+                    </div>
+                </div>
 
             <!-- Page Content -->
-            <main class="pt-16 mt-8 [&>*]:shadow-md [&>*]:rounded-lg" style="margin-top: 64px;">
+            <main class="pt-24 [&>*]:shadow-md [&>*]:rounded-lg">
                 <!-- Ajoute des ombres portu00e9es et des coins arrondis u00e0 tous les u00e9lu00e9ments enfants directs du main -->
                 {{ $slot }}
             </main>
