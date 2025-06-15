@@ -35,7 +35,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px;">
             <!-- Détails des résultats par semestre -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg p-6 hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-4">Détails des résultats par semestre</h4>

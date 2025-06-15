@@ -6,48 +6,51 @@
     </x-slot>
 
     <!-- Navigation de la page de profil -->
-    <div class="fixed top-[80px] left-0 right-0 z-40 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200 flex justify-center items-center w-full">
-        <div class="max-w-7xl w-full px-4 sm:px-6 lg:px-8 flex justify-center items-center">
-            <nav class="inline-flex justify-center items-center space-x-6 py-2 overflow-x-auto no-scrollbar mx-auto text-center">
-                <a href="#informations-etudiant" class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition-all duration-200">
-                    <span class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <div x-data="{ openSidebar: true }">
+        <!-- Bouton d'affichage/masquage de la sidebar -->
+
+
+        <div x-show="openSidebar" x-transition:enter="transform ease-out duration-300"
+            x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+            x-transition:leave="transform ease-in duration-300" x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="-translate-x-full"
+            class="fixed left-0 bottom-0 w-60 bg-white/95 backdrop-blur-sm shadow-md border-r border-gray-200 z-50" style="top: 260px;">
+            <nav class="flex flex-col h-full justify-center py-6 space-y-3 overflow-y-auto no-scrollbar">
+
+                    <a href="#informations-etudiant" class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         Informations personnelles
-                    </span>
-                </a>
-                <a href="#informations-academiques" class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition-all duration-200">
-                    <span class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    </a>
+                    <a href="#informations-academiques" class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path d="M12 14l9-5-9-5-9 5 9 5z" />
                             <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
                         </svg>
                         Parcours
-                    </span>
-                </a>
-                <a href="#resultats-academiques" class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition-all duration-200">
-                    <span class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    </a>
+                    <a href="#resultats-academiques" class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                         Résultats
-                    </span>
-                </a>
-                <a href="#securite" class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition-all duration-200">
-                    <span class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    </a>
+                    <a href="#securite" class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-blue-50 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
                         Sécurité
-                    </span>
-                </a>
+                    </a>
+
             </nav>
         </div>
+
+
     </div>
 
-    <div class="py-12 mt-20">
+    <div class="py-12 pl-64">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Informations étudiant -->
             <div id="informations-etudiant" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
