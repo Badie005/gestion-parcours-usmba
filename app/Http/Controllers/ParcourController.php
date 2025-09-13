@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
@@ -387,16 +388,13 @@ class ParcourController extends Controller
             $reference = 'GPE-' . str_pad($etudiant->num_inscription, 5, '0', STR_PAD_LEFT) . '-' . now()->format('Ymd');
             $hash = hash('sha256', $reference);
             
-            // Générer un QR code via une URL externe (solution temporaire)
-            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?' . http_build_query([
-                'size' => '120x120',
-                'data' => $reference,
-                'ecc' => 'H',
-                'margin' => 1,
-                'qzone' => 1,
-                'format' => 'png'
-            ]);
-            $qr = base64_encode(file_get_contents($qrUrl));
+            // Génération locale du QR code (PNG) via simple-qrcode
+            $qrPng = QrCode::format('png')
+                ->size(120)
+                ->errorCorrection('H')
+                ->margin(1)
+                ->generate($reference);
+            $qr = base64_encode($qrPng);
             
             // Générer le PDF avec filigrane CSS
             $pdf = PDF::loadView('parcours.pdf', [
