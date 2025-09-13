@@ -1,3 +1,5 @@
+# Fichier d'environnement local - NE PAS VERSIONNER.
+/.env
 /.phpunit.cache
 /node_modules
 /public/build
