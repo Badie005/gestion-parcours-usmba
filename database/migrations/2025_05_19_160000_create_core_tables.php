@@ -113,7 +113,8 @@ return new class extends Migration
             $table->index('parcour_id');
             $table->index(['filiere_id', 'annee']);
             $table->index(['parcour_id', 'annee']);
-            $table->fullText(['nom_fr', 'prenom_fr', 'email_academique']);
+            // SQLite ne supporte pas fullText par défaut
+            // $table->fullText(['nom_fr', 'prenom_fr', 'email_academique']);
         });
 
         /* -----------------------------------------------------------------
