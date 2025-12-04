@@ -52,6 +52,7 @@ EXPOSE 8080
 
 # Start server with migrations
 # Copy start script and set permissions
+ARG CACHEBUST=1
 COPY docker/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
