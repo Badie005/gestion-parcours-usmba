@@ -30,5 +30,5 @@ php artisan view:cache
 
 # Start the server
 PORT=${PORT:-8080}
-echo "🌍 Starting server on 0.0.0.0:$PORT..."
-exec php artisan serve --host=0.0.0.0 --port=$PORT
+echo "🌍 Starting PHP built-in server on 0.0.0.0:$PORT..."
+exec php -S 0.0.0.0:$PORT -t public
