@@ -3,6 +3,9 @@
 # Install dependencies
 composer install --no-dev --optimize-autoloader
 
+# Create SQLite database file
+touch database/database.sqlite
+
 # Generate key if not set
 php artisan key:generate --force
 
