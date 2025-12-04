@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\TestDataSeeder;
 use Database\Seeders\LargeSampleSeeder;
 use Database\Seeders\ResultatsAcademiquesSeeder;
+use Database\Seeders\AdminSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             LargeSampleSeeder::class,       // +150 exemples réalistes
             ResultatsAcademiquesSeeder::class, // Génère les notes pour chaque étudiant
             ActionHistoriqueSeeder::class,  // Historique d'actions pour tous
+            AdminSeeder::class,             // Compte Admin
         ]);
         
         // N'utilisez pas User::factory() car nous utilisons le modèle Etudiant pour l'authentification
