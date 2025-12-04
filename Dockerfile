@@ -35,16 +35,23 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
 # Create SQLite database
-RUN touch database/database.sqlite
-
-# Generate key and run migrations
-RUN php artisan key:generate --force || true
+RUN mkdir -p database && touch database/database.sqlite
 
 # Set permissions
 RUN chmod -R 775 storage bootstrap/cache database
 
+# Force SQLite configuration via environment
+ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=/var/www/html/database/database.sqlite
+ENV SESSION_DRIVER=file
+ENV CACHE_STORE=file
+ENV QUEUE_CONNECTION=sync
+
 # Expose port
 EXPOSE 8080
 
-# Start server
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080
+# Start server with migrations
+CMD php artisan key:generate --force && \
+    php artisan migrate --force && \
+    php artisan db:seed --force || true && \
+    php artisan serve --host=0.0.0.0 --port=8080
