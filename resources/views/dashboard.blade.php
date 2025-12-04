@@ -26,7 +26,7 @@
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Status Card 1: Profil -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all duration-300 group transform hover:-translate-y-1">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all duration-300 group">
                     <div class="flex items-center justify-between mb-4">
                         <div class="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,7 +37,7 @@
                     </div>
                     <h4 class="text-lg font-bold text-slate-800 mb-1">Mon Profil</h4>
                     <p class="text-slate-500 text-sm mb-4">Gérez vos informations personnelles</p>
-                    <a href="{{ route('profile.edit') }}" class="text-blue-600 text-sm font-semibold hover:text-blue-700 flex items-center group-hover:translate-x-1 transition-transform">
+                    <a href="{{ route('profile.edit') }}" class="text-blue-600 text-sm font-semibold hover:text-blue-700 flex items-center">
                         Accéder au profil <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                 </div>
@@ -48,7 +48,7 @@
                     $filiere = Auth::user()->filiere;
                     $peutChoisir = !$hasParcours && $filiere && ($filiere->choix_parcour_autorise ?? false);
                 @endphp
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all duration-300 group transform hover:-translate-y-1">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all duration-300 group">
                     <div class="flex items-center justify-between mb-4">
                         <div class="p-3 {{ $hasParcours ? 'bg-green-50 text-green-600 group-hover:bg-green-600' : ($peutChoisir ? 'bg-yellow-50 text-yellow-600 group-hover:bg-yellow-600' : 'bg-slate-50 text-slate-600 group-hover:bg-slate-600') }} rounded-xl group-hover:text-white transition-colors duration-300 shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,13 +61,13 @@
                     </div>
                     <h4 class="text-lg font-bold text-slate-800 mb-1">Parcours Académique</h4>
                     <p class="text-slate-500 text-sm mb-4">{{ $hasParcours ? 'Votre parcours est confirmé' : ($peutChoisir ? 'Vous devez choisir votre spécialité' : 'Parcours non encore disponible') }}</p>
-                    <a href="{{ route('parcours.index') }}" class="text-blue-600 text-sm font-semibold hover:text-blue-700 flex items-center group-hover:translate-x-1 transition-transform">
+                    <a href="{{ route('parcours.index') }}" class="text-blue-600 text-sm font-semibold hover:text-blue-700 flex items-center">
                         {{ $hasParcours ? 'Voir mon parcours' : 'Choisir maintenant' }} <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                 </div>
 
                 <!-- Status Card 3: Résultats -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all duration-300 group transform hover:-translate-y-1">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all duration-300 group">
                     <div class="flex items-center justify-between mb-4">
                         <div class="p-3 bg-purple-50 text-purple-600 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300 shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -78,7 +78,7 @@
                     </div>
                     <h4 class="text-lg font-bold text-slate-800 mb-1">Résultats</h4>
                     <p class="text-slate-500 text-sm mb-4">Consultez vos notes et relevés</p>
-                    <a href="{{ route('resultats.index') }}" class="text-blue-600 text-sm font-semibold hover:text-blue-700 flex items-center group-hover:translate-x-1 transition-transform">
+                    <a href="{{ route('resultats.index') }}" class="text-blue-600 text-sm font-semibold hover:text-blue-700 flex items-center">
                         Voir les résultats <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
                 </div>
