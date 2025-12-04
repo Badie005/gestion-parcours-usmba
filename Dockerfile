@@ -51,6 +51,9 @@ ENV QUEUE_CONNECTION=sync
 EXPOSE 8080
 
 # Start server with migrations
-CMD php artisan key:generate --force && \
-    php artisan migrate:fresh --force --seed && \
-    php artisan serve --host=0.0.0.0 --port=8080
+# Copy start script and set permissions
+COPY docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+# Start application
+CMD ["/usr/local/bin/start.sh"]
