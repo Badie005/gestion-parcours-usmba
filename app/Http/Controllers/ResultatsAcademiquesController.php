@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ResultatsAcademiquesController extends Controller
@@ -126,8 +127,11 @@ class ResultatsAcademiquesController extends Controller
     private function getAnneesAcademiquesDisponibles(Etudiant $etudiant)
     {
         // Récupérer les années uniques des résultats de l'étudiant
+        $driver = DB::connection()->getDriverName();
+        $yearFunction = $driver === 'sqlite' ? "strftime('%Y', created_at)" : 'YEAR(created_at)';
+
         $annees = $etudiant->resultatsAcademiques()
-            ->selectRaw('YEAR(created_at) as annee')
+            ->selectRaw("$yearFunction as annee")
             ->distinct()
             ->pluck('annee')
             ->toArray();

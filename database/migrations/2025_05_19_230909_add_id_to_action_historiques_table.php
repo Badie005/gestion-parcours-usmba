@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('action_historiques', function (Blueprint $table) {
-            // Add ID column as primary key
-            $table->id()->first();
-        });
+        // L'ID est désormais ajouté directement lors de la création de la table
+        // dans 2025_05_19_160000_create_core_tables.php
+        // Cette migration est conservée vide pour éviter de casser l'historique des migrations
     }
 
     /**
@@ -22,9 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('action_historiques', function (Blueprint $table) {
-            // Remove the ID column
-            $table->dropColumn('id');
-        });
+        //
     }
 };
