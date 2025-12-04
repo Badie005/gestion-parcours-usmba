@@ -52,6 +52,5 @@ EXPOSE 8080
 
 # Start server with migrations
 CMD php artisan key:generate --force && \
-    php artisan migrate --force && \
-    php artisan db:seed --force || true && \
+    php artisan migrate:fresh --force --seed && \
     php artisan serve --host=0.0.0.0 --port=8080
