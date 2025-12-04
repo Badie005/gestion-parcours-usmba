@@ -135,7 +135,7 @@ class ParcourController extends Controller
             $parcour = Parcour::findOrFail($request->code_licence);
             
             // Mesure de sécurité supplémentaire - double vérification
-            if ($parcour->id_filiere !== $etudiant->id_filiere) {
+            if ($parcour->id_filiere !== $etudiant->filiere_id) {
                 throw ValidationException::withMessages([
                     'code_licence' => ['Le parcours sélectionné n\'appartient pas à votre filière.']
                 ]);

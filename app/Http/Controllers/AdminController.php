@@ -62,11 +62,11 @@ class AdminController extends Controller
         
         // Appliquer les filtres si présents
         if ($filiere_id) {
-            $query->where('code_deug', $filiere_id);
+            $query->where('filiere_id', $filiere_id);
         }
         
         if ($parcour_id) {
-            $query->where('code_licence', $parcour_id);
+            $query->where('parcour_id', $parcour_id);
         }
         
         if ($confirme !== null) {
@@ -140,12 +140,12 @@ class AdminController extends Controller
         
         // Filtrer par parcours si spécifié
         if ($parcour_id) {
-            $query->where('code_licence', $parcour_id);
+            $query->where('parcour_id', $parcour_id);
         }
         
         // Filtrer par filière si spécifiée
         if ($filiere_id) {
-            $query->where('code_deug', $filiere_id);
+            $query->where('filiere_id', $filiere_id);
         }
         
         // Seulement les choix confirmés par défaut

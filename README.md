@@ -191,7 +191,14 @@ Ce projet est sous licence [MIT](LICENSE).
 - Corrections mineures d'accessibilité et de responsive design.
 - Positionnement fixe du système de notifications sous le header (`top:80px; z-60`) pour rester visible sans chevauchement avec la sidebar.
 
-
+### Sécurité & Déploiement (Décembre 2024)
+- **Routes `/diagnostic` sécurisées** : Ces routes sont maintenant accessibles uniquement en environnement local (`APP_ENV=local`). En production, elles retournent automatiquement une erreur 404.
+- **Configuration sans Redis** : Le fichier `.env.example` a été mis à jour pour fonctionner sans Redis par défaut :
+  - `CACHE_STORE=file` - Utilise le système de fichiers pour le cache
+  - `QUEUE_CONNECTION=sync` - Exécution synchrone des jobs (ou `database` pour async)
+  - `SESSION_DRIVER=database` - Sessions stockées en BDD
+- **Migration sessions** : Ajout de la migration `create_sessions_table` pour le driver de session `database`.
+- **Broker de mot de passe** : Le broker par défaut est maintenant `etudiants` pour être cohérent avec le guard d'authentification.
 
 ### Sécurité et gestion des comptes
 - Ajout du changement de mot de passe obligatoire à la première connexion

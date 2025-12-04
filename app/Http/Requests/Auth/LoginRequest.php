@@ -49,6 +49,8 @@ class LoginRequest extends FormRequest
         
         // Si l'utilisateur n'existe pas, retourner une erreur
         if (!$user) {
+            RateLimiter::hit($this->throttleKey());
+            
             throw ValidationException::withMessages([
                 'email' => [__('Les informations d\'identification fournies sont incorrectes.')],
             ]);
@@ -56,6 +58,8 @@ class LoginRequest extends FormRequest
 
         // Vérifier le mot de passe
         if (!Hash::check($this->input('password'), $user->password)) {
+            RateLimiter::hit($this->throttleKey());
+            
             throw ValidationException::withMessages([
                 'email' => [__('Les informations d\'identification fournies sont incorrectes.')],
             ]);
