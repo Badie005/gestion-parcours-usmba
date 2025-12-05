@@ -122,6 +122,7 @@ return new class extends Migration
          |-----------------------------------------------------------------
          */
         Schema::create('action_historiques', function (Blueprint $table) {
+            $table->id();
             $table->string('etudiant_id', 20);
             $table->string('type_action', 50);
             $table->text('description');

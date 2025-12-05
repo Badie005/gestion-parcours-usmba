@@ -12,23 +12,25 @@ class CheckFirstLogin
     /**
      * Handle an incoming request.
      *
+     * En mode démo/portfolio, cette vérification est complètement désactivée
+     * pour permettre aux visiteurs de naviguer librement sans être forcés
+     * de changer le mot de passe.
+     *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // En mode démo (production avec SQLite), on désactive la vérification
-        // pour permettre aux visiteurs du portfolio de naviguer librement
-        if (env('DEMO_MODE', false) || config('app.demo_mode', false)) {
-            return $next($request);
-        }
+        // MODE DEMO : Bypass complet du changement de mot de passe
+        // Cette application est utilisée en mode démo pour un portfolio
+        // Les visiteurs doivent pouvoir naviguer sans restriction
+        return $next($request);
 
-        // Vérifier si l'utilisateur est connecté
+        // Code original désactivé pour le mode démo :
+        /*
         if (Auth::check()) {
             $user = Auth::user();
             
-            // Vérifier si c'est la première connexion (password non modifié)
             if ($user->password_changed === null || $user->password_changed === 0) {
-                // Si l'utilisateur n'est pas déjà sur la page de changement de mot de passe
                 if (!$request->routeIs('password.first')) {
                     return redirect()->route('password.first');
                 }
@@ -36,5 +38,6 @@ class CheckFirstLogin
         }
 
         return $next($request);
+        */
     }
 }
