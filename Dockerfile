@@ -46,6 +46,7 @@ ENV DB_DATABASE=/var/www/html/database/database.sqlite
 ENV SESSION_DRIVER=file
 ENV CACHE_STORE=file
 ENV QUEUE_CONNECTION=sync
+ENV DEMO_MODE=true
 
 # Expose port
 EXPOSE 8080

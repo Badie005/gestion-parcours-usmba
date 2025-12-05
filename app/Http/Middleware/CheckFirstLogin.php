@@ -16,6 +16,12 @@ class CheckFirstLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // En mode démo (production avec SQLite), on désactive la vérification
+        // pour permettre aux visiteurs du portfolio de naviguer librement
+        if (env('DEMO_MODE', false) || config('app.demo_mode', false)) {
+            return $next($request);
+        }
+
         // Vérifier si l'utilisateur est connecté
         if (Auth::check()) {
             $user = Auth::user();
