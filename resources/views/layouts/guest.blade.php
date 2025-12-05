@@ -26,7 +26,7 @@
                     <div class="transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                         <x-application-logo class="w-auto h-32 fill-current text-white drop-shadow-2xl" style="height: 120px;" />
                     </div>
-                    <span class="mt-4 text-2xl font-bold text-white tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-y-2 group-hover:translate-y-0">USMBA</span>
+                    <span class="mt-4 text-2xl font-bold text-white tracking-wider opacity-0 opacity-100 transition-opacity duration-500 -translate-y-2 ">USMBA</span>
                 </a>
             </div>
 

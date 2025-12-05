@@ -8,12 +8,12 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px;">
-            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg  transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="p-6 text-gray-900">
                     <!-- Les messages flash sont maintenant gérés par le composant dans le layout -->
 
                     <!-- Bannière de félicitation avec animation -->
-                    <div class="relative overflow-hidden mb-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                    <div class="relative overflow-hidden mb-8 rounded-lg shadow-md  transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                         <div class="absolute inset-0 bg-gradient-to-r from-[#00143f] to-[#0061ff] opacity-90"></div>
                         <div class="absolute inset-0 opacity-20 bg-indigo-900 bg-opacity-30"></div>
                         <div class="relative px-6 py-8 md:px-10 text-white text-center">
@@ -36,7 +36,7 @@
                             </svg>
                             Informations de l'étudiant
                         </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 border border-gray-200 hover:border-blue-300 transition-all duration-300 rounded-lg bg-gradient-to-br from-white to-blue-50 shadow-md hover:shadow-lg" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 border border-gray-200  transition-all duration-300 rounded-lg bg-gradient-to-br from-white to-blue-50 shadow-md " style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                             <div>
                                 <p><span class="font-medium">Nom complet :</span> {{ $etudiant->nom_complet ?? 'Non renseigné' }}</p>
                                 <p><span class="font-medium">Email :</span> {{ $etudiant->email ?? 'Non renseigné' }}</p>
@@ -58,7 +58,7 @@
                             </svg>
                             Filière
                         </h3>
-                        <div class="p-4 border border-gray-200 hover:border-green-300 rounded-lg bg-white shadow-md hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                        <div class="p-4 border border-gray-200  rounded-lg bg-white shadow-md  transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
 
                             <div class="flex flex-col md:flex-row justify-between">
                                 <div class="mb-2">
@@ -82,7 +82,7 @@
                             </svg>
                             Parcours choisi
                         </h3>
-                        <div class="relative p-5 border border-gray-200 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-200 hover:border-blue-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                        <div class="relative p-5 border border-gray-200 rounded-lg bg-white shadow-md  transition-all duration-200 " style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
 
                             <!-- Badge de confirmation -->
                             <div class="absolute top-3 right-3">
@@ -97,7 +97,7 @@
                             <div class="flex flex-col md:flex-row gap-6">
                                 <!-- Icone représentative du parcours -->
                                 <div class="flex-shrink-0 mx-auto md:mx-0">
-                                    <div style="background-color:rgb(0, 86, 223);" class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full text-white shadow-sm font-bold text-xl transition-all duration-200 hover:shadow-md">
+                                    <div style="background-color:rgb(0, 86, 223);" class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full text-white shadow-sm font-bold text-xl transition-all duration-200 ">
                                         @php
                                             $initiales = $parcour->licence_intitule_fr ?? 'PAR';
                                             $initiales = mb_strtoupper(mb_substr($initiales, 0, 3, 'UTF-8'));
@@ -143,7 +143,7 @@
                         <div class="flex flex-col sm:flex-row justify-between gap-4">
                             <!-- Bouton retour au dashboard - Style minimaliste moderne -->
                             <a href="{{ route('dashboard') }}" class="group inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md font-medium text-sm transition-all duration-200 hover:bg-gray-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 transition-transform duration-200 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 transition-transform duration-200 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                 </svg>
                                 <span>Tableau de bord</span>

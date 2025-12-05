@@ -154,7 +154,7 @@
                                     </div>
                                     <h4 class="text-lg font-semibold mb-3 text-gray-900">Parcours déjà attribué</h4>
                                     <p class="mb-4 text-gray-600">Votre parcours a été automatiquement attribué. Vous pouvez consulter les détails de votre confirmation.</p>
-                                    <a href="{{ route('parcours.confirmation') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-800 to-black border border-transparent rounded-md font-semibold text-base text-white uppercase tracking-wide hover:from-blue-700 hover:to-blue-800 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md hover:shadow-lg w-full justify-center">
+                                    <a href="{{ route('parcours.confirmation') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-800 to-black border border-transparent rounded-md font-semibold text-base text-white uppercase tracking-wide hover:from-blue-700 hover:to-blue-800 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md  w-full justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                         </svg>
@@ -178,7 +178,7 @@
                                         @foreach($parcours as $parcour)
                                         <div class="relative">
                                             <input type="radio" name="code_licence" id="parcour_{{ $parcour->code_licence }}" value="{{ $parcour->code_licence }}" class="peer hidden" {{ $loop->first ? 'checked' : '' }} required>
-                                            <label for="parcour_{{ $parcour->code_licence }}" class="flex flex-col h-full border border-gray-200 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 hover:shadow-md peer-checked:border-blue-500 peer-checked:ring-2 peer-checked:ring-blue-500 peer-checked:bg-blue-50 transition-all duration-200 overflow-hidden shadow-sm bg-white">
+                                            <label for="parcour_{{ $parcour->code_licence }}" class="flex flex-col h-full border border-gray-200 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50  peer-checked:border-blue-500 peer-checked:ring-2 peer-checked:ring-blue-500 peer-checked:bg-blue-50 transition-all duration-200 overflow-hidden shadow-sm bg-white">
                                                 <!-- En-tête -->
                                                 <div class="p-3 bg-gradient-to-r from-blue-600 to-blue-800 text-black group-hover:from-blue-700 group-hover:to-blue-900 transition-all duration-200">
                                                     <div class="flex justify-between items-center">

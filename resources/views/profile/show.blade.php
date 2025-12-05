@@ -53,7 +53,7 @@
     <div class="py-12 pl-64">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Informations étudiant -->
-            <div id="informations-etudiant" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+            <div id="informations-etudiant" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg  transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="max-w-4xl mx-auto w-full">
                     <section>
                         <header>
@@ -66,7 +66,7 @@
                         </header>
 
                         <div class="mt-6 space-y-6">
-                            <div class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300">
+                            <div class="bg-gray-50 rounded-lg p-4 shadow-sm  transition-shadow duration-300">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <!-- Numéro d'inscription -->
                                     <div>
@@ -120,7 +120,7 @@
             </div>
 
             <!-- Informations académiques -->
-            <div id="informations-academiques" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+            <div id="informations-academiques" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg  transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="max-w-4xl mx-auto w-full">
                     <section>
                         <header>
@@ -133,7 +133,7 @@
                         </header>
 
                         <div class="mt-6 space-y-6">
-                            <div class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300">
+                            <div class="bg-gray-50 rounded-lg p-4 shadow-sm  transition-shadow duration-300">
                                 <!-- Filière -->
                                 <div class="mb-4">
                                     <h3 class="text-sm font-semibold text-gray-500">Filière</h3>
@@ -178,7 +178,7 @@
             </div>
 
             <!-- Résultats académiques -->
-            <div id="resultats-academiques" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+            <div id="resultats-academiques" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg  transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="max-w-4xl mx-auto w-full">
                     <section>
                         <header>
@@ -227,7 +227,7 @@
                                 <div class="mt-3 flex justify-end">
                                     <a href="{{ route('resultats.index') }}" class="group inline-flex items-center px-3 py-1.5 text-sm text-blue-600 font-medium hover:text-blue-800 border border-transparent rounded hover:bg-blue-50 transition-all duration-200">
                                         <span>Voir tous les résultats</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-1.5 transform group-hover:translate-x-0.5 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-1.5 transform  transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
                                     </a>
@@ -240,7 +240,7 @@
     
 
             <!-- Sécurité - Changement de mot de passe -->
-            <div id="securite" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg hover:shadow-lg transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+            <div id="securite" class="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg  transition-shadow duration-300 scroll-mt-32" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <div class="max-w-4xl mx-auto w-full">
                     <section>
                         <header>

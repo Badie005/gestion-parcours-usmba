@@ -37,7 +37,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px;">
             <!-- Détails des résultats par semestre -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg p-6 hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg p-6  transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-4">Détails des résultats par semestre</h4>
                 
                 <!-- Onglets pour chaque semestre -->
@@ -114,7 +114,7 @@
             </div>
             
             <!-- Section des statistiques et graphiques -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg p-6 mt-6 hover:shadow-lg transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg p-6 mt-6  transition-shadow duration-300" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
                 <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-4 cursor-pointer flex items-center" onclick="toggleStatistics()" id="stats-header">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 transition-transform duration-300" id="stats-chevron" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
