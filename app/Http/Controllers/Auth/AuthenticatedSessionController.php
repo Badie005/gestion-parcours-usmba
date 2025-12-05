@@ -22,6 +22,9 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     * 
+     * MODE DEMO: La vérification du changement de mot de passe est désactivée
+     * pour permettre aux visiteurs du portfolio de naviguer librement.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -43,10 +46,12 @@ class AuthenticatedSessionController extends Controller
                 ['ip' => $request->ip()]
             );
             
-            // Si c'est la première connexion, rediriger vers la page de changement de mot de passe
-            if ($isFirstLogin) {
-                return redirect()->route('password.first');
-            }
+            // MODE DEMO: On ne redirige plus vers la page de changement de mot de passe
+            // Les visiteurs du portfolio doivent pouvoir accéder directement au dashboard
+            // Code original désactivé :
+            // if ($isFirstLogin) {
+            //     return redirect()->route('password.first');
+            // }
         }
 
         return redirect()->intended(route('dashboard', absolute: false));
