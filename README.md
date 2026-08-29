@@ -4,7 +4,7 @@
   <img src="public/logo.png" alt="Logo Gestion Parcours Étudiants" width="200" />
 </p>
 
-[![License: Academic](https://img.shields.io/badge/License-Academic%20Project-blue.svg)](LICENSE)
+[![License: Academic](https://img.shields.io/badge/License-GNU%20AGPLv3-blue.svg)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?logo=laravel)](https://laravel.com/)
 [![PHP](https://img.shields.io/badge/PHP-8.1+-777BB4?logo=php)](https://php.net/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?logo=mysql)](https://mysql.com/)
